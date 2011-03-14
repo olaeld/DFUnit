@@ -78,7 +78,7 @@ Object oTestFixtureRunner is a cTestFixtureRunner
         Move (oOutputBox(VDFUnitTestRunner_vw(Self))) to hOutputBox
         Send SetRunningColor to hOutputBox
         Send RunTestFixtures to oTestFixtureRunner
-        If (Err) Begin
+        If (pbFailOccured(oTestFixtureRunner(Self))) Begin
             Send SetFailedColor to hOutputBox
         End
         Else Begin
