@@ -1,4 +1,3 @@
-Use Windows.pkg
 Use DFClient.pkg
 Use cRichEdit.pkg
 Use cProgressBar.pkg
@@ -55,8 +54,6 @@ Object VDFUnitTestRunner_vw is a View
 
 End_Object
 
-Use oVDFUnitTests.pkg
-
 Object oTestFixtureCatalog is a cTestFixtureCatalog
     Set phTestFixtureNeighborhood to (Parent(Self))
     Send InitTestFixtureCatalog
@@ -91,6 +88,10 @@ Object oTestFixtureRunner is a cTestFixtureRunner
     
     Set phTestFixtureCatalog to (oTestFixtureCatalog(Self))
 End_Object
+
+Procedure CatalogTestFixtures
+    Send CatalogTestFixtures to oTestFixtureCatalog
+End_Procedure
 
 Procedure ListTestFixtures
     Send ListTestFixtures to oTestFixtureCatalog

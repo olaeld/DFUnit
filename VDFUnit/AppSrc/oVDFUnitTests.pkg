@@ -1,7 +1,7 @@
 Use cTestFixture.pkg
 Use cTest.pkg
 
-Object cObjectNameMixinTest is a cTestFixture
+Object ObjectNameMixinTest is a cTestFixture
     Object LastPartAfterFullStop_Tests is a cTest
         Procedure Test
             Send AssertSAreEqual "Lastname" (LastPartAfterFullStop(Self, "Firstname.Lastname"))
@@ -17,3 +17,4 @@ Object cObjectNameMixinTest is a cTestFixture
         End_Procedure
     End_Object
 End_Object
+
