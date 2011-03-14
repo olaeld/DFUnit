@@ -1,7 +1,6 @@
 Use DFAllEnt.pkg
 
 Object oApplication is a cApplication
-//    Set psAutoOpenWorkspace to "Config.ws"
 End_Object
 
 Object oMain is a Panel

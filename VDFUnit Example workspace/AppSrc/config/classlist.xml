@@ -1,9 +1,9 @@
 <classList xmlns="http://www.dataaccess.com/VisualDataFlex/2006/classlist/">
-	<VDFLibraryTimeStamp>2009-02-27T00:54:12</VDFLibraryTimeStamp>
+	<VDFLibraryTimeStamp>2009-02-26T22:54:12</VDFLibraryTimeStamp>
 	<libraries>
 		<library>
-			<libraryPath>..\Libraries\VDFUnit\VDFUnit.sws</libraryPath>
-			<libraryTimeStamp>2009-09-24T10:43:56</libraryTimeStamp>
+			<libraryPath>..\VDFUnit\VDFUnit-VDF151.sws</libraryPath>
+			<libraryTimeStamp>2011-03-14T10:25:29</libraryTimeStamp>
 			<libraryID>Lib1</libraryID>
 		</library>
 	</libraries>
