@@ -6,3 +6,4 @@ glob:*.dbg
 glob:*.dep
 glob:*.mtd
 glob:*.loc
+glob:*.prn
