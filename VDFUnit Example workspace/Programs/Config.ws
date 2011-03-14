@@ -1,7 +1,7 @@
 [Workspace]
 Home=..\
 AppSrcPath=.\AppSrc
-AppHTMLPath=.\AppHtml
+AppHTMLPath=.\
 BitmapPath=.\Bitmaps
 IdeSrcPath=.\IdeSrc
 DataPath=.\Data
