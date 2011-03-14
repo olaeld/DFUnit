@@ -1,4 +1,4 @@
-//Iterator pattern interface. Classes importing this class protocol need to 
+//Iterator pattern interface. Classes importing this class protocol need to
 //implement the IteratorMoveNext function.
 //
 //
@@ -40,7 +40,7 @@ Class cIterator_Mixin is a Mixin
     End_Function
     
     //Doc/Interface=Public
-    //@return Points to current element 
+    //@return Points to current element
     Function IteratorCurrent Returns Integer
         Function_Return (IteratorCurrent_Mixin(self))
     End_Function // IteratorCurrent

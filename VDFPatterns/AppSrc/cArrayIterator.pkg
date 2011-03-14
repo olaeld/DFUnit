@@ -5,7 +5,7 @@ Use cIterator_Mixin.pkg
 //available for the array by using the cArrayIterator object.
 //The class is abstract, and needs to be instantiated by using the various
 //array type subclasses, e.g. cArrayIteratorString, cArrayIteratorInteger
-//Doc/Classtype=Abstract 
+//Doc/Classtype=Abstract
 Class cArrayIterator is a cObject
     //Doc/Interface=Private
     Procedure Construct_Object
@@ -27,4 +27,4 @@ Class cArrayIterator is a cObject
         
     End_Procedure // AttachArray
      
-End_Class	// cArrayIterator
+End_Class    // cArrayIterator

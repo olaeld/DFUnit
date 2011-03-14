@@ -1,12 +1,12 @@
 [Workspace]
 Home=..\
 AppSrcPath=.\AppSrc
-AppHTMLPath=.\AppHtml
-BitmapPath=.\Bitmaps
+AppHTMLPath=.\
+BitmapPath=.\
 IdeSrcPath=.\IdeSrc
-DataPath=.\Data
-DDSrcPath=.\DdSrc
-HelpPath=.\Help
+DataPath=.\
+DDSrcPath=.\
+HelpPath=.\
 ProgramPath=.\Programs
-FileList=.\Data\Filelist.cfg
+FileList=.\DummyFilelist.cfg
 Description=VDF Design Patterns
