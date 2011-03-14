@@ -11,6 +11,8 @@ Class cTestFixture is a cObject
         Forward Send Construct_Object
         Property String psTestFixtureName
         Property Handle phTestCatalog
+        Property Boolean pbAbortTestFixture False
+        Property Boolean pbFailOccured
         
         Object oTestCatalog is a cTestCatalog
         End_Object
@@ -27,7 +29,7 @@ Class cTestFixture is a cObject
     Procedure ReportTestFixture Handle hTestFixtureCatalog
         Send AddTestFixtureToCatalog to hTestFixtureCatalog Self
         Send ReportTests
-    End_Function
+    End_Procedure
     
     Function ObjectName Returns String
         String sTestFixtureName
@@ -39,12 +41,20 @@ Class cTestFixture is a cObject
     End_Function
     
     Procedure RunTestFixture
+        Set pbAbortTestFixture to False
+        Set pbFailOccured to False
         Send Setup
-        Send RunTests
-        Send TearDown
+        If (not(pbAbortTestFixture(self))) Send RunTests
+        If (not(pbAbortTestFixture(Self))) Send TearDown
+        Else Error DFERR_PROGRAM "Test Fixture aborted"
+    End_Procedure
+    
+    Procedure AbortTestFixture
+        Set pbAbortTestFixture to True
     End_Procedure
     
     Procedure Setup
+        Set pbAbortTestFixture to False
     End_Procedure
     
     Procedure RunTests
@@ -54,6 +64,7 @@ Class cTestFixture is a cObject
         While (IteratorMoveNext(hTestCatalog))
             Get CurrentTest of hTestCatalog to hTest
             Send RunTest to hTest
+            If (pbFailOccured(hTest)) Set pbFailOccured to True
         Loop
     End_Procedure
     

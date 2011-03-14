@@ -1,7 +1,42 @@
+Use VdfBase.pkg
+
 Class cAssertMixin is a Mixin
     Procedure Define_cObjectNameMixin
     End_Procedure
     
+    { Visibility = Public }
+    Procedure OnAssertFailOccured
+    End_Procedure
+    
+    { Visibility = Private }
+    Function AssertFailErrorMessage String Expected String Actual Returns String
+        String sObjectName sErrorMessage
+        Get ObjectName to sObjectName
+        Move (sObjectName + ": Expected:<" + String(Expected) + ">") to sErrorMessage
+        Move (sErrorMessage + "but was:<" + String(Actual) + ">") to sErrorMessage
+        Function_Return sErrorMessage
+    End_Function
+    
+    { Visibility = Private }
+    Procedure AssertFail String sErrorMessage
+        Send OnAssertFailOccured
+        Boolean bRememberErr
+        Move Err to bRememberErr
+        Error DfErr_Program sErrorMessage
+        Move bRememberErr to Err
+    End_Procedure
+    
+    { Visibility = Private }
+    Procedure AssertFailExpectedActual String Expected String Actual String sAssertMessage
+        String sErrorMessage
+        Get AssertFailErrorMessage Expected Actual to sErrorMessage
+        If (num_arguments >= 3) Begin
+            Move (sErrorMessage + "." * sAssertMessage) to sErrorMessage
+        End
+        Send AssertFail sErrorMessage
+    End_Procedure
+    
+    { Visibility = Public }
     Procedure Assert Boolean bCondition String sAssertMessage
         If bCondition Procedure_Return
         
@@ -11,32 +46,53 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 2) Begin
             Move (sErrorMessage * sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send AssertFail sErrorMessage
     End_Procedure
     
-    Procedure AssertIAreEqual Integer iExpected Integer iActual String sAssertMessage
-        If (iExpected = iActual) Procedure_Return
+    { Visibility = Public }
+    Procedure AssertFalse Boolean bCondition String sAssertMessage
+        If (not(bCondition)) Procedure_Return
         
         String sObjectName sErrorMessage
         Get ObjectName to sObjectName
-        Move (sObjectName + ": Expected:<" + String(iExpected) + ">") to sErrorMessage
-        Move (sErrorMessage + "but was:<" + String(iActual) + ">") to sErrorMessage
-        If (num_arguments >= 3) Begin
-            Move (sErrorMessage + "." * sAssertMessage) to sErrorMessage
+        Move (sObjectName + ": AssertFalse failed.") to sErrorMessage
+        If (num_arguments >= 2) Begin
+            Move (sErrorMessage * sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send AssertFail sErrorMessage
     End_Procedure
     
-    Procedure AssertSAreEqual String sExpected String sActual String sAssertMessage
-        If (sExpected = sActual) Procedure_Return
+    { Visibility = Public }
+    Procedure AssertIAreEqual Integer Expected Integer Actual String sAssertMessage
+        If (Expected = Actual) Procedure_Return
         
-        String sObjectName sErrorMessage
-        Get ObjectName to sObjectName
-        Move (sObjectName + ": Expected:<" + sExpected + ">") to sErrorMessage
-        Move (sErrorMessage + "but was:<" + sActual + ">") to sErrorMessage
-        If (num_arguments >= 3) Begin
-            Move (sErrorMessage + "." * sAssertMessage) to sErrorMessage
-        End
-        Error DfErr_Program sErrorMessage
+        String sErrorMessage
+        If (num_arguments >= 3) Send AssertFailExpectedActual Expected Actual sAssertMessage
+        Else Send AssertFailExpectedActual Expected Actual
+    End_Procedure
+    
+    { Visibility = Public }
+    Procedure AssertNAreEqual Number Expected Number Actual String sAssertMessage
+        If (Expected = Actual) Procedure_Return
+        If (num_arguments >= 3) Send AssertFailExpectedActual Expected Actual sAssertMessage
+        Else Send AssertFailExpectedActual Expected Actual
+    End_Procedure
+    
+    { Visibility = Public }
+    Procedure AssertSAreEqual String Expected String Actual String sAssertMessage
+        If (Expected = Actual) Procedure_Return
+        
+        String sErrorMessage
+        If (num_arguments >= 3) Send AssertFailExpectedActual Expected Actual sAssertMessage
+        Else Send AssertFailExpectedActual Expected Actual
+    End_Procedure
+
+    { Visibility = Public }
+    Procedure AssertDTAreEqual DateTime Expected DateTime Actual String sAssertMessage
+        If (Expected = Actual) Procedure_Return
+        
+        String sErrorMessage
+        If (num_arguments >= 3) Send AssertFailExpectedActual Expected Actual sAssertMessage
+        Else Send AssertFailExpectedActual Expected Actual
     End_Procedure
 End_Class

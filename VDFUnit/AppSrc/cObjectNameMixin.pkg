@@ -1,3 +1,5 @@
+Use VdfBase.pkg
+
 Class cObjectNameMixin is a Mixin
     Procedure Define_cObjectNameMixin
     End_Procedure
