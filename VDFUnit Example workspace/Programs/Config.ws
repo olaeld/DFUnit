@@ -9,4 +9,4 @@ DDSrcPath=.\DdSrc
 HelpPath=.\Help
 ProgramPath=.\Programs
 FileList=.\Data\Filelist.cfg
-Description=VDFUnit Testrunner Sample Workspace
+Description=VDFUnit Example Workspace

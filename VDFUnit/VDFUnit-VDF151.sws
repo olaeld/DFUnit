@@ -1,6 +1,6 @@
 [Properties]
-Version=16.1
+Version=15.1
 [WorkspacePaths]
 ConfigFile=.\Programs\Config.ws
 [Libraries]
-Lib1=..\VDFPatterns\VDFPatterns-VDF161.sws
+Lib1=..\VDFPatterns\VDFPatterns-VDF151.sws
