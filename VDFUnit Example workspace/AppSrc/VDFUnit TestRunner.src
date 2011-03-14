@@ -11,6 +11,7 @@ Object oMain is a Panel
     Set Size to 213 433
     
     Object oClientArea is a ClientArea
+        Use oVDFUnitTests.pkg
         Use VDFUnitTestRunner.vw
     End_Object
     

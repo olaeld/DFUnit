@@ -1,0 +1,32 @@
+Use VDFUnit.pkg
+
+//cObjectNameMixin is included in cTest, so no need to create a test object
+Object cObjectNameMixinTests is a cTestFixture
+    DefineTest LastPartAfterFullStop_FirstNameDotLastname_ReturnsLastname
+        Send AssertSAreEqual "Lastname" (LastPartAfterFullStop(Self, "Firstname.Lastname"))
+    EndTest    
+    DefineTest LastPartAfterFullStop_Dot_ReturnsEmptyString
+        Send AssertSAreEqual "" (LastPartAfterFullStop(Self, "."))
+    EndTest
+    DefineTest LastPartAfterFullStop_DotDot_ReturnsEmptyString
+        Send AssertSAreEqual "" (LastPartAfterFullStop(Self, ".."))
+    EndTest
+    DefineTest LastPartAfterFullStop_EmptyString_ReturnsEmptyString
+        Send AssertSAreEqual "" (LastPartAfterFullStop(Self, ""))
+    EndTest
+    
+    //We define objects fully here, because setup/teardown is needed.
+    Object LastPartOfObjectName_oTestMyName_ReturnsOTestMyName is a cTest
+        Procedure Setup
+            Object oTestMyName is a cObject
+            End_Object
+        End_Procedure
+        Procedure Test
+            Send AssertSAreEqual (Uppercase("oTestMyName")) (LastPartOfObjectName(Self, oTestMyName))
+        End_Procedure
+        Procedure TearDown
+            Send Destroy of oTestMyName
+        End_Procedure
+    End_Object
+End_Object
+
