@@ -10,6 +10,8 @@ Class cTest is a cObject
         Forward Send Construct_Object
         Property String psTestName
         Property Boolean pbFailOccured
+        Property Boolean pbWarningOccured
+        Property Boolean pbIgnore
         
         //Set this to True if an error SHOULD occur for the test to pass
         Property Boolean pbExpectError
@@ -37,18 +39,24 @@ Class cTest is a cObject
     
     Procedure RunTest
         Set pbFailOccured to False
+        Set pbWarningOccured to False
         Move False to Err
+        If (pbIgnore(Self)) Set pbWarningOccured to True
+        Else Send DoRunTest
+    End_Procedure
+    
+    Procedure DoRunTest
         Send Setup
         Send Test
         If (pbExpectError(Self)) Begin //An error SHOULD occur. If not, Fail!
-            If (not(Err)) begin
+            If (not(Err)) Begin
                 Set pbFailOccured to True
                 Error DFERR_PROGRAM "An error was expected, but no error occured!"
             End
             Move False to Err
         End
         Else Begin //Fail if an error occured.
-            If (Err) begin
+            If (Err) Begin
                 Set pbFailOccured to True
                 Error DFERR_PROGRAM "An error occured!"
             End

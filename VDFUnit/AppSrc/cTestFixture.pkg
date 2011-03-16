@@ -13,6 +13,8 @@ Class cTestFixture is a cObject
         Property Handle phTestCatalog
         Property Boolean pbAbortTestFixture False
         Property Boolean pbFailOccured
+        Property Boolean pbWarningOccured
+        Property Boolean pbIgnore
         
         Object oTestCatalog is a cTestCatalog
         End_Object
@@ -41,10 +43,16 @@ Class cTestFixture is a cObject
     End_Function
     
     Procedure RunTestFixture
+        If (pbIgnore(Self)) Set pbWarningOccured to True
+        Else Send DoRunTestFixture
+    End_Procedure
+    
+    Procedure DoRunTestFixture
         Set pbAbortTestFixture to False
         Set pbFailOccured to False
+        Set pbWarningOccured to False
         Send Setup
-        If (not(pbAbortTestFixture(self))) Send RunTests
+        If (not(pbAbortTestFixture(Self))) Send RunTests
         If (not(pbAbortTestFixture(Self))) Send TearDown
         Else Error DFERR_PROGRAM "Test Fixture aborted"
     End_Procedure
@@ -65,6 +73,7 @@ Class cTestFixture is a cObject
             Get CurrentTest of hTestCatalog to hTest
             Send RunTest to hTest
             If (pbFailOccured(hTest)) Set pbFailOccured to True
+            If (pbWarningOccured(hTest)) Set pbWarningOccured to True
         Loop
     End_Procedure
     
