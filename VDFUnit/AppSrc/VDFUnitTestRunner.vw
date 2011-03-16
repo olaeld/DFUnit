@@ -34,6 +34,10 @@ Object VDFUnitTestRunner_vw is a View
             Set Color to clLime
         End_Procedure
         
+        Procedure SetWarningColor
+            Set Color to clYellow
+        End_Procedure
+        
         Procedure SetFailedColor
             Set Color to clRed
         End_Procedure
@@ -77,12 +81,13 @@ Object oTestFixtureRunner is a cTestFixtureRunner
         Handle hOutputBox
         Move (oOutputBox(VDFUnitTestRunner_vw(Self))) to hOutputBox
         Send SetRunningColor to hOutputBox
-        Send RunTestFixtures to oTestFixtureRunner
-        If (pbFailOccured(oTestFixtureRunner(Self))) Begin
+        Send RunTestFixtures
+        If (pbFailOccured(Self)) Begin
             Send SetFailedColor to hOutputBox
         End
         Else Begin
-            Send SetSuccessColor to hOutputBox
+            If (pbWarningOccured(Self)) Send SetWarningColor to hOutputBox
+            Else Send SetSuccessColor to hOutputBox
         End
     End_Procedure
     
