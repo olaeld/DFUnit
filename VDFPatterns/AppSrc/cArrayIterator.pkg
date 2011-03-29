@@ -7,10 +7,9 @@ Use cIterator_Mixin.pkg
 //array type subclasses, e.g. cArrayIteratorString, cArrayIteratorInteger
 //Doc/Classtype=Abstract
 Class cArrayIterator is a cObject
-    //Doc/Interface=Private
     Procedure Construct_Object
         Forward Send Construct_Object
-        send Define_cIterator_Mixin // Constructor method
+        Send Define_cIterator_Mixin
         
         {Visibility = Private}
         Property Integer piArrayType
@@ -25,6 +24,6 @@ Class cArrayIterator is a cObject
     //Doc/Interface=Virtual
     Procedure AttachArray
         
-    End_Procedure // AttachArray
+    End_Procedure
      
-End_Class    // cArrayIterator
+End_Class
