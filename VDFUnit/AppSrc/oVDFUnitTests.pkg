@@ -2,3 +2,4 @@ Use cTestFixture.pkg
 Use cTest.pkg
 
 Use cObjectNameMixinTests.pkg
+Use cArrayIteratorIntegerTests.pkg
