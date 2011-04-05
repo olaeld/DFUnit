@@ -1,5 +1,12 @@
 <classList xmlns="http://www.dataaccess.com/VisualDataFlex/2006/classlist/">
-	<VDFLibraryTimeStamp>2009-02-26T23:54:12</VDFLibraryTimeStamp><libraries></libraries>
+	<VDFLibraryTimeStamp>2009-02-26T23:54:12</VDFLibraryTimeStamp>
+	<libraries>
+		<library>
+			<libraryPath>..\VDFUnit\VDFUnit.sws</libraryPath>
+			<libraryTimeStamp>2011-03-14T11:25:29</libraryTimeStamp>
+			<libraryID>Lib1</libraryID>
+		</library>
+	</libraries>
 	<classes>
 		<class>
 			<className>BitmapContainer</className>
