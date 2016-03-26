@@ -58,7 +58,6 @@ Class cTest is a cObject
         Else Begin //Fail if an error occured.
             If (Err) Begin
                 Set pbFailOccured to True
-                Error DFERR_PROGRAM "An error occured!"
             End
         End
         Send TearDown

@@ -2,7 +2,7 @@ Use VDFUnit.pkg
 Use cObjectNameMixin.pkg
 
 //cObjectNameMixin is included in cTest, so no need to create a separate test object
-Object cObjectNameMixinTests is a cTestFixture
+Object ObjectNameMixin_spec is a cTestFixture
     Object Calling_LastPartAfterFullStop is a cTestFixture
         Object First_name_dot_last_name_Returns_last_name is a cTest
             Procedure Test
