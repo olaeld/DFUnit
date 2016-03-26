@@ -1,0 +1,8 @@
+[Properties]
+Version=18.0
+[WorkspacePaths]
+ConfigFile=.\Programs\Config.ws
+[Libraries]
+Lib1=..\VDFUnit\VDFUnit-VDF180.sws
+[Projects]
+Project0=VDFUnit TestRunner.src
