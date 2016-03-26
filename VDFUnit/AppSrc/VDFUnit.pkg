@@ -1,13 +1,3 @@
-#COMMAND DefineTest R
-    Object !1 is a cTest
-        Procedure Test
-#ENDCOMMAND
-
-#COMMAND EndTest
-        End_Procedure
-    End_Object
-#ENDCOMMAND
-
 Use cTestFixture.pkg
 Use cTest.pkg
 Use cTestFixtureCatalog.pkg
