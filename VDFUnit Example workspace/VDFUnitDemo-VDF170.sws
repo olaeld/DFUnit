@@ -1,0 +1,8 @@
+[Properties]
+Version=17.0
+[WorkspacePaths]
+ConfigFile=.\Programs\Config.ws
+[Libraries]
+Lib1=..\VDFUnit\VDFUnit-VDF170.sws
+[Projects]
+Project0=VDFUnit TestRunner.src
