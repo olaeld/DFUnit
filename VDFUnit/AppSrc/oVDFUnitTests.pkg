@@ -1,5 +1,5 @@
 Use cTestFixture.pkg
 Use cTest.pkg
 
-Use cObjectNameMixinTests.pkg
+Use ObjectNameMixin_spec.pkg
 Use cArrayIteratorIntegerTests.pkg
