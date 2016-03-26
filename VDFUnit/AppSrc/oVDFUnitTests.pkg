@@ -1,5 +1,7 @@
 Use cTestFixture.pkg
 Use cTest.pkg
 
+Use TestFixture_spec.pkg
+Use ExpectError_spec.pkg
 Use ObjectNameMixin_spec.pkg
 Use cArrayIteratorIntegerTests.pkg

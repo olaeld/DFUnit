@@ -7,12 +7,12 @@ Class cTestFixtureRunner is a cObject
         Forward Send Construct_Object
         Property Handle phTestFixtureCatalog
         Property Boolean pbFailOccured
-        Property Boolean pbWarningOccured
     End_Procedure
     
     Procedure RunTestFixtures
+        Move False to Err
+        Move 0 to LastErr
         Set pbFailOccured to False
-        Set pbWarningOccured to False
         Handle hTestFixtureCatalog hTestFixture
         Get phTestFixtureCatalog to hTestFixtureCatalog
         If (not(hTestFixtureCatalog)) Begin
@@ -24,8 +24,7 @@ Class cTestFixtureRunner is a cObject
         While (IteratorMoveNext(hTestFixtureCatalog))
             Get CurrentTestFixture of hTestFixtureCatalog to hTestFixture
             Send RunTestFixture to hTestFixture
-            If (pbFailOccured(hTestFixture)) Set pbFailOccured to True
-            If (pbWarningOccured(hTestFixture)) Set pbWarningOccured to True
+            If (Err) Set pbFailOccured to True
         Loop
     End_Procedure
 End_Class

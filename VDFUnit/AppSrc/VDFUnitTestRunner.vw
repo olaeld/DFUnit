@@ -86,8 +86,7 @@ Object oTestFixtureRunner is a cTestFixtureRunner
             Send SetFailedColor to hOutputBox
         End
         Else Begin
-            If (pbWarningOccured(Self)) Send SetWarningColor to hOutputBox
-            Else Send SetSuccessColor to hOutputBox
+            Send SetSuccessColor to hOutputBox
         End
     End_Procedure
     
