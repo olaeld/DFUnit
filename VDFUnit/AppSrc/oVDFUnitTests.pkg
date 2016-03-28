@@ -1,6 +1,8 @@
 Use cTestFixture.pkg
 Use cTest.pkg
 
+Use Test_fixtures_with_tests_spec.pkg
+Use Leap_year_spec.pkg
 Use oMockTests.pkg
 Use TestFixture_spec.pkg
 Use ExpectError_spec.pkg

@@ -16,7 +16,7 @@ Class cTestCatalog is a cArrayIteratorInteger
         Handle hParentTestFixture
         Handle[] hTests
         Get phParentTestFixture to hParentTestFixture
-        Broadcast Recursive Send ReportTest to hParentTestFixture Self
+        Broadcast Send ReportTest to hParentTestFixture Self
         Get phTests to hTests
         Send AttachArray hTests
     End_Procedure
