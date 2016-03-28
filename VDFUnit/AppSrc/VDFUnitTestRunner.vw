@@ -7,7 +7,7 @@ Activate_View Activate_VDFUnitTestRunner_vw for VDFUnitTestRunner_vw
 Object VDFUnitTestRunner_vw is a View
 
     Procedure ShowText String sText
-        Send AppendTextLn to oOutputBox sText
+        Send AppendTextLn to oOutputBox (Replaces("_", sText, " "))
     End_Procedure
     
     Set Border_Style to Border_None
