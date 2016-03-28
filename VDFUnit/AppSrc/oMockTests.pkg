@@ -1,0 +1,42 @@
+Use cTestFixture.pkg
+Use cTest.pkg
+Use cMock.pkg
+
+Object oMockTests is a cTestFixture
+    Procedure Setup
+        Object oMock is a cMock
+        End_Object
+    End_Procedure
+    
+    Object oProcedure1CalledBeforeProcedure2 is a cTest
+        Procedure Test
+            Send Procedure1 to oMock
+            Send Procedure2 to oMock
+            Send Assert (FirstTimeProcedure1HasBeenCalled(oMock) < FirstTimeProcedure2HasBeenCalled(oMock)) "Procedure1 was not called before Procedure2"
+        End_Procedure
+    End_Object
+    
+    Object oVerifyProcedureCalled is a cTest
+        Procedure Test
+            Send Procedure1 to oMock
+            Send AssertIAreEqual 1 (FirstTimeProcedure1HasBeenCalled(oMock))
+        End_Procedure
+    End_Object
+    
+    Object oVerifyProcedure1NotCalled is a cTest
+        Procedure Test
+            Send AssertIAreEqual 0 (FirstTimeProcedure1HasBeenCalled(oMock))
+        End_Procedure
+    End_Object
+    
+    Object oVerifyProcedure1NotCalledEvenWhenProcedure2HasBeenCalled is a cTest
+        Procedure Test
+            Send Procedure2 to oMock
+            Send AssertIAreEqual 0 (FirstTimeProcedure1HasBeenCalled(oMock))
+        End_Procedure
+    End_Object
+    
+    Procedure TearDown
+        Send Destroy to oMock
+    End_Procedure
+End_Object
