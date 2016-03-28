@@ -92,4 +92,17 @@ Class cAssertMixin is a Mixin
         End
         Error DfErr_Program sErrorMessage
     End_Procedure
+    
+    Procedure AssertTSAreEqual TimeSpan Expected TimeSpan Actual String sAssertMessage
+        If (Expected = Actual) Procedure_Return
+        
+        String sObjectName sErrorMessage
+        Get ObjectName to sObjectName
+        Move (sObjectName + "\nExpected:<" + String(Expected) + ">") to sErrorMessage
+        Move (sErrorMessage + "but was:<" + String(Actual) + ">") to sErrorMessage
+        If (num_arguments >= 3) Begin
+            Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
+        End
+        Error DfErr_Program sErrorMessage
+    End_Procedure
 End_Class
