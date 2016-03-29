@@ -1,29 +1,56 @@
 Use VDFUnit.pkg
 
 Object ExpectError_spec is a cTestFixture
-    Procedure Setup
-        Send Ignore_Error to Error_Object_Id DFERR_PROGRAM
-    End_Procedure
+    Object Fail_if_expected_error_not_thrown is a cTestFixture
+        Procedure Setup
+            Send Ignore_Error to Error_Object_Id DFERR_PROGRAM
+        End_Procedure
+        
+        //Todo: Testing for stuff in TearDown isn't very nice. Refactor!
+        Procedure TearDown
+            Send Trap_Error to Error_Object_Id DFERR_PROGRAM
+            If ((Err) and (LastErr = DFERR_PROGRAM)) Begin
+                //Expected error did not occur, so dferr_program was thrown
+                //This is correct behaviour, so reset Err indicator
+                Move False to Err
+                Move 0 to LastErr
+            End
+            Else Begin
+                //Expected error did not occur, but dferr_program was not thrown
+                //Something must be wrong with ExpectError
+                Error DFERR_PROGRAM "ExpectError does not work"
+            End
+        End_Procedure
+        
+        Object Fails_if_expected_error_not_thrown is a cTest
+            Procedure Test
+                Send ExpectError DFERR_OPERATOR
+            End_Procedure
+        End_Object
+    End_Object
     
-    //Todo: Testing for stuff in TearDown isn't very nice. Refactor!
-    Procedure TearDown
-        Send Trap_Error to Error_Object_Id DFERR_PROGRAM
-        If ((Err) and (LastErr = DFERR_PROGRAM)) Begin
-            //Expected error did not occur, so dferr_program was thrown
-            //This is correct behaviour, so reset Err indicator
-            Move False to Err
-            Move 0 to LastErr
-        End
-        Else Begin
-            //Expected error did not occur, but dferr_program was not thrown
-            //Something must be wrong with ExpectError
-            Error DFERR_PROGRAM "ExpectError does not work"
-        End
-    End_Procedure
-    
-    Object oFails_if_expected_error_not_thrown is a cTest
-        Procedure Test
-            Send ExpectError DFERR_OPERATOR
+    Object Err_not_reset_inadvertently is a cTestFixture
+        Property Boolean pbRememberErr
+        Procedure Setup
+            If (Err) Set pbRememberErr to True
+            Else Set pbRememberErr to False
+            Move True to Err
+        End_Procedure
+        
+        Object Err_not_reset_after_succesful_expect_error is a cTest
+            Procedure Test
+                Send ExpectError DFERR_OPERATOR
+                Send Ignore_Error to Error_Object_Id DFERR_OPERATOR
+                Error DFERR_OPERATOR
+            End_Procedure
+        End_Object
+        
+        Procedure TearDown
+            Boolean bErr
+            Move Err to bErr
+            Send Assert bErr
+            If (pbRememberErr(Self)) Move True to Err
+            Else Move False to Err
         End_Procedure
     End_Object
 End_Object
