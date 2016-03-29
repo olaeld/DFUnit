@@ -1,6 +1,7 @@
 Use cTestCatalog.pkg
 Use cObjectNameMixin.pkg
 Use cAssertMixin.pkg
+Use cErrorState.pkg
 
 Class cTest is a cObject
     Import_Class_Protocol cObjectNameMixin
@@ -10,6 +11,10 @@ Class cTest is a cObject
         Forward Send Construct_Object
         Property String psTestName
         Property Integer piExpectedError
+        Property Handle phErrorState
+        Object oRememberErrorState is a cErrorState
+            Set phErrorState to Self
+        End_Object
     End_Procedure
     
     Procedure ReportTest Handle hTestFixtureCatalog
@@ -26,6 +31,7 @@ Class cTest is a cObject
     End_Function
     
     Procedure ExpectError Integer iErrorNumber
+        Send SaveErrorState to (phErrorState(Self))
         Set piExpectedError to iErrorNumber
         Send Ignore_Error to Error_Object_Id iErrorNumber
         Move 0 to LastErr
@@ -40,8 +46,7 @@ Class cTest is a cObject
             Send Trap_Error to Error_Object_Id iExpectedError
             Send Assert bExpectedErrorOccured ("Expected error number" * String(iExpectedError) * "did not occur.")
             If bExpectedErrorOccured Begin
-                Move False to Err
-                Move 0 to LastErr
+                Send RestoreErrorState to (phErrorState(Self))
             End
             Else Begin
                 Move True to Err
