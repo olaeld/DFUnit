@@ -11,6 +11,10 @@ Object oTestRunCounter is a cObject
     Procedure IncreaseCounterNested
         Set Number_of_times_test_has_been_run_in_nested_fixture to (Number_of_times_test_has_been_run_in_nested_fixture(Self) + 1)
     End_Procedure
+    Procedure ResetCounters
+        Set Number_of_times_test_has_been_run to 0
+        Set Number_of_times_test_has_been_run_in_nested_fixture to 0
+    End_Procedure
 End_Object
 
 Object All_tests_in_a_fixture_are_run_once is a cTestFixture
@@ -29,4 +33,8 @@ Object All_tests_in_a_fixture_are_run_once is a cTestFixture
             End_Procedure
         End_Object
     End_Object
+    
+    Procedure TearDownOneTime
+        Send ResetCounters to oTestRunCounter
+    End_Procedure
 End_Object

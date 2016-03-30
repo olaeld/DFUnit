@@ -19,7 +19,7 @@ Class cTestFixtureCatalog is a cArrayIteratorInteger
         Set phTestFixtures to hTestFixtures
         
         Get phTestFixtureNeighborhood to hTestFixtureNeighborhood
-        Broadcast Recursive Send ReportTestFixture to hTestFixtureNeighborhood Self
+        Broadcast Send ReportTestFixture to hTestFixtureNeighborhood Self
         Get phTestFixtures to hTestFixtures
         Send AttachArray hTestFixtures
     End_Procedure
