@@ -15,6 +15,7 @@ Class cTestCatalog is a cArrayIteratorInteger
     Procedure CatalogTests
         Handle hParentTestFixture
         Handle[] hTests
+        Set phTests to hTests  //Reset catalog
         Get phParentTestFixture to hParentTestFixture
         Broadcast Send ReportTest to hParentTestFixture Self
         Get phTests to hTests

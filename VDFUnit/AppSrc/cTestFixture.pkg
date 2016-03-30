@@ -1,4 +1,5 @@
 Use cTestFixtureCatalog.pkg
+Use cTestFixtureRunner.pkg
 Use cTestCatalog.pkg
 Use cObjectNameMixin.pkg
 Use cAssertMixin.pkg
@@ -14,6 +15,11 @@ Class cTestFixture is a cObject
         Property Handle phTestCatalog
         Property Boolean pbAbortTestFixture False
         
+        Object oTestFixtureCatalog is a cTestFixtureCatalog
+        End_Object
+        Set phTestFixtureNeighborhood of oTestFixtureCatalog to Self
+        Object oTestFixtureRunner is a cTestFixtureRunner
+        End_Object
         Object oTestCatalog is a cTestCatalog
         End_Object
         Object oErrorState is a cErrorState
@@ -46,14 +52,33 @@ Class cTestFixture is a cObject
         Function_Return sTestFixtureName
     End_Function
     
+    Procedure RunChildTestFixtures
+        Send CatalogTestFixtures to oTestFixtureCatalog
+        Set phTestFixtureCatalog of oTestFixtureRunner to oTestFixtureCatalog
+        //Todo: List test fixtures in UI
+        Send RunTestFixtures to oTestFixtureRunner
+    End_Procedure
+    
     Procedure RunTestFixture
         Set pbAbortTestFixture to False
-        If (not(pbAbortTestFixture(self))) Send RunTests
+        
+        Send BeforeSetupOneTime
+        If (not(pbAbortTestFixture(Self))) Send SetupOneTime
+        
+        Send RunChildTestFixtures
+        
+        If (not(pbAbortTestFixture(Self))) Send RunTests
         Else Error DFERR_PROGRAM "Test Fixture aborted"
+        
+        If (not(pbAbortTestFixture(Self))) Send TearDownOneTime
+        If (not(pbAbortTestFixture(Self))) Send AfterTearDownOneTime
     End_Procedure
     
     Procedure AbortTestFixture
         Set pbAbortTestFixture to True
+    End_Procedure
+    
+    Procedure BeforeSetupOneTime
     End_Procedure
     
     Procedure BeforeSetup
@@ -63,14 +88,18 @@ Class cTestFixture is a cObject
     Procedure SetupParentFixture
         Send SaveErrorState to oErrorState
         Send Ignore_Error to Error_Object_Id DFERR_BAD_MESSAGE
-        Integer iTestFixtureIdParent
-        Get TestFixtureId of (Parent(Self)) to iTestFixtureIdParent
+        Handle hTestFixtureIdParent
+        Get TestFixtureId of (Parent(Self)) to hTestFixtureIdParent
         Send Trap_Error to Error_Object_Id DFERR_BAD_MESSAGE
         Send RestoreErrorState to oErrorState
-        If (iTestFixtureIdParent = Parent(Self)) Begin
-            Send BeforeSetup to (Parent(Self))
-            Send Setup to (Parent(Self))
+        If (hTestFixtureIdParent = Parent(Self)) Begin
+            Send SetupParentFixture to hTestFixtureIdParent
+            Send BeforeSetup to hTestFixtureIdParent
+            Send Setup to hTestFixtureIdParent
         End
+    End_Procedure
+    
+    Procedure SetupOneTime
     End_Procedure
     
     Procedure Setup
@@ -81,15 +110,23 @@ Class cTestFixture is a cObject
         Get phTestCatalog to hTestCatalog
         Send IteratorReset to hTestCatalog
         While (IteratorMoveNext(hTestCatalog))
-            Get CurrentTest of hTestCatalog to hTest
             Send BeforeSetup
             Send SetupParentFixture
-            Send Setup to hTest Self
+            Send Setup
+            
+            Get CurrentTest of hTestCatalog to hTest
             Send RunTest to hTest
-            Send TearDown to hTest Self
-            Send AfterTearDown
+            
+            Send TearDown
             Send TearDownParentFixture
+            Send AfterTearDown
         Loop
+    End_Procedure
+    
+    Procedure TearDownOneTime
+    End_Procedure
+    
+    Procedure AfterTearDownOneTime
     End_Procedure
     
     Procedure TearDown
@@ -101,13 +138,14 @@ Class cTestFixture is a cObject
     Procedure TearDownParentFixture
         Send SaveErrorState to oErrorState
         Send Ignore_Error to Error_Object_Id DFERR_BAD_MESSAGE
-        Integer iTestFixtureIdParent
-        Get TestFixtureId of (Parent(Self)) to iTestFixtureIdParent
+        Handle hTestFixtureIdParent
+        Get TestFixtureId of (Parent(Self)) to hTestFixtureIdParent
         Send Trap_Error to Error_Object_Id DFERR_BAD_MESSAGE
         Send RestoreErrorState to oErrorState
-        If (iTestFixtureIdParent = Parent(Self)) Begin
-            Send AfterTearDown to (Parent(Self))
-            Send TearDown to (Parent(Self))
+        If (hTestFixtureIdParent = Parent(Self)) Begin
+            Send TearDown to hTestFixtureIdParent
+            Send AfterTearDown to hTestFixtureIdParent
+            Send TearDownParentFixture to hTestFixtureIdParent
         End
     End_Procedure
     

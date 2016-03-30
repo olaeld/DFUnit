@@ -32,19 +32,15 @@ Object ObjectNameMixin_spec is a cTestFixture
     End_Object
 
     Object LastPartOfObjectName_oTestMyName_Returns_oTestMyName is a cTest
-        Procedure Setup
+        Procedure Test
             Object oTestMyName is a cObject
             End_Object
-        End_Procedure
-        Procedure Test
             String sExpected
             Move "oTestMyName" to sExpected
             #IF (!@<160)
             Move (Uppercase(sExpected)) to sExpected
             #ENDIF
             Send AssertSAreEqual sExpected (LastPartOfObjectName(Self, oTestMyName))
-        End_Procedure
-        Procedure TearDown
             Send Destroy of oTestMyName
         End_Procedure
     End_Object
