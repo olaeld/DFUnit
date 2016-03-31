@@ -6,12 +6,9 @@ Object TestFixture_spec is a cTestFixture
         Property Integer piSetupCalled
         Property Integer piTearDownCalled
         
-        Procedure RunTests
+        Procedure BeforeSetupOneTime
             Set piSetupCalled to 0
             Set piTearDownCalled to 0
-            Forward Send RunTests
-            Send AssertIAreEqual 2 (piSetupCalled(Self))
-            Send AssertIAreEqual 2 (piTearDownCalled(Self))
         End_Procedure
         
         Procedure Setup
@@ -31,5 +28,10 @@ Object TestFixture_spec is a cTestFixture
             Procedure Test
             End_Procedure
         End_Object
+        
+        Procedure AfterTearDownOneTime
+            Send AssertIAreEqual 2 (piSetupCalled(Self))
+            Send AssertIAreEqual 2 (piTearDownCalled(Self))
+        End_Procedure
     End_Object
 End_Object

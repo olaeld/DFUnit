@@ -6,7 +6,12 @@ Object ExpectError_spec is a cTestFixture
             Send Ignore_Error to Error_Object_Id DFERR_PROGRAM
         End_Procedure
         
-        //Todo: Testing for stuff in TearDown isn't very nice. Refactor!
+        Object Fails_if_expected_error_not_thrown is a cTest
+            Procedure Test
+                Send ExpectError DFERR_OPERATOR
+            End_Procedure
+        End_Object
+        
         Procedure TearDown
             Send Trap_Error to Error_Object_Id DFERR_PROGRAM
             If ((Err) and (LastErr = DFERR_PROGRAM)) Begin
@@ -21,12 +26,6 @@ Object ExpectError_spec is a cTestFixture
                 Error DFERR_PROGRAM "ExpectError does not work"
             End
         End_Procedure
-        
-        Object Fails_if_expected_error_not_thrown is a cTest
-            Procedure Test
-                Send ExpectError DFERR_OPERATOR
-            End_Procedure
-        End_Object
     End_Object
     
     Object Err_not_reset_inadvertently is a cTestFixture
