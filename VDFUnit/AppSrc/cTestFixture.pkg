@@ -53,10 +53,18 @@ Class cTestFixture is a cObject
     End_Function
     
     Procedure RunChildTestFixtures
-        Send CatalogTestFixtures to oTestFixtureCatalog
         Set phTestFixtureCatalog of oTestFixtureRunner to oTestFixtureCatalog
         //Todo: List test fixtures in UI
         Send RunTestFixtures to oTestFixtureRunner
+    End_Procedure
+    
+    Procedure CatalogTestFixture
+        Send CatalogTestFixtures to oTestFixtureCatalog
+    End_Procedure
+    
+    Procedure ListTestFixture Handle hLister Integer iIndentation
+        Send ListTestFixture to hLister (ObjectName(Self)) iIndentation
+        Send ListTestFixtures to oTestFixtureCatalog hLister (iIndentation + 1)
     End_Procedure
     
     Procedure RunTestFixture
@@ -85,13 +93,19 @@ Class cTestFixture is a cObject
         Set pbAbortTestFixture to False
     End_Procedure
     
-    Procedure SetupParentFixture
+    Function ParentFixtureId Returns Handle
         Send SaveErrorState to oErrorState
         Send Ignore_Error to Error_Object_Id DFERR_BAD_MESSAGE
         Handle hTestFixtureIdParent
         Get TestFixtureId of (Parent(Self)) to hTestFixtureIdParent
         Send Trap_Error to Error_Object_Id DFERR_BAD_MESSAGE
         Send RestoreErrorState to oErrorState
+        Function_Return hTestFixtureIdParent
+    End_Function
+    
+    Procedure SetupParentFixture
+        Handle hTestFixtureIdParent
+        Get ParentFixtureId to hTestFixtureIdParent
         If (hTestFixtureIdParent = Parent(Self)) Begin
             Send SetupParentFixture to hTestFixtureIdParent
             Send BeforeSetup to hTestFixtureIdParent

@@ -1,6 +1,5 @@
 Use VDFUnit.pkg
 
-//Todo: Intercepting RunTests isn't very nice. Introduce events BeforeRunningTests and AfterRunningTests
 Object TestFixture_spec is a cTestFixture
     Object Setup_and_teardown_called_for_every_test is a cTestFixture
         Property Integer piSetupCalled

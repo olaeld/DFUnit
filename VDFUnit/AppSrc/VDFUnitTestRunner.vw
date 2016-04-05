@@ -41,6 +41,11 @@ Object VDFUnitTestRunner_vw is a View
         Procedure SetFailedColor
             Set Color to clRed
         End_Procedure
+        
+        Procedure ListTestFixture String sName Integer iIndentation
+            Move (Pad("", iIndentation * 2) + sName) to sName
+            Send AppendTextLn (Replaces("_", sName, " "))
+        End_Procedure
     End_Object
 
     Object oRunTestsButton is a Button
@@ -61,18 +66,6 @@ End_Object
 Object oTestFixtureCatalog is a cTestFixtureCatalog
     Set phTestFixtureNeighborhood to (Parent(Self))
     Send InitTestFixtureCatalog
-    
-    Procedure ListTestFixtures
-        String sTestFixtureName
-        Handle hTestFixture
-        
-        Send IteratorReset
-        While (IteratorMoveNext(Self))
-            Get CurrentTestFixture to hTestFixture
-            Get ObjectName of hTestFixture to sTestFixtureName
-            Send ShowText to VDFUnitTestRunner_vw sTestFixtureName
-        Loop
-    End_Procedure
 End_Object
 
 Object oTestFixtureRunner is a cTestFixtureRunner
@@ -91,16 +84,10 @@ Object oTestFixtureRunner is a cTestFixtureRunner
     End_Procedure
     
     Set phTestFixtureCatalog to (oTestFixtureCatalog(Self))
+    
 End_Object
 
-Procedure CatalogTestFixtures
-    Send CatalogTestFixtures to oTestFixtureCatalog
-End_Procedure
-
-Procedure ListTestFixtures
-    Send ListTestFixtures to oTestFixtureCatalog
-End_Procedure
-
 Procedure Execute
+    Send ListTestFixtures to oTestFixtureCatalog (oOutputBox(VDFUnitTestRunner_vw(Self)))
     Send Execute to oTestFixtureRunner
 End_Procedure
