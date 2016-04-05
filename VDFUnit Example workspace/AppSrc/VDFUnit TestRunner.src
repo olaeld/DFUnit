@@ -20,7 +20,6 @@ Object oMain is a Panel
         Handle hoClient
         Get Client_Id to hoClient
         Send Activate_VDFUnitTestRunner_vw of hoClient
-        Send ListTestFixtures to (VDFUnitTestRunner_vw(hoClient))
         If (pbAutoRunTests(Self)) Send Execute to (VDFUnitTestRunner_vw(hoClient))
     End_Procedure
 

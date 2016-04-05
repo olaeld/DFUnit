@@ -11,6 +11,13 @@ Class cTestFixtureCatalog is a cArrayIteratorInteger
         Send CatalogTestFixtures
     End_Procedure
     
+    Procedure CatalogIndentedTestFixtures
+        Send IteratorReset
+        While (IteratorMoveNext(Self))
+            Send CatalogTestFixture to (CurrentArrayValue(Self))
+        Loop
+    End_Procedure
+    
     Procedure CatalogTestFixtures
         Handle hTestFixtureNeighborhood
         Handle[] hTestFixtures
@@ -22,6 +29,7 @@ Class cTestFixtureCatalog is a cArrayIteratorInteger
         Broadcast Send ReportTestFixture to hTestFixtureNeighborhood Self
         Get phTestFixtures to hTestFixtures
         Send AttachArray hTestFixtures
+        Send CatalogIndentedTestFixtures
     End_Procedure
     
     Procedure AddTestFixtureToCatalog Handle hTestFixture
@@ -38,4 +46,14 @@ Class cTestFixtureCatalog is a cArrayIteratorInteger
         Get piCurrent to iCurrent
         Function_Return (hTestFixtures[iCurrent])
     End_Function
+    
+    Procedure ListTestFixtures Handle hLister Integer iIndentation
+        If (not(hLister)) Function_Return
+        Integer iIndentation_
+        If (num_arguments >= 2) Move iIndentation to iIndentation_
+        Send IteratorReset
+        While (IteratorMoveNext(Self))
+            Send ListTestFixture to (CurrentTestFixture(Self)) hLister iIndentation_
+        Loop
+    End_Procedure
 End_Class
