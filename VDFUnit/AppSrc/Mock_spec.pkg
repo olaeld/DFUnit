@@ -2,13 +2,13 @@ Use cTestFixture.pkg
 Use cTest.pkg
 Use cMock.pkg
 
-Object oMockTests is a cTestFixture
+Object Mock_spec is a cTestFixture
     Procedure Setup
         Object oMock is a cMock
         End_Object
     End_Procedure
     
-    Object oProcedure1CalledBeforeProcedure2 is a cTest
+    Object Procedure1_called_before_Procedure2 is a cTest
         Procedure Test
             Send Procedure1 to oMock
             Send Procedure2 to oMock
@@ -16,20 +16,20 @@ Object oMockTests is a cTestFixture
         End_Procedure
     End_Object
     
-    Object oVerifyProcedureCalled is a cTest
+    Object Verify_procedure_called is a cTest
         Procedure Test
             Send Procedure1 to oMock
             Send AssertIAreEqual 1 (FirstTimeProcedure1HasBeenCalled(oMock))
         End_Procedure
     End_Object
     
-    Object oVerifyProcedure1NotCalled is a cTest
+    Object Verify_Procedure1_Not_called is a cTest
         Procedure Test
             Send AssertIAreEqual 0 (FirstTimeProcedure1HasBeenCalled(oMock))
         End_Procedure
     End_Object
     
-    Object oVerifyProcedure1NotCalledEvenWhenProcedure2HasBeenCalled is a cTest
+    Object Verify_Procedure1_Not_called_even_when_Procedure2_has_been_called is a cTest
         Procedure Test
             Send Procedure2 to oMock
             Send AssertIAreEqual 0 (FirstTimeProcedure1HasBeenCalled(oMock))
