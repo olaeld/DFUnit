@@ -1,15 +1,19 @@
 Use cTestFixtureCatalog.pkg
 Use cTestFixture.pkg
 Use cTest.pkg
+Use cErrorState.pkg
 
 Class cTestFixtureRunner is a cObject
     Procedure Construct_Object
         Forward Send Construct_Object
         Property Handle phTestFixtureCatalog
         Property Boolean pbFailOccured
+        Object oErrorState is a cErrorState
+        End_Object
     End_Procedure
     
     Procedure RunTestFixtures
+        Send SaveErrorState to oErrorState
         Move False to Err
         Move 0 to LastErr
         Set pbFailOccured to False
@@ -24,7 +28,8 @@ Class cTestFixtureRunner is a cObject
         While (IteratorMoveNext(hTestFixtureCatalog))
             Get CurrentTestFixture of hTestFixtureCatalog to hTestFixture
             Send RunTestFixture to hTestFixture
-            If (Err) Set pbFailOccured to True
         Loop
+        If (Err) Set pbFailOccured to True
+        Else Send RestoreErrorState to oErrorState
     End_Procedure
 End_Class

@@ -47,13 +47,13 @@ Class cTestFixtureCatalog is a cArrayIteratorInteger
         Function_Return (hTestFixtures[iCurrent])
     End_Function
     
-    Procedure ListTestFixtures Handle hLister Integer iIndentation
+    Procedure ListTestFixtureResults Handle hLister Integer iIndentation
         If (not(hLister)) Function_Return
         Integer iIndentation_
         If (num_arguments >= 2) Move iIndentation to iIndentation_
         Send IteratorReset
         While (IteratorMoveNext(Self))
-            Send ListTestFixture to (CurrentTestFixture(Self)) hLister iIndentation_
+            Send ListTestFixtureResult to (CurrentTestFixture(Self)) hLister iIndentation_
         Loop
     End_Procedure
 End_Class
