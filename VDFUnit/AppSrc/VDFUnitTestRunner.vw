@@ -42,10 +42,15 @@ Object VDFUnitTestRunner_vw is a View
             Set Color to clRed
         End_Procedure
         
-        Procedure ListTestFixture String sName Integer iIndentation
+        Procedure ListTestResult String sName Integer iIndentation
             Move (Pad("", iIndentation * 2) + sName) to sName
             Send AppendTextLn (Replaces("_", sName, " "))
         End_Procedure
+        
+        Procedure ListTestFixtureResult String sName Integer iIndentation
+            Send ListTestResult sName iIndentation
+        End_Procedure
+        
     End_Object
 
     Object oRunTestsButton is a Button
@@ -81,6 +86,8 @@ Object oTestFixtureRunner is a cTestFixtureRunner
         Else Begin
             Send SetSuccessColor to hOutputBox
         End
+        Send Delete_Data to (oOutputBox(VDFUnitTestRunner_vw(Self)))
+        Send ListTestFixtureResults to oTestFixtureCatalog (oOutputBox(VDFUnitTestRunner_vw(Self)))
     End_Procedure
     
     Set phTestFixtureCatalog to (oTestFixtureCatalog(Self))
@@ -88,6 +95,5 @@ Object oTestFixtureRunner is a cTestFixtureRunner
 End_Object
 
 Procedure Execute
-    Send ListTestFixtures to oTestFixtureCatalog (oOutputBox(VDFUnitTestRunner_vw(Self)))
     Send Execute to oTestFixtureRunner
 End_Procedure

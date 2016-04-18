@@ -1,0 +1,39 @@
+Use gFormatNumbers.pkg
+Class cTestFixtureResult is a cObject
+    Procedure Construct_Object
+        Property String psType //"Assembly"
+        Property String psName //".\UnitTestBRAVO.net.dll"
+        Property String psExecuted //"True"
+        Property String psResult //"Success"
+        Property String psSuccess //"True"
+        Property TimeSpan pTime //"0.230"
+        Property String psAsserts //"0"
+    End_Procedure
+    
+    Function TestResultOutput Returns String
+        String sResult sSuccess
+        If (psSuccess(Self) = "True") Move "" to sSuccess
+        Else Move "*** FAILED ***" to sSuccess
+        Move ("[" + FormatNumber(Number(SpanTotalMilliSeconds(pTime(Self)))/1000, 3) + "]" * sSuccess * psName(Self)) to sResult
+        Function_Return sResult
+    End_Function
+End_Class
+
+Class cTestResult is a cObject
+    Procedure Construct_Object
+        Property String PsName //"BRAVOdll.Tests.CalculateTests.AddPercentTest"
+        Property String PsExecuted //"True"
+        Property String PsResult //"Success"
+        Property String PsSuccess //"True"
+        Property TimeSpan pTime //"0.078"
+        Property String PsAsserts //"1"
+    End_Procedure
+    
+    Function TestResultOutput Returns String
+        String sResult sSuccess
+        If (psSuccess(Self) = "True") Move "" to sSuccess
+        Else Move "*** FAILED ***" to sSuccess
+        Move ("[" + FormatNumber(Number(SpanTotalMilliSeconds(pTime(Self)))/1000, 3) + "]" * sSuccess * psName(Self)) to sResult
+        Function_Return sResult
+    End_Function
+End_Class

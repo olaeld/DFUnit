@@ -29,27 +29,32 @@ Object ExpectError_spec is a cTestFixture
     End_Object
     
     Object Err_not_reset_inadvertently is a cTestFixture
-        Property Boolean pbRememberErr
-        Procedure Setup
-            If (Err) Set pbRememberErr to True
-            Else Set pbRememberErr to False
-            Move True to Err
-        End_Procedure
         
         Object Err_not_reset_after_succesful_expect_error is a cTest
+            Property Boolean pbErrWasSet
+            Procedure InitTest
+                If (Err) Set pbErrWasSet to True
+                Else Set pbErrWasSet to False
+                Move True to Err
+                Forward Send InitTest
+            End_Procedure
+            
             Procedure Test
                 Send ExpectError DFERR_OPERATOR
                 Send Ignore_Error to Error_Object_Id DFERR_OPERATOR
                 Error DFERR_OPERATOR
             End_Procedure
+            
+            Procedure FinishTest
+                Forward Send FinishTest
+                Boolean bErr
+                Move Err to bErr
+                Send Assert bErr
+                Set pbSuccess to bErr
+                If (pbErrWasSet(Self)) Move True to Err
+                Else Move (not(pbSuccess(Self))) to Err
+            End_Procedure
         End_Object
         
-        Procedure TearDown
-            Boolean bErr
-            Move Err to bErr
-            Send Assert bErr
-            If (pbRememberErr(Self)) Move True to Err
-            Else Move False to Err
-        End_Procedure
     End_Object
 End_Object

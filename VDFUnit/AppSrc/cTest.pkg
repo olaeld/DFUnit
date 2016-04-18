@@ -2,6 +2,7 @@ Use cTestCatalog.pkg
 Use cObjectNameMixin.pkg
 Use cAssertMixin.pkg
 Use cErrorState.pkg
+Use cTestFixtureResult.pkg
 
 Class cTest is a cObject
     Import_Class_Protocol cObjectNameMixin
@@ -10,10 +11,17 @@ Class cTest is a cObject
     Procedure Construct_Object
         Forward Send Construct_Object
         Property String psTestName
+        Property Boolean pbSuccess
         Property Integer piExpectedError
         Property Handle phErrorState
+        Property DateTime pStartTime
+        Property DateTime pEndTime
+        Property Integer piAsserts
+        
         Object oRememberErrorState is a cErrorState
             Set phErrorState to Self
+        End_Object
+        Object oTestResult is a cTestResult
         End_Object
     End_Procedure
     
@@ -31,7 +39,6 @@ Class cTest is a cObject
     End_Function
     
     Procedure ExpectError Integer iErrorNumber
-        Send SaveErrorState to (phErrorState(Self))
         Set piExpectedError to iErrorNumber
         Send Ignore_Error to Error_Object_Id iErrorNumber
         Move 0 to LastErr
@@ -46,7 +53,8 @@ Class cTest is a cObject
             Send Trap_Error to Error_Object_Id iExpectedError
             Send Assert bExpectedErrorOccured ("Expected error number" * String(iExpectedError) * "did not occur.")
             If bExpectedErrorOccured Begin
-                Send RestoreErrorState to (phErrorState(Self))
+                Move False to Err
+                Move 0 to LastErr
             End
             Else Begin
                 Move True to Err
@@ -59,6 +67,43 @@ Class cTest is a cObject
         If (piExpectedError(Self) <> 0) Begin
             Set piExpectedError to 0
         End
+    End_Procedure
+    
+    Procedure SetTestResult
+        Handle hResult
+        Move oTestResult to hResult
+        Set psName of hResult to (ObjectName(Self))
+        Set psExecuted of hResult to "True"
+        If (pbSuccess(Self)) Begin
+            Set psResult of hResult to "Success"
+            Set psSuccess of hResult to "True"
+        End
+        Else Begin
+            Set psResult of hResult to "Failure"
+            Set psSuccess of hResult to "False"
+        End
+        Set pTime of hResult to (pEndTime(Self) - pStartTime(Self))
+        Set psAsserts of hResult to (piAsserts(Self))
+    End_Procedure
+    
+    Procedure InitTest
+        Set pStartTime to (CurrentDateTime())
+        Set piAsserts to 0
+        Send SaveErrorState to (phErrorState(Self))
+        Move False to Err
+        Move 0 to LastErr
+    End_Procedure
+    
+    Procedure FinishTest
+        If (Err) Begin
+            Send SaveErrorState to (phErrorState(Self))
+            Set pbSuccess to False
+        End
+        Else begin
+            Send RestoreErrorState to (phErrorState(Self))
+            Set pbSuccess to True
+        End
+        Set pEndTime to (CurrentDateTime())
     End_Procedure
     
     Procedure RunTest
