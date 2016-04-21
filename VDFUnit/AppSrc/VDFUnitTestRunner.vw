@@ -44,7 +44,21 @@ Object VDFUnitTestRunner_vw is a View
         
         Procedure ListTestResult String sName Integer iIndentation
             Move (Pad("", iIndentation * 2) + sName) to sName
+            Integer iStart iEnd
+            String sValue
+            Send Select_All
+            Get SelText to sValue
+            Move (Length(sValue)) to iStart
             Send AppendTextLn (Replaces("_", sName, " "))
+            Boolean bFailed
+            Move (Pos("*** FAILED ***", sName) > 0) to bFailed
+            If (not(bFailed)) Procedure_Return
+            Send Select_All
+            Get SelText to sValue
+            Move (Length(sValue)) to iEnd
+            Send SetSel iStart iEnd
+            Set pbBold to bFailed
+            Send SetSel 0 0
         End_Procedure
         
         Procedure ListTestFixtureResult String sName Integer iIndentation
