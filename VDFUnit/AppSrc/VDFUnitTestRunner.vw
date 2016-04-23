@@ -42,16 +42,26 @@ Object VDFUnitTestRunner_vw is a View
             Set Color to clRed
         End_Procedure
         
-        Procedure ListTestResult String sName Integer iIndentation
-            Move (Pad("", iIndentation * 2) + sName) to sName
+        Function TestResultOutputString Handle hResult Returns String
+            String sResult sSuccess
+            If (psSuccess(hResult) = "True") Move "" to sSuccess
+            Else Move "*** FAILED ***" to sSuccess
+            Move ("[" + FormatNumber(Number(SpanTotalMilliSeconds(pTime(hResult)))/1000, 3) + "]" * sSuccess * psName(hResult)) to sResult
+            Function_Return sResult
+        End_Function
+        
+        Procedure ListTestResult Handle hResult Integer iIndentation
+            String sResult
+            Get TestResultOutputString hResult iIndentation to sResult
+            Move (Pad("", iIndentation * 2) + sResult) to sResult
             Integer iStart iEnd
             String sValue
             Send Select_All
             Get SelText to sValue
             Move (Length(sValue)) to iStart
-            Send AppendTextLn (Replaces("_", sName, " "))
+            Send AppendTextLn (Replaces("_", sResult, " "))
             Boolean bFailed
-            Move (Pos("*** FAILED ***", sName) > 0) to bFailed
+            Move (Pos("*** FAILED ***", sResult) > 0) to bFailed
             If (not(bFailed)) Procedure_Return
             Send Select_All
             Get SelText to sValue
@@ -61,8 +71,8 @@ Object VDFUnitTestRunner_vw is a View
             Send SetSel 0 0
         End_Procedure
         
-        Procedure ListTestFixtureResult String sName Integer iIndentation
-            Send ListTestResult sName iIndentation
+        Procedure ListTestFixtureResult Handle hTestFixtureResult Integer iIndentation
+            Send ListTestResult hTestFixtureResult iIndentation
         End_Procedure
         
     End_Object

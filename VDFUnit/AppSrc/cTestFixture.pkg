@@ -67,22 +67,18 @@ Class cTestFixture is a cObject
         Send CatalogTestFixtures to oTestFixtureCatalog
     End_Procedure
     
-    Function TestResultOutput Returns String
-        Function_Return (TestResultOutput(oTestFixtureResult(Self)))
-    End_Function
-    
     Procedure ListTestResults Handle hLister Integer iIndentation
         Handle hTestCatalog hTest
         Get phTestCatalog to hTestCatalog
         Send IteratorReset to hTestCatalog
         While (IteratorMoveNext(hTestCatalog))
             Get CurrentTest of hTestCatalog to hTest
-            Send ListTestResult to hLister (TestResultOutput(oTestResult(hTest))) iIndentation
+            Send ListTestResult to hLister (oTestResult(hTest)) iIndentation
         Loop
     End_Procedure
     
     Procedure ListTestFixtureResult Handle hLister Integer iIndentation
-        Send ListTestFixtureResult to hLister (TestResultOutput(Self)) iIndentation
+        Send ListTestFixtureResult to hLister (oTestFixtureResult(Self)) iIndentation
         Send ListTestResults hLister (iIndentation + 1)
         Send ListTestFixtureResults to oTestFixtureCatalog hLister (iIndentation + 1)
     End_Procedure
