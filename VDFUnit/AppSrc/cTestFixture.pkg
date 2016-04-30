@@ -18,6 +18,7 @@ Class cTestFixture is a cObject
         Property DateTime pStartTime
         Property DateTime pEndTime
         Property Integer piAsserts
+        Property Integer piNumberOfTests
         
         Object oTestFixtureCatalog is a cTestFixtureCatalog
         End_Object
@@ -41,8 +42,18 @@ Class cTestFixture is a cObject
         Handle hTestCatalog
         Get phTestCatalog to hTestCatalog
         If (hTestCatalog = 0) Error DFERR_PROGRAM ("phTestCatalog undefined for" * Name(Self))
-        Else Send InitTestCatalog to hTestCatalog
+        Else Begin
+            Send InitTestCatalog to hTestCatalog
+            Set piNumberOfTests to (piNumberOfTests(hTestCatalog))
+        End
     End_Procedure
+    
+    Function TotalNumberOfTests Returns Integer
+        Integer iTests
+        Get NumberOfTests of oTestFixtureCatalog to iTests
+        Move (piNumberOfTests(Self) + iTests) to iTests
+        Function_Return iTests
+    End_Function
     
     Procedure ReportTestFixture Handle hTestFixtureCatalog
         Send AddTestFixtureToCatalog to hTestFixtureCatalog Self
@@ -67,25 +78,10 @@ Class cTestFixture is a cObject
         Send CatalogTestFixtures to oTestFixtureCatalog
     End_Procedure
     
-    Procedure ListTestResults Handle hLister Integer iIndentation
-        Handle hTestCatalog hTest
-        Get phTestCatalog to hTestCatalog
-        Send IteratorReset to hTestCatalog
-        While (IteratorMoveNext(hTestCatalog))
-            Get CurrentTest of hTestCatalog to hTest
-            Send ListTestResult to hLister (oTestResult(hTest)) iIndentation
-        Loop
-    End_Procedure
-    
-    Procedure ListTestFixtureResult Handle hLister Integer iIndentation
-        Send ListTestFixtureResult to hLister (oTestFixtureResult(Self)) iIndentation
-        Send ListTestResults hLister (iIndentation + 1)
-        Send ListTestFixtureResults to oTestFixtureCatalog hLister (iIndentation + 1)
-    End_Procedure
-    
     Procedure SetTestFixtureResult
         Handle hResult
         Move oTestFixtureResult to hResult
+        Send Reset to hResult
         Set psName of hResult to (ObjectName(Self))
         If (pbAbortTestFixture(Self)) Set psExecuted of hResult to "False"
         Else Set psExecuted of hResult to "True"

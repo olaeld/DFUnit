@@ -6,3 +6,4 @@ ConfigFile=.\Programs\Config.ws
 Lib1=..\VDFUnit\VDFUnit-VDF182.sws
 [Projects]
 Project0=VDFUnit TestRunner.src
+Project1=VDFUnit-console.src
