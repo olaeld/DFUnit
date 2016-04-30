@@ -5,11 +5,6 @@ Object oApplication is a cApplication
 End_Object
 Object oUnattendedErrorSystem is a cUnattendedErrorSystem
     Move Self to Error_Object_Id
-    //Set pbShowErrorDialog to True if you want to debug test failures
-    Set pbShowErrorDialog to True
-End_Object
-
-Object oApplication is a cApplication
 End_Object
 Use cTestFixture.pkg
 Use cTest.pkg
@@ -18,7 +13,7 @@ Object oMain is a Panel
     
     Property Boolean pbAutoRunTests Public True
     
-    Set Label to "VDFUnit TestRunner"
+    Set Label to "VDFUnit-console"
     Set Size to 213 433
     
     Object oClientArea is a ClientArea
@@ -27,15 +22,15 @@ Object oMain is a Panel
             Use oVDFUnitTests.pkg
             
         End_Object
-        Use VDFUnitTestRunner.vw
+        Use "VDFUnit-console.vw"
     End_Object
     
     Procedure End_Construct_Object
         Forward Send End_Construct_Object
         Handle hoClient
         Get Client_Id to hoClient
-        Send Activate_VDFUnitTestRunner_vw of hoClient
-        If (pbAutoRunTests(Self)) Send Execute to (VDFUnitTestRunner_vw(hoClient))
+        Send Activate_VDFUnitConsole_vw of hoClient
+        If (pbAutoRunTests(Self)) Send Execute to (VDFUnitConsole_vw(hoClient))
     End_Procedure
 
 End_Object

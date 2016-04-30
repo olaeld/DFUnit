@@ -72,6 +72,7 @@ Class cTest is a cObject
     Procedure SetTestResult
         Handle hResult
         Move oTestResult to hResult
+        Send Reset to hResult
         Set psName of hResult to (ObjectName(Self))
         Set psExecuted of hResult to "True"
         If (pbSuccess(Self)) Begin
@@ -81,6 +82,9 @@ Class cTest is a cObject
         Else Begin
             Set psResult of hResult to "Failure"
             Set psSuccess of hResult to "False"
+            String sErrorMessage
+            Get psLastErrorMessage of Error_Object_Id to sErrorMessage
+            Set psErrorMessage of oTestResult to sErrorMessage
         End
         Set pTime of hResult to (pEndTime(Self) - pStartTime(Self))
         Set psAsserts of hResult to (piAsserts(Self))
@@ -110,6 +114,7 @@ Class cTest is a cObject
         Send Test
         Send CheckIfExpectedError
         Send UnexpectError
+        String sErrorMessage
     End_Procedure
     
     Procedure Test

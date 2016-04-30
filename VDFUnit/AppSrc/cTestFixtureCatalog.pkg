@@ -18,6 +18,16 @@ Class cTestFixtureCatalog is a cArrayIteratorInteger
         Loop
     End_Procedure
     
+    Function NumberOfTests Returns Integer
+        Integer iPerFixture iTotal
+        Send IteratorReset
+        While (IteratorMoveNext(Self))
+            Get TotalNumberOfTests of (CurrentArrayValue(Self)) to iPerFixture
+            Move (iTotal + iPerFixture) to iTotal
+        Loop
+        Function_Return iTotal
+    End_Function
+    
     Procedure CatalogTestFixtures
         Handle hTestFixtureNeighborhood
         Handle[] hTestFixtures
@@ -47,13 +57,4 @@ Class cTestFixtureCatalog is a cArrayIteratorInteger
         Function_Return (hTestFixtures[iCurrent])
     End_Function
     
-    Procedure ListTestFixtureResults Handle hLister Integer iIndentation
-        If (not(hLister)) Function_Return
-        Integer iIndentation_
-        If (num_arguments >= 2) Move iIndentation to iIndentation_
-        Send IteratorReset
-        While (IteratorMoveNext(Self))
-            Send ListTestFixtureResult to (CurrentTestFixture(Self)) hLister iIndentation_
-        Loop
-    End_Procedure
 End_Class

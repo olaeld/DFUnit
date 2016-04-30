@@ -7,6 +7,18 @@ Class cTestResult is a cObject
         Property String PsSuccess //"True"
         Property TimeSpan pTime
         Property String PsAsserts
+        Property String psErrorMessage
+    End_Procedure
+    
+    Procedure Reset
+        Set PsName to ""
+        Set PsExecuted to "False"
+        Set PsResult to ""
+        Set PsSuccess to ""
+        TimeSpan tsNoTime
+        Set pTime to tsNoTime
+        Set PsAsserts to ""
+        Set psErrorMessage to ""
     End_Procedure
 End_Class
 
