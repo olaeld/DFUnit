@@ -5,8 +5,9 @@ Object oApplication is a cApplication
 End_Object
 Object oUnattendedErrorSystem is a cUnattendedErrorSystem
     Move Self to Error_Object_Id
-    //Set pbShowErrorDialog to True if you want to debug test failures
-    Set pbShowErrorDialog to True
+    If (IsDebuggerPresent()) Begin
+        Set pbShowErrorDialog to True
+    End
 End_Object
 
 Object oApplication is a cApplication
