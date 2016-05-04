@@ -1,49 +1,21 @@
-Use DFClient.pkg
-Use cRichEdit.pkg
-Use cProgressBar.pkg
-Use VDFUnit.pkg
-
-Activate_View Activate_VDFUnitConsole_vw for VDFUnitConsole_vw
-Object VDFUnitConsole_vw is a View
-
-    Set Border_Style to Border_None
-    Set Size to 246 427
-    Set Location to 0 0
-    Set Label to "VDFUnit-console"
-    Set Maximize_Icon to False
-    Set Minimize_Icon to False
-    Set pbSizeToClientArea to False
-    Set Sysmenu_Icon to False
-    Set Caption_Bar to False
-    Set View_Mode to Viewmode_Zoom
-
-    Object oRunTestsButton is a Button
-        Set Size to 30 200
-        Set Location to 13 13
-        Set Label to "Run tests!"
-        Set Typeface to "verdana"
-        Set FontSize to 20 10
-    
-        Procedure OnClick
-            Send Execute to oTestFixtureRunner
-        End_Procedure
-    
-    End_Object
-
-End_Object
-
-Object oTestFixtureCatalog is a cTestFixtureCatalog
-    Set phTestFixtureNeighborhood to (Parent(Self))
-    Send InitTestFixtureCatalog
-End_Object
-
 Use Flexml.pkg
 
-Object oResultXml is a cXMLDOMDocument
-    Property Handle phRoot
+Class cVDFUnitResultXml is a cXMLDOMDocument
+    Procedure Construct_Object
+        Forward Send Construct_Object
+        Property Handle phRoot
+    End_Procedure
+    
+    Procedure OnExecute
+    End_Procedure
+    
+    Procedure OnFail
+    End_Procedure
+    
+    Procedure OnSuccess
+    End_Procedure
     
     Procedure InsertXmlDeclaration Handle hoRoot
-        //Add <?xml version="1.0" encoding="ISO-8859-1"?>
         Handle hoNodeToInsert hoInsertedNode
         Get CreateChildProcessingInstruction of hoRoot "xml" 'version="1.0" encoding="ISO-8859-1"' to hoNodeToInsert
         If (hoNodeToInsert > 0) Begin
@@ -54,7 +26,6 @@ Object oResultXml is a cXMLDOMDocument
             Send Destroy of hoNodeToInsert
         End
     End_Procedure
-    
 
     Procedure StartTestResults
         Handle hRoot
@@ -66,7 +37,6 @@ Object oResultXml is a cXMLDOMDocument
     Procedure EndTestResults
         String sXml
         Get psXML to sXml
-        Set psDocumentName to "C:\Jenkins\jobs\Unit test results\workspace\Test.xml"
         Integer iResult
         Get SaveXMLDocument to iResult
         Send Destroy of (phRoot(Self))
@@ -138,20 +108,7 @@ Object oResultXml is a cXMLDOMDocument
         Send OutputTestFixtureCatalog hTestFixtureCatalog hNode
         Send EndTestResults
     End_Procedure
-End_Object
-
-Object oTestFixtureRunner is a cTestFixtureRunner
-    Procedure Execute
-        Indicate Err False
-        Send RunTestFixtures
-        Send OutputResults to oResultXml oTestFixtureCatalog
-        Abort
+    
+    Procedure OnExecuteFinished
     End_Procedure
-    
-    Set phTestFixtureCatalog to (oTestFixtureCatalog(Self))
-    
-End_Object
-
-Procedure Execute
-    Send Execute to oTestFixtureRunner
-End_Procedure
+End_Class

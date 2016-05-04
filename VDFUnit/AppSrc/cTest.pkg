@@ -72,7 +72,6 @@ Class cTest is a cObject
     Procedure SetTestResult
         Handle hResult
         Move oTestResult to hResult
-        Send Reset to hResult
         Set psName of hResult to (ObjectName(Self))
         Set psExecuted of hResult to "True"
         If (pbSuccess(Self)) Begin
@@ -91,6 +90,7 @@ Class cTest is a cObject
     End_Procedure
     
     Procedure InitTest
+        Send Reset to oTestResult
         Set pStartTime to (CurrentDateTime())
         Set piAsserts to 0
         Send SaveErrorState to (phErrorState(Self))

@@ -13,7 +13,6 @@
 			</v3:requestedPrivileges>
 		</v3:security>
 	</v3:trustInfo>
-	<description xmlns="">VDFUnit TestRunner.src</description>
 	<v3:application xmlns:v3="urn:schemas-microsoft-com:asm.v3">
 		<v3:windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
 			<dpiAware>True</dpiAware>
