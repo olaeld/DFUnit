@@ -1,0 +1,10 @@
+<Templates>
+	<Template>
+		<ComponentType>0</ComponentType>
+		<Name>VDFUnit TestRunner Project</Name>
+		<FileName>VDFUnit TestRunner.tpl</FileName>
+		<ImageLarge>Bitmaps\Run.ico</ImageLarge>
+		<BriefDescription>VDFUnit TestRunner Template</BriefDescription>
+		<LongDescription>Creates a VDFUnit TestRunner Project.\n\nReplace oVDFUnitTests.pkg with your unit test package files.\n\n</LongDescription>
+	</Template>
+</Templates>
