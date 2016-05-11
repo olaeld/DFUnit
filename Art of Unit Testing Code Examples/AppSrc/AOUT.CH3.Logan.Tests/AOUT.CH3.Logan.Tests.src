@@ -1,0 +1,29 @@
+Use DFAllEnt.pkg
+
+Object oApplication is a cApplication
+End_Object
+
+Object oMain is a Panel
+    
+    Property Boolean pbAutoRunTests Public True
+    
+    Set Label to "AOUT.CH3.LogAn"
+    Set Size to 213 433
+    
+    Object oClientArea is a ClientArea
+        Use AOUT.CH3.Logan.Tests\cCalculatorTests.pkg
+        Use VDFUnitTestRunner.vw
+    End_Object
+    
+    Procedure End_Construct_Object
+        Forward Send End_Construct_Object
+        Handle hoClient
+        Get Client_Id to hoClient
+        Send Activate_VDFUnitTestRunner_vw of hoClient
+        Send ListTestFixtures to (VDFUnitTestRunner_vw(hoClient))
+        If (pbAutoRunTests(Self)) Send Execute to (VDFUnitTestRunner_vw(hoClient))
+    End_Procedure
+
+End_Object
+
+Start_UI

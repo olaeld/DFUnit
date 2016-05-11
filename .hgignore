@@ -1,0 +1,14 @@
+glob:*SyncToy*.dat
+glob:*.bak
+glob:*.dsk
+glob:*.exe
+glob:*.dbg
+glob:*.dep
+glob:*.mtd
+glob:*.loc
+glob:*.prn
+glob:*.tmp
+glob:Art of Unit Testing Code Examples/Programs/AOUT.CH1.Examples.exe.manifest
+glob:Art of Unit Testing Code Examples/Programs/AOUT.Ch1.Examples.Tests.exe.manifest
+glob:Art of Unit Testing Code Examples/Programs/AOUT.CH3.Logan.Tests.exe.manifest
+glob:~*.docx

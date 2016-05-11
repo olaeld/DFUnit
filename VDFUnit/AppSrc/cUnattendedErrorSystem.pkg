@@ -1,0 +1,18 @@
+Use Dferror.pkg
+
+Class cUnattendedErrorSystem is a ErrorSystem
+    Procedure construct_object
+        Forward Send Construct_Object
+        Property String psLastErrorMessage
+        Property Boolean pbShowErrorDialog False
+    End_Procedure
+    
+    Procedure UnhandledErrorDisplay Integer iErrorLine String sMessage 
+        If (pbShowErrorDialog(Self)) Forward Send UnhandledErrorDisplay iErrorLine sMessage
+        String sCRLF
+        Move (Character(13)+Character(10)) to sCRLF
+        Move (Replaces("\n",sMessage,sCRLF)) to sMessage
+        Move (Replaces("\"+sCRLF, sMessage, "\n")) to sMessage
+        Set psLastErrorMessage to sMessage
+    End_Procedure
+End_Class
