@@ -1,5 +1,3 @@
-# README #
-
 # Unit testing framework for Dataflex #
 
 ### How do I get set up? ###
