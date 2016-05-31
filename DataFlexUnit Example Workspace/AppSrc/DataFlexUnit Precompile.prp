@@ -1,0 +1,3543 @@
+Compiling Program: C:\Projects\Bitbucket\vdfunit\DataFlexUnit Example Workspace\AppSrc\DATAFLEXUNIT PRECOMPILE.PKG
+Memory Available: 2147483646
+1>Use DFAllEnt.pkg
+Using pre-compiled package DFALLENT.PKG
+Including file: dfallent.pkd    (C:\Program Files (x86)\DataFlex 18.2\Pkg\dfallent.pkd)
+75288>Use VDFUnit.pkg
+Including file: VDFUnit.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\VDFUnit.pkg)
+75288>>>Use cTestFixture.pkg
+Including file: cTestFixture.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cTestFixture.pkg)
+75288>>>>>Use cTestFixtureCatalog.pkg
+Including file: cTestFixtureCatalog.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cTestFixtureCatalog.pkg)
+75288>>>>>>>Use cArrayIteratorInteger.pkg
+Including file: cArrayIteratorInteger.pkg    (C:\Projects\Bitbucket\vdfunit\VDFPatterns\AppSrc\cArrayIteratorInteger.pkg)
+75288>>>>>>>>>Use cArrayIterator.pkg
+Including file: cArrayIterator.pkg    (C:\Projects\Bitbucket\vdfunit\VDFPatterns\AppSrc\cArrayIterator.pkg)
+75288>>>>>>>>>>>Use cIterator_Mixin.pkg
+Including file: cIterator_Mixin.pkg    (C:\Projects\Bitbucket\vdfunit\VDFPatterns\AppSrc\cIterator_Mixin.pkg)
+75288>>>>>>>>>>>>>//Iterator pattern interface. Classes importing this class protocol need to
+75288>>>>>>>>>>>>>//implement the IteratorMoveNext function.
+75288>>>>>>>>>>>>>//
+75288>>>>>>>>>>>>>//
+75288>>>>>>>>>>>>>//@author Ola Eld›y
+75288>>>>>>>>>>>>>Use VdfBase.pkg
+75288>>>>>>>>>>>>>
+75288>>>>>>>>>>>>>Class cIterator_Mixin is a Mixin
+75289>>>>>>>>>>>>>
+75289>>>>>>>>>>>>>    //Doc/ Interface=Private
+75289>>>>>>>>>>>>>    Procedure Define_cIterator_Mixin
+75291>>>>>>>>>>>>>        //Points to the current element in the collection. This can be used as
+75291>>>>>>>>>>>>>        //an object handle, an item number, a Recnum or whatever (as long as
+75291>>>>>>>>>>>>>        //it's an integer (a handle is also an integer).
+75291>>>>>>>>>>>>>        Property Integer piCurrent
+75292>>>>>>>>>>>>>    End_Procedure
+75293>>>>>>>>>>>>>    
+75293>>>>>>>>>>>>>    Procedure IteratorReset_Mixin
+75295>>>>>>>>>>>>>        set piCurrent to -1
+75296>>>>>>>>>>>>>    End_Procedure
+75297>>>>>>>>>>>>>    
+75297>>>>>>>>>>>>>    //Resets to before first element in collection (must call IteratorMoveNext to move to first element)
+75297>>>>>>>>>>>>>    Procedure IteratorReset
+75299>>>>>>>>>>>>>        Send IteratorReset_Mixin
+75300>>>>>>>>>>>>>    End_Procedure
+75301>>>>>>>>>>>>>    
+75301>>>>>>>>>>>>>    //Find next element in collection
+75301>>>>>>>>>>>>>    //@return If next element is found: True. If not: False
+75301>>>>>>>>>>>>>    Function IteratorMoveNext Returns Boolean
+75303>>>>>>>>>>>>>        //Implement code to find next element in collection, then set piCurrent
+75303>>>>>>>>>>>>>        //to point to this element. Return true if found.
+75303>>>>>>>>>>>>>        Function_return False
+75304>>>>>>>>>>>>>    End_Function
+75305>>>>>>>>>>>>>    
+75305>>>>>>>>>>>>>    Function IteratorCurrent_Mixin Returns Integer
+75307>>>>>>>>>>>>>        Function_Return (piCurrent(self))
+75308>>>>>>>>>>>>>    End_Function
+75309>>>>>>>>>>>>>    
+75309>>>>>>>>>>>>>    //Points to current element
+75309>>>>>>>>>>>>>    Function IteratorCurrent Returns Integer
+75311>>>>>>>>>>>>>        Function_Return (IteratorCurrent_Mixin(self))
+75312>>>>>>>>>>>>>    End_Function
+75313>>>>>>>>>>>>>    
+75313>>>>>>>>>>>>>End_Class
+75314>>>>>>>>>>>
+75314>>>>>>>>>>>//This is an iterator object that attaches to an array. Use the procedure
+75314>>>>>>>>>>>//AttachArray to attach an array variable. Then the Iterator interface is
+75314>>>>>>>>>>>//available for the array by using the cArrayIterator object.
+75314>>>>>>>>>>>//The class is abstract, and needs to be instantiated by using the various
+75314>>>>>>>>>>>//array type subclasses, e.g. cArrayIteratorString, cArrayIteratorInteger
+75314>>>>>>>>>>>//Doc/Classtype=Abstract
+75314>>>>>>>>>>>Class cArrayIterator is a cObject
+75315>>>>>>>>>>>    Procedure Construct_Object
+75317>>>>>>>>>>>        Forward Send Construct_Object
+75319>>>>>>>>>>>        Send Define_cIterator_Mixin
+75320>>>>>>>>>>>        
+75320>>>>>>>>>>>        Property Integer piArrayType
+75321>>>>>>>>>>>        Property String[] psArray
+75322>>>>>>>>>>>    End_Procedure
+75323>>>>>>>>>>>    
+75323>>>>>>>>>>>    Import_Class_Protocol cIterator_Mixin
+75324>>>>>>>>>>>    
+75324>>>>>>>>>>>    //Attaches an array variable to the cArrayIterator object.
+75324>>>>>>>>>>>    //This procedure has to be instantiated in the various array type subclasses
+75324>>>>>>>>>>>    //Doc/Interface=Virtual
+75324>>>>>>>>>>>    Procedure AttachArray
+75326>>>>>>>>>>>        
+75326>>>>>>>>>>>    End_Procedure
+75327>>>>>>>>>>>     
+75327>>>>>>>>>>>End_Class
+75328>>>>>>>>>
+75328>>>>>>>>>//Integer array instantiation class of cArrayIterator
+75328>>>>>>>>>Class cArrayIteratorInteger is a cArrayIterator
+75329>>>>>>>>>    Procedure Construct_Object
+75331>>>>>>>>>        Forward Send Construct_Object
+75333>>>>>>>>>        Property Integer[] piArray
+75334>>>>>>>>>    End_Procedure
+75335>>>>>>>>>    
+75335>>>>>>>>>    //Attaches an array variable to the cArrayIterator object. After updating
+75335>>>>>>>>>    //the array, this procedure needs to be called before using any part of the
+75335>>>>>>>>>    //iterator interface.
+75335>>>>>>>>>    //@param iArray Integer Array variable to attach
+75335>>>>>>>>>    Procedure AttachArray Integer[] iArray
+75337>>>>>>>>>        set piArray to iArray
+75338>>>>>>>>>    End_Procedure
+75339>>>>>>>>>    
+75339>>>>>>>>>    Function RetrieveArray Returns Integer[]
+75341>>>>>>>>>        Integer[] iArray
+75342>>>>>>>>>        Get piArray to iArray
+75343>>>>>>>>>        Function_Return iArray
+75344>>>>>>>>>    End_Function
+75345>>>>>>>>>
+75345>>>>>>>>>    //Find next element in collection
+75345>>>>>>>>>    //@return If next element is found: True. If not: False
+75345>>>>>>>>>    Function IteratorMoveNext Returns Boolean
+75347>>>>>>>>>        Integer iCurrent
+75347>>>>>>>>>        Integer[] iArray
+75348>>>>>>>>>        get piArray to iArray
+75349>>>>>>>>>        //Implement code to find next element in collection, then set piCurrent
+75349>>>>>>>>>        //to point to this element. Return true if found.
+75349>>>>>>>>>        get piCurrent to iCurrent
+75350>>>>>>>>>        If (iCurrent >= (SizeOfArray(iArray) - 1)) Function_return False
+75353>>>>>>>>>        Else Begin
+75354>>>>>>>>>            Set piCurrent to (iCurrent + 1)
+75355>>>>>>>>>            Function_Return True
+75356>>>>>>>>>        End
+75356>>>>>>>>>>
+75356>>>>>>>>>    End_Function
+75357>>>>>>>>>    
+75357>>>>>>>>>    //Add element to collection
+75357>>>>>>>>>    Procedure AddToArray Integer iValue
+75359>>>>>>>>>        Integer[] iArray
+75360>>>>>>>>>        Get piArray to iArray
+75361>>>>>>>>>        Move iValue to iArray[SizeOfArray(iArray)]
+75362>>>>>>>>>        Set piArray to iArray
+75363>>>>>>>>>    End_Procedure
+75364>>>>>>>>>    
+75364>>>>>>>>>    //Returns current array value
+75364>>>>>>>>>    Function CurrentArrayValue Returns Integer
+75366>>>>>>>>>        Integer iCurrent
+75366>>>>>>>>>        Integer[] iArray
+75367>>>>>>>>>        get piArray to iArray
+75368>>>>>>>>>        get piCurrent to iCurrent
+75369>>>>>>>>>        Function_Return iArray[iCurrent]
+75370>>>>>>>>>    End_Function
+75371>>>>>>>>>    
+75371>>>>>>>>>    //Returns number of items in collection
+75371>>>>>>>>>    Function NumberOfItems Returns Integer
+75373>>>>>>>>>        Integer[] iArray
+75374>>>>>>>>>        Get piArray to iArray
+75375>>>>>>>>>        Function_Return (SizeOfArray(iArray))
+75376>>>>>>>>>    End_Function
+75377>>>>>>>>>End_Class
+75378>>>>>>>
+75378>>>>>>>Class cTestFixtureCatalog is a cArrayIteratorInteger
+75379>>>>>>>    Procedure Construct_Object
+75381>>>>>>>        Forward Send Construct_Object
+75383>>>>>>>        Property Handle phTestFixtureNeighborhood
+75384>>>>>>>        Property Handle[] phTestFixtures
+75385>>>>>>>    End_Procedure
+75386>>>>>>>    
+75386>>>>>>>    Procedure InitTestFixtureCatalog
+75388>>>>>>>        Send CatalogTestFixtures
+75389>>>>>>>    End_Procedure
+75390>>>>>>>    
+75390>>>>>>>    Procedure CatalogIndentedTestFixtures
+75392>>>>>>>        Send IteratorReset
+75393>>>>>>>        While (IteratorMoveNext(Self))
+75397>>>>>>>            Send CatalogTestFixture to (CurrentArrayValue(Self))
+75398>>>>>>>        Loop
+75399>>>>>>>>
+75399>>>>>>>    End_Procedure
+75400>>>>>>>    
+75400>>>>>>>    Function NumberOfTests Returns Integer
+75402>>>>>>>        Integer iPerFixture iTotal
+75402>>>>>>>        Send IteratorReset
+75403>>>>>>>        While (IteratorMoveNext(Self))
+75407>>>>>>>            Get TotalNumberOfTests of (CurrentArrayValue(Self)) to iPerFixture
+75408>>>>>>>            Move (iTotal + iPerFixture) to iTotal
+75409>>>>>>>        Loop
+75410>>>>>>>>
+75410>>>>>>>        Function_Return iTotal
+75411>>>>>>>    End_Function
+75412>>>>>>>    
+75412>>>>>>>    Procedure CatalogTestFixtures
+75414>>>>>>>        Handle hTestFixtureNeighborhood
+75414>>>>>>>        Handle[] hTestFixtures
+75415>>>>>>>        
+75415>>>>>>>        //Reset array properties
+75415>>>>>>>        Set phTestFixtures to hTestFixtures
+75416>>>>>>>        
+75416>>>>>>>        Get phTestFixtureNeighborhood to hTestFixtureNeighborhood
+75417>>>>>>>        Broadcast Send ReportTestFixture to hTestFixtureNeighborhood Self
+75419>>>>>>>        Get phTestFixtures to hTestFixtures
+75420>>>>>>>        Send AttachArray hTestFixtures
+75421>>>>>>>        Send CatalogIndentedTestFixtures
+75422>>>>>>>    End_Procedure
+75423>>>>>>>    
+75423>>>>>>>    Procedure AddTestFixtureToCatalog Handle hTestFixture
+75425>>>>>>>        Handle[] hTestFixtures
+75426>>>>>>>        Get phTestFixtures to hTestFixtures
+75427>>>>>>>        Move hTestFixture to hTestFixtures[SizeOfArray(hTestFixtures)]
+75428>>>>>>>        Set phTestFixtures to hTestFixtures
+75429>>>>>>>    End_Procedure
+75430>>>>>>>    
+75430>>>>>>>    Function CurrentTestFixture Returns Handle
+75432>>>>>>>        Integer iCurrent
+75432>>>>>>>        Handle[] hTestFixtures
+75433>>>>>>>        Get phTestFixtures to hTestFixtures
+75434>>>>>>>        Get piCurrent to iCurrent
+75435>>>>>>>        Function_Return (hTestFixtures[iCurrent])
+75436>>>>>>>    End_Function
+75437>>>>>>>    
+75437>>>>>>>End_Class
+75438>>>>>Use cTestFixtureRunner.pkg
+Including file: cTestFixtureRunner.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cTestFixtureRunner.pkg)
+75438>>>>>>>Use cTestFixtureCatalog.pkg
+75438>>>>>>>Use cTestFixture.pkg
+75438>>>>>>>Use cTest.pkg
+Including file: cTest.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cTest.pkg)
+75438>>>>>>>>>Use cTestCatalog.pkg
+Including file: cTestCatalog.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cTestCatalog.pkg)
+75438>>>>>>>>>>>Use cArrayIteratorInteger.pkg
+75438>>>>>>>>>>>
+75438>>>>>>>>>>>Class cTestCatalog is a cArrayIteratorInteger
+75439>>>>>>>>>>>    Procedure Construct_Object
+75441>>>>>>>>>>>        Forward Send Construct_Object
+75443>>>>>>>>>>>        Property Handle phParentTestFixture
+75444>>>>>>>>>>>        Property Handle[] phTests
+75445>>>>>>>>>>>        Set phParentTestFixture to (Parent(Self))
+75446>>>>>>>>>>>        Property Integer piNumberOfTests
+75447>>>>>>>>>>>    End_Procedure
+75448>>>>>>>>>>>    
+75448>>>>>>>>>>>    Procedure InitTestCatalog
+75450>>>>>>>>>>>        Send CatalogTests
+75451>>>>>>>>>>>    End_Procedure
+75452>>>>>>>>>>>    
+75452>>>>>>>>>>>    Procedure CatalogTests
+75454>>>>>>>>>>>        Handle hParentTestFixture
+75454>>>>>>>>>>>        Handle[] hTests
+75455>>>>>>>>>>>        Set phTests to hTests  //Reset catalog
+75456>>>>>>>>>>>        Get phParentTestFixture to hParentTestFixture
+75457>>>>>>>>>>>        Broadcast Send ReportTest to hParentTestFixture Self
+75459>>>>>>>>>>>        Get phTests to hTests
+75460>>>>>>>>>>>        Send AttachArray hTests
+75461>>>>>>>>>>>        Set piNumberOfTests to (SizeOfArray(hTests))
+75462>>>>>>>>>>>    End_Procedure
+75463>>>>>>>>>>>    
+75463>>>>>>>>>>>    Procedure AddTestToCatalog Handle hTest
+75465>>>>>>>>>>>        Handle[] hTests
+75466>>>>>>>>>>>        Get phTests to hTests
+75467>>>>>>>>>>>        Move hTest to hTests[SizeOfArray(hTests)]
+75468>>>>>>>>>>>        Set phTests to hTests
+75469>>>>>>>>>>>    End_Procedure
+75470>>>>>>>>>>>    
+75470>>>>>>>>>>>    Function CurrentTest Returns Handle
+75472>>>>>>>>>>>        Integer iCurrent
+75472>>>>>>>>>>>        Handle[] hTests
+75473>>>>>>>>>>>        Get phTests to hTests
+75474>>>>>>>>>>>        Get piCurrent to iCurrent
+75475>>>>>>>>>>>        Function_Return (hTests[iCurrent])
+75476>>>>>>>>>>>    End_Function
+75477>>>>>>>>>>>End_Class
+75478>>>>>>>>>Use cObjectNameMixin.pkg
+Including file: cObjectNameMixin.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cObjectNameMixin.pkg)
+75478>>>>>>>>>>>Use VdfBase.pkg
+75478>>>>>>>>>>>
+75478>>>>>>>>>>>Class cObjectNameMixin is a Mixin
+75479>>>>>>>>>>>    Procedure Define_cObjectNameMixin
+75481>>>>>>>>>>>    End_Procedure
+75482>>>>>>>>>>>    
+75482>>>>>>>>>>>    Function LastPartAfterFullStop String sFullString Returns String
+75484>>>>>>>>>>>        String sTmp
+75484>>>>>>>>>>>        Integer iPos
+75484>>>>>>>>>>>        Move sFullString to sTmp
+75485>>>>>>>>>>>        Move (Pos(".", sTmp)) to iPos
+75486>>>>>>>>>>>        While (iPos > 0)
+75490>>>>>>>>>>>            Move (Mid(sTmp, Length(sTmp) - iPos, iPos + 1)) to sTmp
+75491>>>>>>>>>>>            Move (Pos(".", sTmp)) to iPos
+75492>>>>>>>>>>>        Loop
+75493>>>>>>>>>>>>
+75493>>>>>>>>>>>        Function_Return sTmp
+75494>>>>>>>>>>>    End_Function
+75495>>>>>>>>>>>    
+75495>>>>>>>>>>>    Function LastPartOfObjectName Handle hObject Returns String
+75497>>>>>>>>>>>        String sFullName sLastPart
+75497>>>>>>>>>>>        Get Name of hObject to sFullName
+75498>>>>>>>>>>>        Get LastPartAfterFullStop sFullName to sLastPart
+75499>>>>>>>>>>>        Function_Return sLastPart
+75500>>>>>>>>>>>    End_Function
+75501>>>>>>>>>>>    
+75501>>>>>>>>>>>End_Class
+75502>>>>>>>>>Use cAssertMixin.pkg
+Including file: cAssertMixin.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cAssertMixin.pkg)
+75502>>>>>>>>>>>Use VdfBase.pkg
+75502>>>>>>>>>>>
+75502>>>>>>>>>>>Class cAssertMixin is a Mixin
+75503>>>>>>>>>>>    Procedure Define_cObjectNameMixin
+75505>>>>>>>>>>>    End_Procedure
+75506>>>>>>>>>>>    
+75506>>>>>>>>>>>    Procedure Assert Boolean bCondition String sAssertMessage
+75508>>>>>>>>>>>        If bCondition Procedure_Return
+75511>>>>>>>>>>>        
+75511>>>>>>>>>>>        String sObjectName sErrorMessage
+75511>>>>>>>>>>>        Get ObjectName to sObjectName
+75512>>>>>>>>>>>        Move (sObjectName + "\nAssert failed.") to sErrorMessage
+75513>>>>>>>>>>>        If (num_arguments >= 2) Begin
+75515>>>>>>>>>>>            Move (sErrorMessage + "\n" + sAssertMessage) to sErrorMessage
+75516>>>>>>>>>>>        End
+75516>>>>>>>>>>>>
+75516>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75517>>>>>>>>>>>>
+75517>>>>>>>>>>>    End_Procedure
+75518>>>>>>>>>>>    
+75518>>>>>>>>>>>    Procedure AssertFalse Boolean bCondition String sAssertMessage
+75520>>>>>>>>>>>        If (not(bCondition)) Procedure_Return
+75523>>>>>>>>>>>        
+75523>>>>>>>>>>>        String sObjectName sErrorMessage
+75523>>>>>>>>>>>        Get ObjectName to sObjectName
+75524>>>>>>>>>>>        Move (sObjectName + "\nAssertFalse failed.") to sErrorMessage
+75525>>>>>>>>>>>        If (num_arguments >= 2) Begin
+75527>>>>>>>>>>>            Move (sErrorMessage + "\n" + sAssertMessage) to sErrorMessage
+75528>>>>>>>>>>>        End
+75528>>>>>>>>>>>>
+75528>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75529>>>>>>>>>>>>
+75529>>>>>>>>>>>    End_Procedure
+75530>>>>>>>>>>>    
+75530>>>>>>>>>>>    Procedure AssertIAreEqual Integer Expected Integer Actual String sAssertMessage
+75532>>>>>>>>>>>        If (Expected = Actual) Procedure_Return
+75535>>>>>>>>>>>        
+75535>>>>>>>>>>>        String sObjectName sErrorMessage
+75535>>>>>>>>>>>        Get ObjectName to sObjectName
+75536>>>>>>>>>>>        Move (sObjectName + "\nExpected:<" + String(Expected) + ">") to sErrorMessage
+75537>>>>>>>>>>>        Move (sErrorMessage + "but was:<" + String(Actual) + ">") to sErrorMessage
+75538>>>>>>>>>>>        If (num_arguments >= 3) Begin
+75540>>>>>>>>>>>            Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
+75541>>>>>>>>>>>        End
+75541>>>>>>>>>>>>
+75541>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75542>>>>>>>>>>>>
+75542>>>>>>>>>>>    End_Procedure
+75543>>>>>>>>>>>    
+75543>>>>>>>>>>>    Procedure AssertNAreEqual Number Expected Number Actual String sAssertMessage
+75545>>>>>>>>>>>        If (Expected = Actual) Procedure_Return
+75548>>>>>>>>>>>        
+75548>>>>>>>>>>>        String sObjectName sErrorMessage
+75548>>>>>>>>>>>        Get ObjectName to sObjectName
+75549>>>>>>>>>>>        Move (sObjectName + "\nExpected:<" + String(Expected) + ">") to sErrorMessage
+75550>>>>>>>>>>>        Move (sErrorMessage + "but was:<" + String(Actual) + ">") to sErrorMessage
+75551>>>>>>>>>>>        If (num_arguments >= 3) Begin
+75553>>>>>>>>>>>            Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
+75554>>>>>>>>>>>        End
+75554>>>>>>>>>>>>
+75554>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75555>>>>>>>>>>>>
+75555>>>>>>>>>>>    End_Procedure
+75556>>>>>>>>>>>    
+75556>>>>>>>>>>>    Procedure AssertSAreEqual String Expected String Actual String sAssertMessage
+75558>>>>>>>>>>>        If (Expected = Actual) Procedure_Return
+75561>>>>>>>>>>>        
+75561>>>>>>>>>>>        String sObjectName sErrorMessage
+75561>>>>>>>>>>>        Get ObjectName to sObjectName
+75562>>>>>>>>>>>        Move (sObjectName + "\nExpected:<" + Expected + ">") to sErrorMessage
+75563>>>>>>>>>>>        Move (sErrorMessage + "but was:<" + Actual + ">") to sErrorMessage
+75564>>>>>>>>>>>        If (num_arguments >= 3) Begin
+75566>>>>>>>>>>>            Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
+75567>>>>>>>>>>>        End
+75567>>>>>>>>>>>>
+75567>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75568>>>>>>>>>>>>
+75568>>>>>>>>>>>    End_Procedure
+75569>>>>>>>>>>>
+75569>>>>>>>>>>>    Procedure AssertDAreEqual Date Expected Date Actual String sAssertMessage
+75571>>>>>>>>>>>        If (Expected = Actual) Procedure_Return
+75574>>>>>>>>>>>        
+75574>>>>>>>>>>>        String sObjectName sErrorMessage
+75574>>>>>>>>>>>        Get ObjectName to sObjectName
+75575>>>>>>>>>>>        Move (sObjectName + "\nExpected:<" + String(Expected) + ">") to sErrorMessage
+75576>>>>>>>>>>>        Move (sErrorMessage + "but was:<" + String(Actual) + ">") to sErrorMessage
+75577>>>>>>>>>>>        If (num_arguments >= 3) Begin
+75579>>>>>>>>>>>            Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
+75580>>>>>>>>>>>        End
+75580>>>>>>>>>>>>
+75580>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75581>>>>>>>>>>>>
+75581>>>>>>>>>>>    End_Procedure
+75582>>>>>>>>>>>    
+75582>>>>>>>>>>>    Procedure AssertDTAreEqual DateTime Expected DateTime Actual String sAssertMessage
+75584>>>>>>>>>>>        If (Expected = Actual) Procedure_Return
+75587>>>>>>>>>>>        
+75587>>>>>>>>>>>        String sObjectName sErrorMessage
+75587>>>>>>>>>>>        Get ObjectName to sObjectName
+75588>>>>>>>>>>>        Move (sObjectName + "\nExpected:<" + String(Expected) + ">") to sErrorMessage
+75589>>>>>>>>>>>        Move (sErrorMessage + "but was:<" + String(Actual) + ">") to sErrorMessage
+75590>>>>>>>>>>>        If (num_arguments >= 3) Begin
+75592>>>>>>>>>>>            Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
+75593>>>>>>>>>>>        End
+75593>>>>>>>>>>>>
+75593>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75594>>>>>>>>>>>>
+75594>>>>>>>>>>>    End_Procedure
+75595>>>>>>>>>>>    
+75595>>>>>>>>>>>    Procedure AssertTSAreEqual TimeSpan Expected TimeSpan Actual String sAssertMessage
+75597>>>>>>>>>>>        If (Expected = Actual) Procedure_Return
+75600>>>>>>>>>>>        
+75600>>>>>>>>>>>        String sObjectName sErrorMessage
+75600>>>>>>>>>>>        Get ObjectName to sObjectName
+75601>>>>>>>>>>>        Move (sObjectName + "\nExpected:<" + String(Expected) + ">") to sErrorMessage
+75602>>>>>>>>>>>        Move (sErrorMessage + "but was:<" + String(Actual) + ">") to sErrorMessage
+75603>>>>>>>>>>>        If (num_arguments >= 3) Begin
+75605>>>>>>>>>>>            Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
+75606>>>>>>>>>>>        End
+75606>>>>>>>>>>>>
+75606>>>>>>>>>>>        Error DfErr_Program sErrorMessage
+75607>>>>>>>>>>>>
+75607>>>>>>>>>>>    End_Procedure
+75608>>>>>>>>>>>End_Class
+75609>>>>>>>>>Use cErrorState.pkg
+Including file: cErrorState.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cErrorState.pkg)
+75609>>>>>>>>>>>Use UI
+75609>>>>>>>>>>>
+75609>>>>>>>>>>>Class cErrorState is a cObject
+75610>>>>>>>>>>>    
+75610>>>>>>>>>>>    Procedure Construct_Object
+75612>>>>>>>>>>>        Forward Send Construct_Object
+75614>>>>>>>>>>>        Property Integer piLastErr
+75615>>>>>>>>>>>        Property Boolean pbErr
+75616>>>>>>>>>>>    End_Procedure
+75617>>>>>>>>>>>
+75617>>>>>>>>>>>    Procedure SaveErrorState
+75619>>>>>>>>>>>        Set piLastErr to LastErr
+75620>>>>>>>>>>>        If Err Set pbErr to True
+75623>>>>>>>>>>>        Else Set pbErr to False
+75625>>>>>>>>>>>    End_Procedure
+75626>>>>>>>>>>>    
+75626>>>>>>>>>>>    Procedure RestoreErrorState
+75628>>>>>>>>>>>        Get piLastErr to LastErr
+75629>>>>>>>>>>>        If (pbErr(Self)) Move True to Err
+75632>>>>>>>>>>>        Else Move False to Err
+75634>>>>>>>>>>>    End_Procedure
+75635>>>>>>>>>>>
+75635>>>>>>>>>>>End_Class
+75636>>>>>>>>>Use cTestFixtureResult.pkg
+Including file: cTestFixtureResult.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cTestFixtureResult.pkg)
+75636>>>>>>>>>>>Use gFormatNumbers.pkg
+Including file: gFormatNumbers.pkg    (C:\Program Files (x86)\DataFlex 18.2\Pkg\gFormatNumbers.pkg)
+75636>>>>>>>>>>>>>//****************************************************************************//
+75636>>>>>>>>>>>>>//                                                                            //
+75636>>>>>>>>>>>>>// $File name  : gFormatNumbers.pkg                                           //
+75636>>>>>>>>>>>>>// $File title : Globals for formating numbers and currency                   //
+75636>>>>>>>>>>>>>// Notice      :                                                              //
+75636>>>>>>>>>>>>>// $Author(s)  : John Tuohy                                                   //
+75636>>>>>>>>>>>>>//                                                                            //
+75636>>>>>>>>>>>>>// Confidential Trade Secret.                                                 //
+75636>>>>>>>>>>>>>// Copyright 1999 Data Access Corporation, Miami FL, USA                      //
+75636>>>>>>>>>>>>>// All Rights reserved                                                        //
+75636>>>>>>>>>>>>>// DataFlex is a registered trademark of Data Access Corporation.             //
+75636>>>>>>>>>>>>>// $Rev History                                                               //
+75636>>>>>>>>>>>>>//                                                                            //
+75636>>>>>>>>>>>>>// 25.08.99 Created                                                           //
+75636>>>>>>>>>>>>>//****************************************************************************//
+75636>>>>>>>>>>>>>
+75636>>>>>>>>>>>>>Use cFormatter.pkg
+Including file: cFormatter.pkg    (C:\Program Files (x86)\DataFlex 18.2\Pkg\cFormatter.pkg)
+75636>>>>>>>>>>>>>>>//****************************************************************************//
+75636>>>>>>>>>>>>>>>//                                                                            //
+75636>>>>>>>>>>>>>>>// $File name  : cFormatter.pkg                                               //
+75636>>>>>>>>>>>>>>>// $File title : cFormatter class (private class)                             //
+75636>>>>>>>>>>>>>>>// $Author(s)  : John Tuohy                                                   //
+75636>>>>>>>>>>>>>>>//                                                                            //
+75636>>>>>>>>>>>>>>>// Confidential Trade Secret.                                                 //
+75636>>>>>>>>>>>>>>>// Copyright 1999 Data Access Corporation, Miami FL, USA                      //
+75636>>>>>>>>>>>>>>>// All Rights reserved                                                        //
+75636>>>>>>>>>>>>>>>// DataFlex is a registered trademark of Data Access Corporation.             //
+75636>>>>>>>>>>>>>>>//                                                                            //
+75636>>>>>>>>>>>>>>>// $Rev History                                                               //
+75636>>>>>>>>>>>>>>>//                                                                            //
+75636>>>>>>>>>>>>>>>// 25.08.99 Created                                                           //
+75636>>>>>>>>>>>>>>>//****************************************************************************//
+75636>>>>>>>>>>>>>>>use VDFBase.pkg
+75636>>>>>>>>>>>>>>>
+75636>>>>>>>>>>>>>>>Class cFormatter is an cObject
+75637>>>>>>>>>>>>>>>
+75637>>>>>>>>>>>>>>>    Procedure Construct_object
+75639>>>>>>>>>>>>>>>        Integer iCh
+75639>>>>>>>>>>>>>>>        forward send construct_object
+75641>>>>>>>>>>>>>>>        Property String  psCurrencySymbol
+75642>>>>>>>>>>>>>>>        Set psCurrencySymbol to (Default_Currency_Symbol())
+75643>>>>>>>>>>>>>>>
+75643>>>>>>>>>>>>>>>        Property string  psLeft
+75644>>>>>>>>>>>>>>>        Property string  psright
+75645>>>>>>>>>>>>>>>        Property integer pbThousandsSep
+75646>>>>>>>>>>>>>>>        Property integer piPoints
+75647>>>>>>>>>>>>>>>
+75647>>>>>>>>>>>>>>>        Property string  psCurPosLeft
+75648>>>>>>>>>>>>>>>        Property string  psCurPosright
+75649>>>>>>>>>>>>>>>        Property integer pbCurPosThousandsSep
+75650>>>>>>>>>>>>>>>        Property integer piCurPosPoints
+75651>>>>>>>>>>>>>>>
+75651>>>>>>>>>>>>>>>        Property string  psCurNegLeft
+75652>>>>>>>>>>>>>>>        Property string  psCurNegright
+75653>>>>>>>>>>>>>>>        Property integer pbCurNegThousandsSep
+75654>>>>>>>>>>>>>>>        Property integer piCurNegPoints
+75655>>>>>>>>>>>>>>>
+75655>>>>>>>>>>>>>>>        Property string  psNumPosLeft
+75656>>>>>>>>>>>>>>>        Property string  psNumPosright
+75657>>>>>>>>>>>>>>>        Property integer pbNumPosThousandsSep
+75658>>>>>>>>>>>>>>>        Property integer piNumPosPoints
+75659>>>>>>>>>>>>>>>
+75659>>>>>>>>>>>>>>>        Property string  psNumNegLeft
+75660>>>>>>>>>>>>>>>        Property string  psNumNegright
+75661>>>>>>>>>>>>>>>        Property integer pbNumNegThousandsSep
+75662>>>>>>>>>>>>>>>        Property integer piNumNegPoints
+75663>>>>>>>>>>>>>>>
+75663>>>>>>>>>>>>>>>        Send SetFormat "$,#.##;($,#.##)" true  // currency
+75664>>>>>>>>>>>>>>>        Send SetFormat  ",#.*"           false // numeric
+75665>>>>>>>>>>>>>>>
+75665>>>>>>>>>>>>>>>    end_procedure
+75666>>>>>>>>>>>>>>>
+75666>>>>>>>>>>>>>>>    // internal
+75666>>>>>>>>>>>>>>>    // parse passed format string and set temporary properties with result
+75666>>>>>>>>>>>>>>>    //
+75666>>>>>>>>>>>>>>>    Procedure ParseFormat string sFmt
+75668>>>>>>>>>>>>>>>
+75668>>>>>>>>>>>>>>>        string sLeft sRight sDigit
+75668>>>>>>>>>>>>>>>        integer bSep iPos i iDigits
+75668>>>>>>>>>>>>>>>
+75668>>>>>>>>>>>>>>>        // replace any literals. A "/" followed by anything.
+75668>>>>>>>>>>>>>>>        // some literals are special. $ . , / #
+75668>>>>>>>>>>>>>>>        Move (Replaces("/$",sFmt,Character(1)))    to sFmt
+75669>>>>>>>>>>>>>>>        Move (Replaces("/.",sFmt,Character(2)))    to sFmt
+75670>>>>>>>>>>>>>>>        Move (Replaces("/,",sFmt,Character(3)))    to sFmt
+75671>>>>>>>>>>>>>>>        Move (Replaces("/"+"/",sFmt,Character(4))) to sFmt
+75672>>>>>>>>>>>>>>>        Move (Replaces("/#",sFmt,Character(5)))    to sFmt
+75673>>>>>>>>>>>>>>>        Move (Character(9)) to sDigit
+75674>>>>>>>>>>>>>>>        Move (Replaces("#",sFmt,sDigit))           to sFmt
+75675>>>>>>>>>>>>>>>        Move (Replaces("/",sFmt,""))               to sFmt // replace all others
+75676>>>>>>>>>>>>>>>
+75676>>>>>>>>>>>>>>>        Move (Pos(",",sFmt))                 to bSep // if we have any , we use thousand seps
+75677>>>>>>>>>>>>>>>        If bSep Move (Replaces(",",sFmt,"")) to sFmt // remove all ,
+75680>>>>>>>>>>>>>>>
+75680>>>>>>>>>>>>>>>        Move (Replaces("$",sFmt,psCurrencySymbol(self))) to sFmt // replace any $ with currency symbol
+75681>>>>>>>>>>>>>>>
+75681>>>>>>>>>>>>>>>        Move (Pos(".",sFmt)) to iPos                 // position of decimal
+75682>>>>>>>>>>>>>>>
+75682>>>>>>>>>>>>>>>        // Move all the special literals back into place before parsing
+75682>>>>>>>>>>>>>>>        Move (Replaces(Character(1),sFmt,"$")) to sFmt
+75683>>>>>>>>>>>>>>>        Move (Replaces(Character(2),sFmt,".")) to sFmt
+75684>>>>>>>>>>>>>>>        Move (Replaces(Character(3),sFmt,",")) to sFmt
+75685>>>>>>>>>>>>>>>        Move (Replaces(Character(4),sFmt,"/")) to sFmt
+75686>>>>>>>>>>>>>>>        Move (Replaces(Character(5),sFmt,"#")) to sFmt
+75687>>>>>>>>>>>>>>>
+75687>>>>>>>>>>>>>>>        If (iPos>0) Begin                      // if we have a decimanl point
+75689>>>>>>>>>>>>>>>            Move 1 to i                        // look for first non # to right and count the #s
+75690>>>>>>>>>>>>>>>            If (mid(sFmt,1,iPos+i)="*") Begin  // the "*" is special. It means as many as you want
+75692>>>>>>>>>>>>>>>               Move -2 to iDigits
+75693>>>>>>>>>>>>>>>               increment i
+75694>>>>>>>>>>>>>>>            end
+75694>>>>>>>>>>>>>>>>
+75694>>>>>>>>>>>>>>>            While (mid(sFmt,1,iPos+i)=sDigit)
+75698>>>>>>>>>>>>>>>                 Increment i
+75699>>>>>>>>>>>>>>>            end
+75700>>>>>>>>>>>>>>>>
+75700>>>>>>>>>>>>>>>            Move (Mid(sFmt,255,iPos+i)) to sRight // everything to the right of the last # is format stuff
+75701>>>>>>>>>>>>>>>            If (iDigits=0) Move (i-1) to iDigits
+75704>>>>>>>>>>>>>>>            //
+75704>>>>>>>>>>>>>>>            Move 1 to i                           // find the first non-# to the left of the point
+75705>>>>>>>>>>>>>>>            While (mid(sFmt,1,iPos-i)=sDigit)     // everything to the left is format stuff
+75709>>>>>>>>>>>>>>>                 increment i
+75710>>>>>>>>>>>>>>>            end
+75711>>>>>>>>>>>>>>>>
+75711>>>>>>>>>>>>>>>            Move (left(sFmt,iPos-i)) to sLeft
+75712>>>>>>>>>>>>>>>        end
+75712>>>>>>>>>>>>>>>>
+75712>>>>>>>>>>>>>>>        else begin                             // we have no decinal
+75713>>>>>>>>>>>>>>>            Move 0 to iDigits                  // so points is none
+75714>>>>>>>>>>>>>>>            Move (Pos(sDigit,sFmt)) to iPos    // find first #.
+75715>>>>>>>>>>>>>>>            If (iPos=0) Begin                  // if none, entire string is left format stuff..wierd!
+75717>>>>>>>>>>>>>>>                Move sFmt to sLeft
+75718>>>>>>>>>>>>>>>                Move ""   to sRight
+75719>>>>>>>>>>>>>>>            end
+75719>>>>>>>>>>>>>>>>
+75719>>>>>>>>>>>>>>>            else begin
+75720>>>>>>>>>>>>>>>                Move (left(sFmt,iPos-1)) to sLeft // all char to left of first # is left format stuff
+75721>>>>>>>>>>>>>>>                Move 1 to i
+75722>>>>>>>>>>>>>>>                While (mid(sFmt,1,iPos+i)=sDigit) // find last #, all char to right is right format
+75726>>>>>>>>>>>>>>>                    Increment i
+75727>>>>>>>>>>>>>>>                end
+75728>>>>>>>>>>>>>>>>
+75728>>>>>>>>>>>>>>>                Move (Mid(sFmt,255,i+iPos)) to sRight
+75729>>>>>>>>>>>>>>>            end
+75729>>>>>>>>>>>>>>>>
+75729>>>>>>>>>>>>>>>        end
+75729>>>>>>>>>>>>>>>>
+75729>>>>>>>>>>>>>>>        // set temporary format properties and exit
+75729>>>>>>>>>>>>>>>        Set pbThousandsSep to bSep
+75730>>>>>>>>>>>>>>>        set psLeft         to sLeft
+75731>>>>>>>>>>>>>>>        set psRight        to sRight
+75732>>>>>>>>>>>>>>>        Set piPoints       to iDigits
+75733>>>>>>>>>>>>>>>     End_procedure
+75734>>>>>>>>>>>>>>>
+75734>>>>>>>>>>>>>>>    // Public: Sets a format string. Pass full format for Positve and negative in sFmt. Pass
+75734>>>>>>>>>>>>>>>    //         bCurrency true is this is a currency format, false if a numeric format
+75734>>>>>>>>>>>>>>>    //
+75734>>>>>>>>>>>>>>>    //  e.g. Send SetFormat "$,#.##;($,#.##)" True
+75734>>>>>>>>>>>>>>>    //
+75734>>>>>>>>>>>>>>>    Procedure SetFormat string sFmt integer bCurrency
+75736>>>>>>>>>>>>>>>        string sPos sNeg
+75736>>>>>>>>>>>>>>>        integer iPos
+75736>>>>>>>>>>>>>>>
+75736>>>>>>>>>>>>>>>        Move (Pos(";",sFmt)) to iPos
+75737>>>>>>>>>>>>>>>        If iPos begin
+75739>>>>>>>>>>>>>>>            Move (left(sFmt,iPos-1))    to sPos
+75740>>>>>>>>>>>>>>>            Move (mid(sFmt,255,iPos+1)) to sNeg
+75741>>>>>>>>>>>>>>>        end
+75741>>>>>>>>>>>>>>>>
+75741>>>>>>>>>>>>>>>        else Begin
+75742>>>>>>>>>>>>>>>            Move sFmt         to sPos
+75743>>>>>>>>>>>>>>>            Move ("-" + sFmt) to sNeg
+75744>>>>>>>>>>>>>>>        end
+75744>>>>>>>>>>>>>>>>
+75744>>>>>>>>>>>>>>>        Send ParseFormat sPos
+75745>>>>>>>>>>>>>>>        If bCurrency begin
+75747>>>>>>>>>>>>>>>            Set pbCurPosThousandsSep to (pbThousandsSep(self))
+75748>>>>>>>>>>>>>>>            set psCurPosLeft         to (psLeft(self))
+75749>>>>>>>>>>>>>>>            set psCurPosRight        to (psRight(self))
+75750>>>>>>>>>>>>>>>            Set piCurPosPoints       to (piPoints(self))
+75751>>>>>>>>>>>>>>>        End
+75751>>>>>>>>>>>>>>>>
+75751>>>>>>>>>>>>>>>        else Begin
+75752>>>>>>>>>>>>>>>            Set pbNumPosThousandsSep to (pbThousandsSep(self))
+75753>>>>>>>>>>>>>>>            set psNumPosLeft         to (psLeft(self))
+75754>>>>>>>>>>>>>>>            set psNumPosRight        to (psRight(self))
+75755>>>>>>>>>>>>>>>            Set piNumPosPoints       to (piPoints(self))
+75756>>>>>>>>>>>>>>>        end
+75756>>>>>>>>>>>>>>>>
+75756>>>>>>>>>>>>>>>
+75756>>>>>>>>>>>>>>>        Send ParseFormat sNeg
+75757>>>>>>>>>>>>>>>        If bCurrency begin
+75759>>>>>>>>>>>>>>>            Set pbCurNegThousandsSep to (pbThousandsSep(self))
+75760>>>>>>>>>>>>>>>            set psCurNegLeft         to (psLeft(self))
+75761>>>>>>>>>>>>>>>            set psCurNegRight        to (psRight(self))
+75762>>>>>>>>>>>>>>>            Set piCurNegPoints       to (piPoints(self))
+75763>>>>>>>>>>>>>>>        End
+75763>>>>>>>>>>>>>>>>
+75763>>>>>>>>>>>>>>>        else Begin
+75764>>>>>>>>>>>>>>>            Set pbNumNegThousandsSep to (pbThousandsSep(self))
+75765>>>>>>>>>>>>>>>            set psNumNegLeft         to (psLeft(self))
+75766>>>>>>>>>>>>>>>            set psNumNegRight        to (psRight(self))
+75767>>>>>>>>>>>>>>>            Set piNumNegPoints       to (piPoints(self))
+75768>>>>>>>>>>>>>>>        end
+75768>>>>>>>>>>>>>>>>
+75768>>>>>>>>>>>>>>>    End_procedure
+75769>>>>>>>>>>>>>>>
+75769>>>>>>>>>>>>>>>    // low level formatting. Pass parameters
+75769>>>>>>>>>>>>>>>    Function Format_Num number nNumber integer iPoints integer bSep ;                       string sPrefix string sSuffix returns string
+75771>>>>>>>>>>>>>>>        string  sLeft sRight sNumber sSep sDec
+75771>>>>>>>>>>>>>>>        integer bIsNegative iDec iLen iCh
+75771>>>>>>>>>>>>>>>
+75771>>>>>>>>>>>>>>>        Get_Attribute DF_DECIMAL_SEPARATOR to iCh
+75774>>>>>>>>>>>>>>>        Move (Character(iCh)) to sDec
+75775>>>>>>>>>>>>>>>
+75775>>>>>>>>>>>>>>>        Move (abs(nNumber)) to sNumber
+75776>>>>>>>>>>>>>>>        Move (Pos(sDec,sNumber)) to iDec
+75777>>>>>>>>>>>>>>>        Move (If(iDec=0, sNumber, left(sNumber,iDec-1))) to sLeft
+75778>>>>>>>>>>>>>>>        Move (If(iDec=0, "", mid(sNumber,255,iDec+1)))   to sRight
+75779>>>>>>>>>>>>>>>        // format for decimal separator
+75779>>>>>>>>>>>>>>>        If (iPoints>=0) ; // if -2, leave it alone, it should not be -1            Move (left(sRight+repeat("0",iPoints),iPoints)) to sRight
+75782>>>>>>>>>>>>>>>
+75782>>>>>>>>>>>>>>>        // format for thousand sep.
+75782>>>>>>>>>>>>>>>        If bSep Begin
+75784>>>>>>>>>>>>>>>            Get_Attribute DF_THOUSANDS_SEPARATOR to iCh
+75787>>>>>>>>>>>>>>>            Move (Character(iCh)) to sSep
+75788>>>>>>>>>>>>>>>            Move (Length(sLeft)) to iLen
+75789>>>>>>>>>>>>>>>            While (iLen>3)
+75793>>>>>>>>>>>>>>>                Move (insert(sSep,sLeft,iLen-2)) to sLeft
+75794>>>>>>>>>>>>>>>                Move (iLen-3) to iLen
+75795>>>>>>>>>>>>>>>            End
+75796>>>>>>>>>>>>>>>>
+75796>>>>>>>>>>>>>>>        End
+75796>>>>>>>>>>>>>>>>
+75796>>>>>>>>>>>>>>>        // if decimal points or -2 (allow anything) and there are points to show
+75796>>>>>>>>>>>>>>>        If (iPoints>0 OR (iPoints=-2 AND sRight<>"")) ;            Move (sLeft + sDec + sright) to sLeft
+75799>>>>>>>>>>>>>>>        Function_return (sPrefix + sLeft+ sSuffix)
+75800>>>>>>>>>>>>>>>    End_Function
+75801>>>>>>>>>>>>>>>
+75801>>>>>>>>>>>>>>>    // Public: Format for currency
+75801>>>>>>>>>>>>>>>    //
+75801>>>>>>>>>>>>>>>    Function FormatCur number nNumber integer iPoints returns string
+75803>>>>>>>>>>>>>>>        string  sLeft sRight
+75803>>>>>>>>>>>>>>>        integer bSep
+75803>>>>>>>>>>>>>>>        If (nNumber<0) Begin
+75805>>>>>>>>>>>>>>>            get pbCurNegThousandsSep to bSep
+75806>>>>>>>>>>>>>>>            get psCurNegLeft         to sLeft
+75807>>>>>>>>>>>>>>>            get psCurNegRight        to sRight
+75808>>>>>>>>>>>>>>>            If (iPoints=-1) get piCurNegPoints       to iPoints
+75811>>>>>>>>>>>>>>>        end
+75811>>>>>>>>>>>>>>>>
+75811>>>>>>>>>>>>>>>        Else Begin
+75812>>>>>>>>>>>>>>>            get pbCurPosThousandsSep to bSep
+75813>>>>>>>>>>>>>>>            get psCurPosLeft         to sLeft
+75814>>>>>>>>>>>>>>>            get psCurPosRight        to sRight
+75815>>>>>>>>>>>>>>>            If (iPoints=-1) get piCurPosPoints       to iPoints
+75818>>>>>>>>>>>>>>>        end
+75818>>>>>>>>>>>>>>>>
+75818>>>>>>>>>>>>>>>        Function_return (Format_Num(self, nNumber,iPoints,bSep,sLeft,sRight))
+75819>>>>>>>>>>>>>>>    End_function
+75820>>>>>>>>>>>>>>>
+75820>>>>>>>>>>>>>>>    // Public: Format for numeric
+75820>>>>>>>>>>>>>>>    //
+75820>>>>>>>>>>>>>>>    Function FormatNum number nNumber integer iPoints returns string
+75822>>>>>>>>>>>>>>>        string  sLeft sRight
+75822>>>>>>>>>>>>>>>        integer bSep
+75822>>>>>>>>>>>>>>>        If (nNumber<0) Begin
+75824>>>>>>>>>>>>>>>            get pbNumNegThousandsSep to bSep
+75825>>>>>>>>>>>>>>>            get psNumNegLeft         to sLeft
+75826>>>>>>>>>>>>>>>            get psNumNegRight        to sRight
+75827>>>>>>>>>>>>>>>            If (iPoints=-1) get piNumNegPoints       to iPoints
+75830>>>>>>>>>>>>>>>        end
+75830>>>>>>>>>>>>>>>>
+75830>>>>>>>>>>>>>>>        Else Begin
+75831>>>>>>>>>>>>>>>            get pbNumPosThousandsSep to bSep
+75832>>>>>>>>>>>>>>>            get psNumPosLeft         to sLeft
+75833>>>>>>>>>>>>>>>            get psNumPosRight        to sRight
+75834>>>>>>>>>>>>>>>            If (iPoints=-1) get piNumPosPoints       to iPoints
+75837>>>>>>>>>>>>>>>        end
+75837>>>>>>>>>>>>>>>>
+75837>>>>>>>>>>>>>>>        Function_return (Format_Num(self, nNumber,iPoints,bSep,sLeft,sRight))
+75838>>>>>>>>>>>>>>>    End_function
+75839>>>>>>>>>>>>>>>
+75839>>>>>>>>>>>>>>>
+75839>>>>>>>>>>>>>>>    // Public: Format passing format string
+75839>>>>>>>>>>>>>>>    //
+75839>>>>>>>>>>>>>>>    Function FormatVal number nNumber string sFmt returns string
+75841>>>>>>>>>>>>>>>        integer iPos bIsNeg
+75841>>>>>>>>>>>>>>>        string  sLeft sRight
+75841>>>>>>>>>>>>>>>        integer iPoints bSep
+75841>>>>>>>>>>>>>>>        Move (nNumber<0) to bIsNeg
+75842>>>>>>>>>>>>>>>        Move (Pos(";",sFmt)) to iPos
+75843>>>>>>>>>>>>>>>        Case Begin
+75843>>>>>>>>>>>>>>>            Case (iPos and Not(bIsNeg))      Move (left(sFmt,iPos-1))    to sFmt
+75846>>>>>>>>>>>>>>>            Case (iPos and bIsNeg)           Move (mid(sFmt,255,iPos+1)) to sFmt
+75850>>>>>>>>>>>>>>>            Case (not(iPos) and not(bIsNeg)) Move sFmt                   to sFmt
+75854>>>>>>>>>>>>>>>            Case else                        Move ("-" + sFmt)           to sFmt
+75856>>>>>>>>>>>>>>>        case end
+75856>>>>>>>>>>>>>>>        Send ParseFormat sFmt
+75857>>>>>>>>>>>>>>>        get pbThousandsSep to bSep
+75858>>>>>>>>>>>>>>>        get psLeft         to sLeft
+75859>>>>>>>>>>>>>>>        get psRight        to sRight
+75860>>>>>>>>>>>>>>>        get piPoints       to iPoints
+75861>>>>>>>>>>>>>>>        Function_return (Format_Num(self, nNumber,iPoints,bSep,sLeft,sRight))
+75862>>>>>>>>>>>>>>>    end_function
+75863>>>>>>>>>>>>>>>
+75863>>>>>>>>>>>>>>>End_Class
+75864>>>>>>>>>>>>>
+75864>>>>>>>>>>>>>// for now, this object is private. All access is through the following
+75864>>>>>>>>>>>>>// global functions
+75864>>>>>>>>>>>>>
+75864>>>>>>>>>>>>>//Object oFmt is a cFormatter
+75864>>>>>>>>>>>>>//end_object
+75864>>>>>>>>>>>>>
+75864>>>>>>>>>>>>>Global_variable handle ghoFormatter
+75864>>>>>>>>>>>>>Get Create of desktop U_cFormatter to ghoFormatter
+75865>>>>>>>>>>>>>
+75865>>>>>>>>>>>>>Function FormatNumber Global number nNum integer iPoints returns string
+75867>>>>>>>>>>>>>    Function_return (FormatNum(ghoFormatter, nNum,iPoints))
+75868>>>>>>>>>>>>>end_function
+75869>>>>>>>>>>>>>
+75869>>>>>>>>>>>>>Function FormatCurrency Global number nNum integer iPoints returns string
+75871>>>>>>>>>>>>>    Function_return (FormatCur(ghoFormatter, nNum,iPoints))
+75872>>>>>>>>>>>>>end_function
+75873>>>>>>>>>>>>>
+75873>>>>>>>>>>>>>Function FormatValue Global number nNum string sFmt returns string
+75875>>>>>>>>>>>>>    Function_return (FormatVal(ghoFormatter, nNum,sFmt))
+75876>>>>>>>>>>>>>end_function
+75877>>>>>>>>>>>>>
+75877>>>>>>>>>>>>>Procedure SetCurrencyFormat Global string sFmt
+75879>>>>>>>>>>>>>    Send SetFormat of ghoFormatter sFmt True
+75880>>>>>>>>>>>>>end_function
+75881>>>>>>>>>>>>>
+75881>>>>>>>>>>>>>Procedure SetNumberFormat Global string sFmt
+75883>>>>>>>>>>>>>    Send SetFormat of ghoFormatter sFmt False
+75884>>>>>>>>>>>>>end_function
+75885>>>>>>>>>>>>>
+75885>>>>>>>>>>>Class cTestResult is a cObject
+75886>>>>>>>>>>>    Procedure Construct_Object
+75888>>>>>>>>>>>        Property String PsName
+75889>>>>>>>>>>>        Property String PsExecuted //"True"
+75890>>>>>>>>>>>        Property String PsResult //"Success"
+75891>>>>>>>>>>>        Property String PsSuccess //"True"
+75892>>>>>>>>>>>        Property TimeSpan pTime
+75893>>>>>>>>>>>        Property String PsAsserts
+75894>>>>>>>>>>>        Property String psErrorMessage
+75895>>>>>>>>>>>    End_Procedure
+75896>>>>>>>>>>>    
+75896>>>>>>>>>>>    Procedure Reset
+75898>>>>>>>>>>>        Set PsName to ""
+75899>>>>>>>>>>>        Set PsExecuted to "False"
+75900>>>>>>>>>>>        Set PsResult to ""
+75901>>>>>>>>>>>        Set PsSuccess to ""
+75902>>>>>>>>>>>        TimeSpan tsNoTime
+75902>>>>>>>>>>>        Set pTime to tsNoTime
+75903>>>>>>>>>>>        Set PsAsserts to ""
+75904>>>>>>>>>>>        Set psErrorMessage to ""
+75905>>>>>>>>>>>    End_Procedure
+75906>>>>>>>>>>>End_Class
+75907>>>>>>>>>>>
+75907>>>>>>>>>>>Class cTestFixtureResult is a cTestResult
+75908>>>>>>>>>>>End_Class
+75909>>>>>>>>>>>
+75909>>>>>>>>>
+75909>>>>>>>>>Class cTest is a cObject
+75910>>>>>>>>>    Import_Class_Protocol cObjectNameMixin
+75911>>>>>>>>>    Import_Class_Protocol cAssertMixin
+75912>>>>>>>>>    
+75912>>>>>>>>>    Procedure Construct_Object
+75914>>>>>>>>>        Forward Send Construct_Object
+75916>>>>>>>>>        Property String psTestName
+75917>>>>>>>>>        Property Boolean pbSuccess
+75918>>>>>>>>>        Property Integer piExpectedError
+75919>>>>>>>>>        Property Handle phErrorState
+75920>>>>>>>>>        Property DateTime pStartTime
+75921>>>>>>>>>        Property DateTime pEndTime
+75922>>>>>>>>>        Property Integer piAsserts
+75923>>>>>>>>>        
+75923>>>>>>>>>        Object oRememberErrorState is a cErrorState
+75925>>>>>>>>>            Set phErrorState to Self
+75926>>>>>>>>>        End_Object
+75927>>>>>>>>>        Object oTestResult is a cTestResult
+75929>>>>>>>>>        End_Object
+75930>>>>>>>>>    End_Procedure
+75931>>>>>>>>>    
+75931>>>>>>>>>    Procedure ReportTest Handle hTestFixtureCatalog
+75933>>>>>>>>>        Send AddTestToCatalog to hTestFixtureCatalog Self
+75934>>>>>>>>>    End_Procedure
+75935>>>>>>>>>    
+75935>>>>>>>>>    Function ObjectName Returns String
+75937>>>>>>>>>        String sTestName
+75937>>>>>>>>>        Get psTestName to sTestName
+75938>>>>>>>>>        If (sTestName <> "") Function_Return sTestName
+75941>>>>>>>>>        
+75941>>>>>>>>>        Get LastPartOfObjectName Self to sTestName
+75942>>>>>>>>>        Function_Return sTestName
+75943>>>>>>>>>    End_Function
+75944>>>>>>>>>    
+75944>>>>>>>>>    Procedure ExpectError Integer iErrorNumber
+75946>>>>>>>>>        Set piExpectedError to iErrorNumber
+75947>>>>>>>>>        Send Ignore_Error to Error_Object_Id iErrorNumber
+75948>>>>>>>>>        Move 0 to LastErr
+75949>>>>>>>>>    End_Procedure
+75950>>>>>>>>>    
+75950>>>>>>>>>    Procedure CheckIfExpectedError
+75952>>>>>>>>>        Integer iExpectedError
+75952>>>>>>>>>        Get piExpectedError to iExpectedError
+75953>>>>>>>>>        Boolean bExpectedErrorOccured
+75953>>>>>>>>>        If (iExpectedError <> 0) Begin
+75955>>>>>>>>>            Move (LastErr = iExpectedError) to bExpectedErrorOccured
+75956>>>>>>>>>            Send Trap_Error to Error_Object_Id iExpectedError
+75957>>>>>>>>>            Send Assert bExpectedErrorOccured ("Expected error number" * String(iExpectedError) * "did not occur.")
+75958>>>>>>>>>            If bExpectedErrorOccured Begin
+75960>>>>>>>>>                Move False to Err
+75961>>>>>>>>>                Move 0 to LastErr
+75962>>>>>>>>>            End
+75962>>>>>>>>>>
+75962>>>>>>>>>            Else Begin
+75963>>>>>>>>>                Move True to Err
+75964>>>>>>>>>                Move DFERR_PROGRAM to LastErr
+75965>>>>>>>>>            End
+75965>>>>>>>>>>
+75965>>>>>>>>>        End
+75965>>>>>>>>>>
+75965>>>>>>>>>    End_Procedure
+75966>>>>>>>>>    
+75966>>>>>>>>>    Procedure UnexpectError
+75968>>>>>>>>>        If (piExpectedError(Self) <> 0) Begin
+75970>>>>>>>>>            Set piExpectedError to 0
+75971>>>>>>>>>        End
+75971>>>>>>>>>>
+75971>>>>>>>>>    End_Procedure
+75972>>>>>>>>>    
+75972>>>>>>>>>    Procedure SetTestResult
+75974>>>>>>>>>        Handle hResult
+75974>>>>>>>>>        Move oTestResult to hResult
+75975>>>>>>>>>        Set psName of hResult to (ObjectName(Self))
+75976>>>>>>>>>        Set psExecuted of hResult to "True"
+75977>>>>>>>>>        If (pbSuccess(Self)) Begin
+75979>>>>>>>>>            Set psResult of hResult to "Success"
+75980>>>>>>>>>            Set psSuccess of hResult to "True"
+75981>>>>>>>>>        End
+75981>>>>>>>>>>
+75981>>>>>>>>>        Else Begin
+75982>>>>>>>>>            Set psResult of hResult to "Failure"
+75983>>>>>>>>>            Set psSuccess of hResult to "False"
+75984>>>>>>>>>            String sErrorMessage
+75984>>>>>>>>>            Get psLastErrorMessage of Error_Object_Id to sErrorMessage
+75985>>>>>>>>>            Set psErrorMessage of oTestResult to sErrorMessage
+75986>>>>>>>>>        End
+75986>>>>>>>>>>
+75986>>>>>>>>>        Set pTime of hResult to (pEndTime(Self) - pStartTime(Self))
+75987>>>>>>>>>        Set psAsserts of hResult to (piAsserts(Self))
+75988>>>>>>>>>    End_Procedure
+75989>>>>>>>>>    
+75989>>>>>>>>>    Procedure InitTest
+75991>>>>>>>>>        Send Reset to oTestResult
+75992>>>>>>>>>        Set pStartTime to (CurrentDateTime())
+75993>>>>>>>>>        Set piAsserts to 0
+75994>>>>>>>>>        Send SaveErrorState to (phErrorState(Self))
+75995>>>>>>>>>        Move False to Err
+75996>>>>>>>>>        Move 0 to LastErr
+75997>>>>>>>>>    End_Procedure
+75998>>>>>>>>>    
+75998>>>>>>>>>    Procedure FinishTest
+76000>>>>>>>>>        If (Err) Begin
+76002>>>>>>>>>            Send SaveErrorState to (phErrorState(Self))
+76003>>>>>>>>>            Set pbSuccess to False
+76004>>>>>>>>>        End
+76004>>>>>>>>>>
+76004>>>>>>>>>        Else begin
+76005>>>>>>>>>            Send RestoreErrorState to (phErrorState(Self))
+76006>>>>>>>>>            Set pbSuccess to True
+76007>>>>>>>>>        End
+76007>>>>>>>>>>
+76007>>>>>>>>>        Set pEndTime to (CurrentDateTime())
+76008>>>>>>>>>    End_Procedure
+76009>>>>>>>>>    
+76009>>>>>>>>>    Procedure RunTest
+76011>>>>>>>>>        Send Test
+76012>>>>>>>>>        Send CheckIfExpectedError
+76013>>>>>>>>>        Send UnexpectError
+76014>>>>>>>>>        String sErrorMessage
+76014>>>>>>>>>    End_Procedure
+76015>>>>>>>>>    
+76015>>>>>>>>>    Procedure Test
+76017>>>>>>>>>    End_Procedure
+76018>>>>>>>>>    
+76018>>>>>>>>>    Procedure Setup Handle hoTestFixture
+76020>>>>>>>>>        Send Setup to hoTestFixture
+76021>>>>>>>>>    End_Procedure
+76022>>>>>>>>>    
+76022>>>>>>>>>    Procedure TearDown Handle hoTestFixture
+76024>>>>>>>>>        Send TearDown to hoTestFixture
+76025>>>>>>>>>    End_Procedure
+76026>>>>>>>>>End_Class
+76027>>>>>>>Use cErrorState.pkg
+76027>>>>>>>
+76027>>>>>>>Class cTestFixtureRunner is a cObject
+76028>>>>>>>    Procedure Construct_Object
+76030>>>>>>>        Forward Send Construct_Object
+76032>>>>>>>        Property Handle phTestFixtureCatalog
+76033>>>>>>>        Property Boolean pbFailOccured
+76034>>>>>>>        Object oErrorState is a cErrorState
+76036>>>>>>>        End_Object
+76037>>>>>>>    End_Procedure
+76038>>>>>>>    
+76038>>>>>>>    Procedure RunTestFixtures
+76040>>>>>>>        Send SaveErrorState to oErrorState
+76041>>>>>>>        Move False to Err
+76042>>>>>>>        Move 0 to LastErr
+76043>>>>>>>        Set pbFailOccured to False
+76044>>>>>>>        Handle hTestFixtureCatalog hTestFixture
+76044>>>>>>>        Get phTestFixtureCatalog to hTestFixtureCatalog
+76045>>>>>>>        If (not(hTestFixtureCatalog)) Begin
+76047>>>>>>>            Error DFERR_PROGRAM "phTestFixtureCatalog not defined for cTestRunner object"
+76048>>>>>>>>
+76048>>>>>>>            Procedure_Return
+76049>>>>>>>        End
+76049>>>>>>>>
+76049>>>>>>>        
+76049>>>>>>>        Send IteratorReset to hTestFixtureCatalog
+76050>>>>>>>        While (IteratorMoveNext(hTestFixtureCatalog))
+76054>>>>>>>            Get CurrentTestFixture of hTestFixtureCatalog to hTestFixture
+76055>>>>>>>            Send RunTestFixture to hTestFixture
+76056>>>>>>>        Loop
+76057>>>>>>>>
+76057>>>>>>>        If (Err) Set pbFailOccured to True
+76060>>>>>>>        Else Send RestoreErrorState to oErrorState
+76062>>>>>>>    End_Procedure
+76063>>>>>>>End_Class
+76064>>>>>Use cTestCatalog.pkg
+76064>>>>>Use cObjectNameMixin.pkg
+76064>>>>>Use cAssertMixin.pkg
+76064>>>>>Use cErrorState.pkg
+76064>>>>>Use cTestFixtureResult.pkg
+76064>>>>>
+76064>>>>>Class cTestFixture is a cObject
+76065>>>>>    Import_Class_Protocol cObjectNameMixin
+76066>>>>>    Import_Class_Protocol cAssertMixin
+76067>>>>>    
+76067>>>>>    Procedure Construct_Object
+76069>>>>>        Forward Send Construct_Object
+76071>>>>>        Property String psTestFixtureName
+76072>>>>>        Property Handle phTestCatalog
+76073>>>>>        Property Boolean pbAbortTestFixture False
+76074>>>>>        Property DateTime pStartTime
+76075>>>>>        Property DateTime pEndTime
+76076>>>>>        Property Integer piAsserts
+76077>>>>>        Property Integer piNumberOfTests
+76078>>>>>        
+76078>>>>>        Object oTestFixtureCatalog is a cTestFixtureCatalog
+76080>>>>>        End_Object
+76081>>>>>        Set phTestFixtureNeighborhood of oTestFixtureCatalog to Self
+76082>>>>>        Object oTestFixtureRunner is a cTestFixtureRunner
+76084>>>>>        End_Object
+76085>>>>>        Object oTestCatalog is a cTestCatalog
+76087>>>>>        End_Object
+76088>>>>>        Object oTestFixtureResult is a cTestFixtureResult
+76090>>>>>        End_Object
+76091>>>>>        Object oErrorState is a cErrorState
+76093>>>>>        End_Object
+76094>>>>>        Set phTestCatalog to (oTestCatalog(Self))
+76095>>>>>    End_Procedure
+76096>>>>>    
+76096>>>>>    Function TestFixtureId Returns Handle
+76098>>>>>        Function_Return Self
+76099>>>>>    End_Function
+76100>>>>>    
+76100>>>>>    Procedure ReportTests
+76102>>>>>        Handle hTestCatalog
+76102>>>>>        Get phTestCatalog to hTestCatalog
+76103>>>>>        If (hTestCatalog = 0) Error DFERR_PROGRAM ("phTestCatalog undefined for" * Name(Self))
+76106>>>>>        Else Begin
+76107>>>>>            Send InitTestCatalog to hTestCatalog
+76108>>>>>            Set piNumberOfTests to (piNumberOfTests(hTestCatalog))
+76109>>>>>        End
+76109>>>>>>
+76109>>>>>    End_Procedure
+76110>>>>>    
+76110>>>>>    Function TotalNumberOfTests Returns Integer
+76112>>>>>        Integer iTests
+76112>>>>>        Get NumberOfTests of oTestFixtureCatalog to iTests
+76113>>>>>        Move (piNumberOfTests(Self) + iTests) to iTests
+76114>>>>>        Function_Return iTests
+76115>>>>>    End_Function
+76116>>>>>    
+76116>>>>>    Procedure ReportTestFixture Handle hTestFixtureCatalog
+76118>>>>>        Send AddTestFixtureToCatalog to hTestFixtureCatalog Self
+76119>>>>>        Send ReportTests
+76120>>>>>    End_Procedure
+76121>>>>>    
+76121>>>>>    Function ObjectName Returns String
+76123>>>>>        String sTestFixtureName
+76123>>>>>        Get psTestFixtureName to sTestFixtureName
+76124>>>>>        If (sTestFixtureName <> "") Function_Return sTestFixtureName
+76127>>>>>        
+76127>>>>>        Get LastPartOfObjectName Self to sTestFixtureName
+76128>>>>>        Function_Return sTestFixtureName
+76129>>>>>    End_Function
+76130>>>>>    
+76130>>>>>    Procedure RunChildTestFixtures
+76132>>>>>        Set phTestFixtureCatalog of oTestFixtureRunner to oTestFixtureCatalog
+76133>>>>>        Send RunTestFixtures to oTestFixtureRunner
+76134>>>>>    End_Procedure
+76135>>>>>    
+76135>>>>>    Procedure CatalogTestFixture
+76137>>>>>        Send CatalogTestFixtures to oTestFixtureCatalog
+76138>>>>>    End_Procedure
+76139>>>>>    
+76139>>>>>    Procedure SetTestFixtureResult
+76141>>>>>        Handle hResult
+76141>>>>>        Move oTestFixtureResult to hResult
+76142>>>>>        Send Reset to hResult
+76143>>>>>        Set psName of hResult to (ObjectName(Self))
+76144>>>>>        If (pbAbortTestFixture(Self)) Set psExecuted of hResult to "False"
+76147>>>>>        Else Set psExecuted of hResult to "True"
+76149>>>>>        Set psResult of hResult to "Success"
+76150>>>>>        Set psSuccess of hResult to "True"
+76151>>>>>        Set pTime of hResult to (pEndTime(Self) - pStartTime(Self))
+76152>>>>>        Set psAsserts of hResult to (piAsserts(Self))
+76153>>>>>    End_Procedure
+76154>>>>>    
+76154>>>>>    Procedure InitTestFixture
+76156>>>>>        Set pStartTime to (CurrentDateTime())
+76157>>>>>        Set pbAbortTestFixture to False
+76158>>>>>        Set piAsserts to 0
+76159>>>>>    End_Procedure
+76160>>>>>    
+76160>>>>>    Procedure FinishTestFixture
+76162>>>>>        Set pEndTime to (CurrentDateTime())
+76163>>>>>    End_Procedure
+76164>>>>>    
+76164>>>>>    Procedure RunTestFixture
+76166>>>>>        Send InitTestFixture
+76167>>>>>        Send BeforeSetupOneTime
+76168>>>>>        If (not(pbAbortTestFixture(Self))) Send SetupOneTime
+76171>>>>>        
+76171>>>>>        Send RunChildTestFixtures
+76172>>>>>        
+76172>>>>>        If (not(pbAbortTestFixture(Self))) Send RunTests
+76175>>>>>        Else Error DFERR_PROGRAM "Test Fixture aborted"
+76177>>>>>        
+76177>>>>>        If (not(pbAbortTestFixture(Self))) Send TearDownOneTime
+76180>>>>>        If (not(pbAbortTestFixture(Self))) Send AfterTearDownOneTime
+76183>>>>>        Send FinishTestFixture
+76184>>>>>        Send SetTestFixtureResult
+76185>>>>>    End_Procedure
+76186>>>>>    
+76186>>>>>    Procedure AbortTestFixture
+76188>>>>>        Set pbAbortTestFixture to True
+76189>>>>>    End_Procedure
+76190>>>>>    
+76190>>>>>    Procedure BeforeSetupOneTime
+76192>>>>>    End_Procedure
+76193>>>>>    
+76193>>>>>    Procedure BeforeSetup
+76195>>>>>        Set pbAbortTestFixture to False
+76196>>>>>    End_Procedure
+76197>>>>>    
+76197>>>>>    Function ParentFixtureId Returns Handle
+76199>>>>>        Send SaveErrorState to oErrorState
+76200>>>>>        Send Ignore_Error to Error_Object_Id DFERR_BAD_MESSAGE
+76201>>>>>        Handle hTestFixtureIdParent
+76201>>>>>        Get TestFixtureId of (Parent(Self)) to hTestFixtureIdParent
+76202>>>>>        Send Trap_Error to Error_Object_Id DFERR_BAD_MESSAGE
+76203>>>>>        Send RestoreErrorState to oErrorState
+76204>>>>>        Function_Return hTestFixtureIdParent
+76205>>>>>    End_Function
+76206>>>>>    
+76206>>>>>    Procedure SetupParentFixture
+76208>>>>>        Handle hTestFixtureIdParent
+76208>>>>>        Get ParentFixtureId to hTestFixtureIdParent
+76209>>>>>        If (hTestFixtureIdParent = Parent(Self)) Begin
+76211>>>>>            Send SetupParentFixture to hTestFixtureIdParent
+76212>>>>>            Send BeforeSetup to hTestFixtureIdParent
+76213>>>>>            Send Setup to hTestFixtureIdParent
+76214>>>>>        End
+76214>>>>>>
+76214>>>>>    End_Procedure
+76215>>>>>    
+76215>>>>>    Procedure SetupOneTime
+76217>>>>>    End_Procedure
+76218>>>>>    
+76218>>>>>    Procedure Setup
+76220>>>>>    End_Procedure
+76221>>>>>    
+76221>>>>>    Procedure RunTests
+76223>>>>>        Handle hTestCatalog hTest
+76223>>>>>        Get phTestCatalog to hTestCatalog
+76224>>>>>        Send IteratorReset to hTestCatalog
+76225>>>>>        While (IteratorMoveNext(hTestCatalog))
+76229>>>>>            Get CurrentTest of hTestCatalog to hTest
+76230>>>>>            Send InitTest to hTest
+76231>>>>>            
+76231>>>>>            Send BeforeSetup
+76232>>>>>            Send SetupParentFixture
+76233>>>>>            Send Setup
+76234>>>>>            
+76234>>>>>            Send RunTest to hTest
+76235>>>>>            
+76235>>>>>            Send TearDown
+76236>>>>>            Send TearDownParentFixture
+76237>>>>>            Send AfterTearDown
+76238>>>>>            
+76238>>>>>            Send FinishTest to hTest
+76239>>>>>            Send SetTestResult to hTest
+76240>>>>>        Loop
+76241>>>>>>
+76241>>>>>    End_Procedure
+76242>>>>>    
+76242>>>>>    Procedure TearDownOneTime
+76244>>>>>    End_Procedure
+76245>>>>>    
+76245>>>>>    Procedure AfterTearDownOneTime
+76247>>>>>    End_Procedure
+76248>>>>>    
+76248>>>>>    Procedure TearDown
+76250>>>>>    End_Procedure
+76251>>>>>    
+76251>>>>>    Procedure AfterTearDown
+76253>>>>>    End_Procedure
+76254>>>>>    
+76254>>>>>    Procedure TearDownParentFixture
+76256>>>>>        Send SaveErrorState to oErrorState
+76257>>>>>        Send Ignore_Error to Error_Object_Id DFERR_BAD_MESSAGE
+76258>>>>>        Handle hTestFixtureIdParent
+76258>>>>>        Get TestFixtureId of (Parent(Self)) to hTestFixtureIdParent
+76259>>>>>        Send Trap_Error to Error_Object_Id DFERR_BAD_MESSAGE
+76260>>>>>        Send RestoreErrorState to oErrorState
+76261>>>>>        If (hTestFixtureIdParent = Parent(Self)) Begin
+76263>>>>>            Send TearDown to hTestFixtureIdParent
+76264>>>>>            Send AfterTearDown to hTestFixtureIdParent
+76265>>>>>            Send TearDownParentFixture to hTestFixtureIdParent
+76266>>>>>        End
+76266>>>>>>
+76266>>>>>    End_Procedure
+76267>>>>>    
+76267>>>>>End_Class
+76268>>>Use cTest.pkg
+76268>>>Use cTestFixtureCatalog.pkg
+76268>>>Use cTestFixtureRunner.pkg
+76268>Use Flexml.pkg
+Including file: Flexml.pkg    (C:\Program Files (x86)\DataFlex 18.2\Pkg\Flexml.pkg)
+76268>>>//****************************************************************************************
+76268>>>//                                                                                       *
+76268>>>//  FLEXML.PKG                                                                            *
+76268>>>//                                                                                       *
+76268>>>//  Interface package for FLEXML.DLL - extension system for Extensible Markup Language.  *
+76268>>>//                                                                                       *
+76268>>>//  Written by Michael Gouker, 7/31/99                                                   *
+76268>>>// 12/19/2000 JJT - Major revision changes for VDF7/SP2.                                 *
+76268>>>//                                                                                       *
+76268>>>//****************************************************************************************
+76268>>>Use LanguageText.pkg
+76268>>>Use Windows.pkg
+76268>>>Use GlobalFunctionsProcedures.pkg
+76268>>>
+76268>>>
+76268>>>// Used to designate that a handle is a handle to an Xml Dom object. This
+76268>>>// is used/required by server web-services but could be used elsewhere .
+76268>>>
+76268>>>
+76268>>>// Types of Nodes
+76268>>>
+76268>>>
+76268>>>// classes and methods defined in fmac
+76268>>>
+76268>>>
+76268>>>Register_Function transformNode Integer infcXSLNode Returns String
+76268>>>
+76268>>>
+76268>>>
+76268>>>
+76268>>>
+76268>>>
+76268>>>
+76268>>>
+76268>>>
+76268>>>// XML function & procedure registration
+76268>>>
+76268>>>Register_Procedure Set XmlInterface Integer iHandle
+76268>>>Register_Function XmlInterface Returns Integer
+76268>>>
+76268>>>// NODE Properties
+76268>>>Register_Function phAttributes Returns Integer
+76268>>>Register_Function psBaseName Returns String
+76268>>>Register_Function phChildNodes Returns Integer
+76268>>>Register_Function phDefinition Returns Integer
+76268>>>Register_Function phFirstChild Returns Integer
+76268>>>Register_Function phLastChild Returns Integer
+76268>>>Register_Function phNextSibling Returns Integer
+76268>>>Register_Function psNameSpaceURI Returns String
+76268>>>Register_Function psNodeName Returns String
+76268>>>Register_Function piNodeType Returns Integer
+76268>>>Register_Function psNodeTypeString Returns String
+76268>>>Register_Function phOwnerDocument Returns Integer
+76268>>>Register_Function phParentNode Returns Integer
+76268>>>Register_Function pbParsed Returns Integer
+76268>>>Register_Function psPrefix Returns String
+76268>>>Register_Function phPreviousSibling Returns Integer
+76268>>>Register_Function pbSpecified Returns Integer
+76268>>>Register_Function psText Returns String
+76268>>>Register_Procedure Set psText String sText
+76268>>>Register_Function psXML Returns String
+76268>>>
+76268>>>// Node Read write properties
+76268>>>
+76268>>>Register_Procedure Set psDataType String sTypeName
+76268>>>Register_Function psDataType Returns String
+76268>>>Register_Procedure Set pvNodeTypedValue Integer iType Integer iAddress
+76268>>>Register_Function pvNodeTypedValue Integer iType Returns Integer  // address of data
+76268>>>Register_Procedure Set psNodeValue String sValue
+76268>>>Register_Function psNodeValue Returns String
+76268>>>
+76268>>>// Node Methods
+76268>>>
+76268>>>Register_Function AppendChild Integer iChildInfc Returns Integer
+76268>>>Register_Function CloneInfcNode Integer bRecurse Returns Integer
+76268>>>Register_Function HasChildNodes Returns Integer
+76268>>>Register_Function InsertBefore Integer infcNodeToInsert Integer iWhere Returns Integer
+76268>>>Register_Function RemoveChild Integer iChildToRemove Returns Integer
+76268>>>Register_Function ReplaceChild Integer iNewChild Integer iChildToReplace Returns Integer
+76268>>>Register_Function SelectNodes String selectstring Returns Integer
+76268>>>Register_Function SelectSingleNode String selectstring Returns Integer
+76268>>>
+76268>>>// Node Collections
+76268>>>// READONLY PROPERTIES
+76268>>>
+76268>>>Register_Function phItem Integer iItem Returns Integer
+76268>>>Register_Function phElementItem Integer iItem Returns Integer
+76268>>>
+76268>>>Register_Function piLength Returns Integer
+76268>>>
+76268>>>//*     GET_ENUMNODELIST                  */  typ_p1_int | qt_int | out_two,
+76268>>>//*     GET_RESET                         */  qt_int | out_one,
+76268>>>
+76268>>>// Named Node Map
+76268>>>
+76268>>>//*     GET_NAMEDITEM                     */  typ_p1_str | qt_int | out_two,
+76268>>>
+76268>>>Register_Function NamedItem String sName Returns Integer
+76268>>>Register_Function QualifiedItem String sBaseName String sNameSpace Returns Integer
+76268>>>Register_Function RemoveNamedItem String sName Returns Integer
+76268>>>Register_Function RemoveQualifiedItem String sBaseName String sNameSpace Returns Integer
+76268>>>Register_Function SetNamedItem Integer iInterface Returns Integer
+76268>>>
+76268>>>// XML DOM Document
+76268>>>// Read only properties
+76268>>>
+76268>>>Register_Function phDocType Returns Integer
+76268>>>Register_Function phImplementation Returns Integer
+76268>>>Register_Function phParseError Returns Integer
+76268>>>Register_Function piReadyState Returns Integer
+76268>>>Register_Function psURL Returns String
+76268>>>
+76268>>>// Read Write Properties
+76268>>>
+76268>>>Register_Procedure Set pbAsync Integer bValue
+76268>>>Register_Function pbAsync Returns Integer
+76268>>>Register_Procedure Set phDocumentElement Integer iElement
+76268>>>Register_Function phDocumentElement Returns Integer
+76268>>>Register_Procedure Set pbPreserveWhiteSpace Integer bValue
+76268>>>Register_Function pbPreserveWhiteSpace Returns Integer
+76268>>>Register_Procedure Set pbResolveExternals Integer bValue
+76268>>>Register_Function pbResolveExternals Returns Integer
+76268>>>Register_Procedure Set pbValidateOnParse Integer bValue
+76268>>>Register_Function pbValidateOnParse Returns Integer
+76268>>>
+76268>>>// Events
+76268>>>
+76268>>>// Methods
+76268>>>
+76268>>>Register_Function Abort Returns Integer
+76268>>>Register_Function ElementsByTagName String sTagName Returns Integer
+76268>>>Register_Function LoadDocument String sURLName Returns Integer
+76268>>>Register_Function LoadXML String sXMLText Returns Integer
+76268>>>Register_Function NodeFromID String sNodeName Returns Integer
+76268>>>Register_Function SaveDocument String sURLName Returns Integer
+76268>>>
+76268>>>// Parse Error
+76268>>>// Read Only Properties
+76268>>>
+76268>>>Register_Function piErrorCode Returns Integer
+76268>>>Register_Function piFilePos Returns Integer
+76268>>>Register_Function piLine Returns Integer
+76268>>>Register_Function piLinePos Returns Integer
+76268>>>Register_Function psReason Returns String
+76268>>>Register_Function psSrcText Returns String
+76268>>>Register_Function psURL Returns String
+76268>>>
+76268>>>// DOM Implementation
+76268>>>// Method
+76268>>>
+76268>>>Register_Function HasFeature String sSystem String sFeature Returns Integer
+76268>>>
+76268>>>// Methods
+76268>>>
+76268>>>Register_Function substringData Integer iOffset Integer iCount Returns String
+76268>>>Register_Function appendData String sData Returns Integer
+76268>>>Register_Function insertData Integer iOffset String sData Returns Integer
+76268>>>Register_Function deleteData Integer iOffset Integer iCount Returns Integer
+76268>>>Register_Function replaceData Integer iOffset Integer iCount String sData Returns Integer
+76268>>>
+76268>>>// Attributes
+76268>>>
+76268>>>Register_Function psName Returns String
+76268>>>
+76268>>>// Elements
+76268>>>// Read Only properties
+76268>>>
+76268>>>Register_Function psTagName Returns String
+76268>>>
+76268>>>// Methods
+76268>>>
+76268>>>Register_Procedure Set attributeValue String sName String sValue
+76268>>>Register_Function attributeValue String sName Returns String
+76268>>>Register_Function removeAttribute String sName Returns Integer
+76268>>>Register_Function attributeNode String sName Returns Integer
+76268>>>Register_Procedure Set attributeNode Integer iNode Returns Integer
+76268>>>Register_Function removeAttributeNode Integer iNode Returns Integer
+76268>>>
+76268>>>// DOM Text
+76268>>>// Methods
+76268>>>
+76268>>>Register_Function splitText Integer iOffset Returns Integer
+76268>>>
+76268>>>// DOM Processing Instruction
+76268>>>// Read Only Properties
+76268>>>Register_Function psTarget Returns String
+76268>>>
+76268>>>// DOM Document Type
+76268>>>
+76268>>>Register_Function phEntities Returns Integer
+76268>>>Register_Function phNotations Returns Integer
+76268>>>
+76268>>>// DOM Notations
+76268>>>
+76268>>>Register_Function psPublicID Returns String
+76268>>>Register_Function psSystemID Returns String
+76268>>>Register_Function psNotationName Returns String
+76268>>>
+76268>>>// create nodes
+76268>>>
+76268>>>Register_Function createAttribute String sName Returns Integer
+76268>>>Register_Function createCDataSection String sValue Returns Integer
+76268>>>Register_Function createComment String sValue Returns Integer
+76268>>>Register_Function createDocumentFragment Returns Integer
+76268>>>Register_Function createElement String sTagName Returns Integer
+76268>>>Register_Function createEntityReference String sEntityName Returns Integer
+76268>>>Register_Function createNode Integer iNodeType String sName String sNameSpace Returns Integer
+76268>>>Register_Function createProcessingInstruction String sTarget String sData Returns Integer
+76268>>>Register_Function createTextNode String sData Returns Integer
+76268>>>
+76268>>>Register_Function ChangeNodeType Integer iTypeOfNode Integer bSetInterface Returns Integer
+76268>>>
+76268>>>
+76268>>>// ******************************************************************************
+76268>>>//
+76268>>>//          Part 1:  Base Document Logic Specialized For Templates
+76268>>>//
+76268>>>// ******************************************************************************
+76268>>>
+76268>>>//
+76268>>>//  XML Collections
+76268>>>//
+76268>>>//  Collection mixin has common functions to both node lists and named node maps
+76268>>>//
+76268>>>
+76268>>>// This provides functions required of all XMLDOM objects.
+76268>>>//
+76268>>>Class cXMLDOMMixin is a Mixin
+76269>>>
+76269>>>    // Create an XML object of passed class Id and bind passed interface. returns
+76269>>>    // the object handle. All dynamic XML object can be created using this syntax
+76269>>>
+76269>>>    Function CreateXMLObject Integer iClassId Integer hinfXMLInterface Returns Handle
+76271>>>        Handle hoId hoDocument
+76271>>>        // We will always create objects at the DOMDocument level.
+76271>>>        Get DocumentObject to hoDocument
+76272>>>        If (hoDocument=0) Begin  // this should never happen.
+76274>>>            Error DFERR_XML_INTERNAL_ERROR C_$XmlFailedNoDocObject
+76275>>>>
+76275>>>            Function_Return 0
+76276>>>        End
+76276>>>>
+76276>>>        If hinfXMLInterface Begin
+76278>>>            Get Create of hoDocument iClassId to hoID
+76279>>>            Set XMLInterface of hoID to hinfXMLInterface
+76280>>>        End
+76280>>>>
+76280>>>        Function_Return hoID
+76281>>>    End_Function
+76282>>>
+76282>>>    // create an XML Node object based on the interface type.
+76282>>>    // this will convert the interface to the proper type and will create
+76282>>>    // an appropriate DF object.
+76282>>>    // This requires that a DocumentObject exists
+76282>>>
+76282>>>    Function CreateXMLNode Handle hinfc Returns Handle
+76284>>>        Integer hoNode iType iClassId
+76284>>>        Handle  hoDocument
+76284>>>        // Get the node type of the infc handle w/o creating a DF object
+76284>>>        Move (invokexml(DF_IXMLDOMNODE, GET_piNodeType, hinfc, 0, 0, 0, 0)) to iType
+76285>>>        Move (invokexml(DF_IXMLDOMNODE, GET_ChangeNodeType, hinfc, iType, 1, 0, 0)) to hInfc
+76286>>>        If (hinfc=0) Begin
+76288>>>            // this should not happen and we would need to know about this.
+76288>>>            Error DFERR_XML_INTERNAL_ERROR (C_$XmlFailedNoDocObject + String(iType))
+76289>>>>
+76289>>>            Function_Return 0
+76290>>>        End
+76290>>>>
+76290>>>        Get DocumentObject to hoDocument
+76291>>>        // you can augment your class IDs in a single place.
+76291>>>        Get NodeClassId of hoDocument iType to iClassId
+76292>>>        // MG: 12/6/00 Changed to create nodes inside of the document object.
+76292>>>        Get CreateXMLObject of hoDocument iClassId hinfc to hoNode
+76293>>>
+76293>>>        Function_Return hoNode
+76294>>>    End_Function
+76295>>>
+76295>>>
+76295>>>    // Change object's class. This let's you change the class id of an object
+76295>>>    // on an object by object basis. This would let you create nodes (e.g. elements)
+76295>>>    // that have a custom interface for each node type. Normally, this would be sent
+76295>>>    // after a node has been created using one of the default classes
+76295>>>    Function ChangeNodeClass Integer hoNode Integer iClassID Returns Handle
+76297>>>        Integer iType
+76297>>>        Handle  hinfcNew
+76297>>>        Get piNodeType of hoNode to iType
+76298>>>        Get ChangeNodeType of hoNode iType False to hInfcNew
+76299>>>        Send Destroy to hoNode // destroy object and old infc handle.
+76300>>>        Get CreateXMLObject iClassId hinfcNew to hoNode
+76301>>>        Function_Return hoNode
+76302>>>    End_Function
+76303>>>
+76303>>>End_Class
+76304>>>
+76304>>>
+76304>>>Class cXMLDOMCollectionMixin is a Mixin
+76305>>>
+76305>>>    Import_Class_Protocol cXMLDOMMixin
+76306>>>
+76306>>>    //  Returns number of items in the collection
+76306>>>    //
+76306>>>    Function NodeListLength Returns Integer
+76308>>>        Integer iLength
+76308>>>        Get piLength to iLength
+76309>>>        Function_Return iLength
+76310>>>    End_Function
+76311>>>
+76311>>>    // Returns an XML node object for pass item
+76311>>>    //
+76311>>>    Function CollectionNode Integer I Returns Handle
+76313>>>        Integer hoNewNode
+76313>>>        Integer infcItem
+76313>>>        Get phItem i to infcItem
+76314>>>        If (infcItem) ;            Get CreateXMLNode infcItem to hoNewNode
+76317>>>        Function_Return hoNewNode
+76318>>>    End_Function
+76319>>>
+76319>>>
+76319>>>End_Class
+76320>>>
+76320>>>// Simple declarations of collections.
+76320>>>
+76320>>>Class cXMLDOMNodeList is a BaseXmlDomNodeList
+76321>>>    Import_Class_Protocol cXMLDOMCollectionMixin
+76322>>>End_Class
+76323>>>
+76323>>>Class cXMLDOMNamedNodeMap is a BaseXmlDomNamedNodeMap
+76324>>>
+76324>>>    Import_Class_Protocol cXMLDOMCollectionMixin
+76325>>>
+76325>>>    // returns a node attribute that matches passed name, zero if none
+76325>>>    Function NamedNode String sName Returns Handle
+76327>>>        Integer hoNewNode
+76327>>>        Integer infcItem
+76327>>>        Get NamedItem sName to infcItem
+76328>>>        If infcItem ;            Get CreateXMLNode infcItem to hoNewNode
+76331>>>        Function_Return hoNewNode
+76332>>>    End_Function
+76333>>>
+76333>>>    // Adds or changes a node attribute
+76333>>>    // This should return the passed object Id which is now bound to the attribute. If an error, returns 0
+76333>>>    Function SetNamedNode Handle hoNode Returns Handle
+76335>>>        Integer hinfcNode hinfcItem
+76335>>>        Get XMLInterface of hoNode to hinfcNode // node of passed attribute
+76336>>>        Get SetNamedItem hinfcNode to hinfcItem
+76337>>>        If hinfcItem ;            Set XMLInterface of hoNode to hinfcItem
+76340>>>        Else ;            Move 0 to hoNode // zero indicates error
+76342>>>        Function_Return hoNode
+76343>>>    End_Function
+76344>>>
+76344>>>    // removes named attribute, Returns handle of removed node or zero if not found.
+76344>>>    // Note that returned object must be disposed of or moved somewhere else.
+76344>>>    Function RemoveNamedNode String sName Returns Handle
+76346>>>        Integer hoNewNode
+76346>>>        Integer infcItem
+76346>>>        Get RemoveNamedItem sName to infcItem
+76347>>>        If infcItem ;            Get CreateXMLNode infcItem to hoNewNode
+76350>>>        Function_Return hoNewNode
+76351>>>    End_Function
+76352>>>
+76352>>>    Function QualifiedNode String sNameSpace String sBaseName Returns Handle
+76354>>>        Integer hoNewNode
+76354>>>        Integer infcItem
+76354>>>        Get QualifiedItem  sBaseName sNameSpace  to infcItem
+76355>>>        If infcItem ;            Get CreateXMLNode infcItem to hoNewNode
+76358>>>        Function_Return hoNewNode
+76359>>>    End_Function
+76360>>>
+76360>>>    Function RemoveQualifiedNode String sNameSpace String sBaseName Returns Handle
+76362>>>        Integer hoNewNode
+76362>>>        Integer infcItem
+76362>>>        Get RemoveQualifiedItem sBaseName sNameSpace to infcItem
+76363>>>        If infcItem ;            Get CreateXMLNode infcItem to hoNewNode
+76366>>>        Function_Return hoNewNode
+76367>>>    End_Function
+76368>>>
+76368>>>End_Class
+76369>>>
+76369>>>
+76369>>>
+76369>>>// Mixin for nodes.
+76369>>>//
+76369>>>//  First the declaration of functions that have no object references.
+76369>>>//
+76369>>>
+76369>>>
+76369>>>Class cXMLDOMNodeMixin is a Mixin
+76370>>>
+76370>>>    Import_Class_Protocol cXMLDOMMixin
+76371>>>
+76371>>>    //  Append Node to the end of list. Returns passed Object handle if Ok, 0 if error
+76371>>>
+76371>>>    Function AppendNode Handle hoNode Returns Handle
+76373>>>        Integer hoNewTextNode
+76373>>>        Integer hinfcNode
+76373>>>        Integer infcReturned
+76373>>>        // Get COM Interface to call Append child.
+76373>>>        Get XMLInterface of hoNode to hinfcNode
+76374>>>        If (hinfcNode=0) Function_Return 0
+76377>>>        Get AppendChild hinfcNode to infcReturned
+76378>>>        // Interface returned is stored in DataFlex object.
+76378>>>        If (infcReturned=0) Function_Return 0
+76381>>>        Set XMLInterface of hoNode to infcReturned
+76382>>>        Function_Return hoNode
+76383>>>    End_Function
+76384>>>
+76384>>>    //  Insert NewNode before Node. Returns passed newnode Object handle if Ok, 0 if error
+76384>>>
+76384>>>    Function InsertBeforeNode Integer hoNewNode Integer hoNode Returns Handle
+76386>>>        Integer hinfcNewNode hinfcNode iType hoRefNode
+76386>>>        Integer infcReturned
+76386>>>        // DOM says if no refnode argument passed or it is 0, append to end
+76386>>>        If (Num_Arguments=1) ;            Move 0 to hoRefNode
+76389>>>        Else ;            Move hoNode to hoRefNode
+76391>>>        Get XMLInterface of hoNewNode to hinfcNewNode
+76392>>>        If (hinfcNewNode=0) Function_Return 0
+76395>>>        If hoRefNode Begin
+76397>>>            Get XMLInterface of hoRefNode to hinfcNode
+76398>>>            If (hinfcNode=0) Function_Return 0
+76401>>>        End
+76401>>>>
+76401>>>        Get InsertBefore hinfcNewNode hinfcNode to infcReturned
+76402>>>        If (infcReturned=0) Function_Return 0
+76405>>>        // Interface returned is stored in DataFlex object.
+76405>>>        Set XMLInterface of hoNewNode to infcReturned
+76406>>>        Function_Return hoNewNode
+76407>>>    End_Function
+76408>>>
+76408>>>    //  Remove Node. Returns object Id of removed node, zero if error
+76408>>>    //  Important: The node is not destroyed! This lets you move it elsewhere if you want
+76408>>>
+76408>>>    Function RemoveNode Integer hoNode Returns Handle
+76410>>>        Integer hInfcNode
+76410>>>        Get XMLInterface of hoNode to hInfcNode
+76411>>>        If (hinfcNode=0) Function_Return 0
+76414>>>        Get RemoveChild hInfcNode to hinfcNode
+76415>>>        If (hinfcNode=0) Function_Return 0
+76418>>>        Set XMLInterface of hoNode to hinfcNode
+76419>>>        Function_Return hoNode
+76420>>>    End_Function
+76421>>>
+76421>>>    //  Replace Node. Returns object Id of replaced node, zero if error
+76421>>>    //  Important: The replaced node is not destroyed! This lets you move it elsewhere if you want
+76421>>>
+76421>>>    Function ReplaceNode Integer hoNewNode Integer hoNodeToReplace Returns Handle
+76423>>>        Integer hInfcNewNode hinfcNodetoReplace hinfcNode
+76423>>>        Get XMLInterface of hoNewNode       to hInfcNewNode
+76424>>>        Get XMLInterface of hoNodetoReplace to hInfcNodetoreplace
+76425>>>        If (hinfcNewNode=0 or hInfcNodeToReplace=0) Function_Return 0
+76428>>>        Get ReplaceChild hInfcNewNode hinfcNodeToReplace to hinfcNode
+76429>>>        If (hinfcNode=0) Function_Return 0
+76432>>>        Set XMLInterface of hoNodetoReplace to hinfcNode
+76433>>>        Function_Return hoNodetoReplace
+76434>>>    End_Function
+76435>>>
+76435>>>    // Remove the named node. Returns handle to removed node. You must destroy
+76435>>>    // or move this removed object as needed
+76435>>>
+76435>>>    Function RemoveNamedNode String sQueryString Returns Handle
+76437>>>        Integer hoNode
+76437>>>        Integer hInfcTemplate hinfcNode
+76437>>>        Get SelectSingleNode sQueryString to hinfcTemplate
+76438>>>        If (hinfcTemplate) Begin
+76440>>>            // Remove child returns an interface to the disassociated node.
+76440>>>            // It should be disposed by setting it to an object and then calling destroy
+76440>>>            Get RemoveChild hInfcTemplate to hInfcNode
+76441>>>            If hInfcNode Get CreateXMLNode hinfcNode to hoNode
+76444>>>        End
+76444>>>>
+76444>>>        Function_Return hoNode
+76445>>>    End_Function
+76446>>>
+76446>>>    // This function creates a clone of the passed Node. if bRecurse all child nodes are also
+76446>>>    // cloned. The object Id of the new clone object is returned.
+76446>>>    // The interface of the object returned can be used in AppendChild to add
+76446>>>    // the node to the XML Document.
+76446>>>
+76446>>>    Function CloneNode Integer bRecurse Returns Handle
+76448>>>        Handle hoNewNode
+76448>>>        Handle hinfcNewNode
+76448>>>        Get CloneInfcNode (If(bRecurse,-1,0)) to hinfcNewNode
+76449>>>        If hinfcNewNode ;            Get CreateXMLNode hinfcNewNode to hoNewNode
+76452>>>        Function_Return hoNewNode
+76453>>>    End_Function
+76454>>>
+76454>>>    //  Create a collection of all nodes. returns handle of a cXMLDomNodeList
+76454>>>
+76454>>>    Function ChildNodes Returns Handle
+76456>>>        Integer infcNodeList
+76456>>>        Integer hoNodeList
+76456>>>        Get phChildNodes to infcNodeList
+76457>>>        If (infcNodeList) ;            Get CreateXMLObject U_cXMLDOMNodeList infcNodeList to hoNodeList
+76460>>>        Function_Return hoNodeList
+76461>>>    End_Function
+76462>>>
+76462>>>    //  Create a collection of all attributes. returns handle of a cXMLDomNodeMapList
+76462>>>
+76462>>>    Function AttributeNodes Returns Handle
+76464>>>        Integer hoCollectionId   // Object to hold collection
+76464>>>        Integer hinfcAttributes  // XML Interface for collection
+76464>>>        Get phAttributes to hinfcAttributes
+76465>>>        If (hinfcAttributes) ;            Get CreateXMLObject U_cXMLDOMNamedNodeMap hinfcAttributes to hoCollectionId
+76468>>>        Function_Return hoCollectionId
+76469>>>    End_Function
+76470>>>    
+76470>>>    //  Create a collection of all attributes for the temporary attribute node object.
+76470>>>    //  Using this saves a small amount of time creating and destroying this object but
+76470>>>    //  it must be used with care. This binding is temporary!
+76470>>>    Function TempAttributeNodes Returns Handle
+76472>>>        Handle hoCollectionId hoDocument
+76472>>>        Handle hinfcAttributes  // XML Interface for collection
+76472>>>        Get phAttributes to hinfcAttributes
+76473>>>        If (hinfcAttributes) Begin
+76475>>>            Get DocumentObject to hoDocument
+76476>>>            Get phoTempDomNodeMap of hoDocument to hoCollectionId
+76477>>>            Set XMLInterface of hoCollectionId to hinfcAttributes
+76478>>>        End
+76478>>>>
+76478>>>        Function_Return hoCollectionId
+76479>>>    End_Function
+76480>>>    
+76480>>>
+76480>>>    // Returns a collection of just elements
+76480>>>
+76480>>>    Function ElementNodes String sQueryString Returns Handle
+76482>>>        Integer hoNodeList
+76482>>>        Integer hinfcNodeList
+76482>>>        Get ElementsByTagName sQueryString to hinfcNodeList
+76483>>>        If (hinfcNodeList <> 0) ;            Get CreateXMLObject U_cXMLDOMNodeList hinfcNodeList to hoNodeList
+76486>>>        Function_Return hoNodeList
+76487>>>    End_Function
+76488>>>
+76488>>>
+76488>>>
+76488>>>    // Return object handle for query.
+76488>>>
+76488>>>    Function FindNode String sQueryString Returns Handle
+76490>>>        Integer hoNode
+76490>>>        Integer hinfcNode
+76490>>>        Get SelectSingleNode sQueryString to hinfcNode
+76491>>>        //inkey windowindex
+76491>>>        If (hinfcNode <> 0) ;            Get CreateXMLNode hInfcNode to hoNode
+76494>>>        Function_Return hoNode
+76495>>>    End_Function
+76496>>>
+76496>>>    // Return object handle for a collection node.
+76496>>>
+76496>>>
+76496>>>    Function FindNodeList String sQueryString Returns Handle
+76498>>>        Integer hoNodeList
+76498>>>        Integer hinfcNodeList
+76498>>>        Get SelectNodes sQueryString to hinfcNodeList
+76499>>>        If (hinfcNodeList <> 0) ;            Get CreateXMLObject U_cXMLDOMNodeList hinfcNodeList to hoNodeList
+76502>>>        Function_Return hoNodeList
+76503>>>    End_Function
+76504>>>
+76504>>>    // The CreatexxxxxNode messages creates an node object for the type specified. Both
+76504>>>    // the interface and the object or of the correct type (i.e. element, comment)
+76504>>>    // These all return an object handle which can be used to place the object via
+76504>>>    // appendNode or InsertBeforeNode
+76504>>>
+76504>>>    // This function creates a child element, returning a dataflex object.
+76504>>>    // The interface of the object returned can be used in AppendChild to add
+76504>>>    // the element to the XML Document.
+76504>>>
+76504>>>    Function CreateElementNode String sTagName String sValue Returns Handle
+76506>>>        Integer hoNewElement
+76506>>>        Integer hoDocumentObject
+76506>>>        Integer infcNewElement
+76506>>>        Integer iClassId
+76506>>>        // The DataFlex objects are created inside the nodes (elements).
+76506>>>        // Create an element in the document and assign its interface to the new DF object.
+76506>>>        Get DocumentObject to hoDocumentObject
+76507>>>        Get createElement of hoDocumentObject sTagName to infcNewElement
+76508>>>        If infcNewElement Begin // if there was an error, no infc handle would be returned
+76510>>>            Get NodeClassId of hoDocumentObject NODE_ELEMENT to iClassId
+76511>>>            Get CreateXMLObject iClassId infcNewElement to hoNewElement
+76512>>>            If hoNewElement ; // very unlikely this will be zero                Set psText of hoNewElement to sValue
+76515>>>        End
+76515>>>>
+76515>>>        Function_Return hoNewElement
+76516>>>    End_Function
+76517>>>
+76517>>>    // This function creates an attribute in a document. Attributes are _NOT_ children of an element.
+76517>>>    // A DataFlex object is returned. An attribute can be added to an xml document using
+76517>>>    // get AddAttributeNode.
+76517>>>
+76517>>>    Function CreateAttributeNode String sName String sValue Returns Handle
+76519>>>        Integer hoNewAttribute
+76519>>>        Integer hoDocumentObject
+76519>>>        Integer infcNewAttribute
+76519>>>        Integer iClassId
+76519>>>        Get DocumentObject to hoDocumentObject
+76520>>>        // Create an Attribute in the document and assign its interface to the new DF object.
+76520>>>        Get createAttribute of hoDocumentObject sName to infcNewAttribute
+76521>>>        If infcNewAttribute Begin // if there was an error, no infc handle would be returned
+76523>>>            Get NodeClassId of hoDocumentObject NODE_ATTRIBUTE to iClassId
+76524>>>            Get CreateXMLObject iClassId infcNewAttribute to hoNewAttribute
+76525>>>            // Set the value of the attribute.
+76525>>>            If hoNewAttribute ; // very unlikely this will be 0                Set psText of hoNewAttribute to sValue
+76528>>>        End
+76528>>>>
+76528>>>        Function_Return hoNewAttribute
+76529>>>    End_Function
+76530>>>
+76530>>>    // This function creates a child comment, returning a dataflex object.
+76530>>>    // The interface of the object returned can be used in AppendChild to add
+76530>>>    // the comment to the XML Document.
+76530>>>
+76530>>>    Function CreateChildComment String sValue Returns Handle
+76532>>>        Integer hoNewComment
+76532>>>        Integer hoDocumentObject
+76532>>>        Integer infcNewComment
+76532>>>        Integer iClassID
+76532>>>        Get DocumentObject to hoDocumentObject
+76533>>>        // Create an Comment in the document and assign its interface to the new DF object.
+76533>>>        Get createComment of hoDocumentObject sValue to infcNewComment
+76534>>>        If infcNewComment Begin // if there was an error, no infc handle would be returned
+76536>>>            Get NodeClassId of hoDocumentObject NODE_COMMENT to iClassId
+76537>>>            Get CreateXMLObject iClassId infcNewComment to hoNewComment
+76538>>>            If hoNewComment ; // very unlikely this will be 0                Set psText of hoNewComment to sValue
+76541>>>        End
+76541>>>>
+76541>>>        Function_Return hoNewComment
+76542>>>    End_Function
+76543>>>
+76543>>>    // This function creates a child processing instruction, returning a dataflex object.
+76543>>>    // The interface of the object returned can be used in AppendChild to add
+76543>>>    // the processing instruction to the XML Document.
+76543>>>
+76543>>>    Function CreateChildProcessingInstruction String sTarget String sValue Returns Handle
+76545>>>        Integer hoNewProcessingInstruction
+76545>>>        Integer hoDocumentObject
+76545>>>        Integer infcNewProcessingInstruction
+76545>>>        Integer iClassID
+76545>>>        Get DocumentObject to hoDocumentObject
+76546>>>        // Create an ProcessingInstruction in the document and assign its interface to the new DF object.
+76546>>>        Get createProcessingInstruction of hoDocumentObject sTarget sValue to infcNewProcessingInstruction
+76547>>>        If infcNewProcessingInstruction  Begin // if there was an error, no infc handle would be returned
+76549>>>            Get NodeClassId of hoDocumentObject NODE_PROCESSING_INSTRUCTION to iClassId
+76550>>>            Get CreateXMLObject iClassID infcNewProcessingInstruction to hoNewProcessingInstruction
+76551>>>        End
+76551>>>>
+76551>>>        Function_Return hoNewProcessingInstruction
+76552>>>    End_Function
+76553>>>
+76553>>>    // This function creates a child text node, returning a dataflex object.
+76553>>>    // The interface of the object returned can be used in AppendChild to add
+76553>>>    // the text node to the XML Document.
+76553>>>
+76553>>>    Function CreateChildTextNode String sValue Returns Handle
+76555>>>        Integer hoNewTextNode
+76555>>>        Integer hoDocumentObject
+76555>>>        Integer infcNewTextNode
+76555>>>        Integer iClassID
+76555>>>        Get DocumentObject to hoDocumentObject
+76556>>>        // Create an TextNode in the document and assign its interface to the new DF object.
+76556>>>        Get createTextNode of hoDocumentObject sValue to infcNewTextNode
+76557>>>        If infcNewTextNode Begin // if there was an error, no infc handle would be returned
+76559>>>            Get NodeClassId of hoDocumentObject NODE_TEXT to iClassId
+76560>>>            Get CreateXMLObject iClassId infcNewTextNode to hoNewTextNode
+76561>>>        End
+76561>>>>
+76561>>>        Function_Return hoNewTextNode
+76562>>>    End_Function
+76563>>>
+76563>>>    // This function creates a cdata text node, returning a dataflex object.
+76563>>>    // The interface of the object returned can be used in AppendChild to add
+76563>>>    // the cdata node to the XML Document.
+76563>>>
+76563>>>    Function CreateCDATASectionNode String sValue Returns Handle
+76565>>>        Integer hoNewNode
+76565>>>        Integer hoDocumentObject
+76565>>>        Integer infcNewNode
+76565>>>        Integer iClassId
+76565>>>        // The DataFlex objects are created inside the nodes (elements).
+76565>>>        // Create an element in the document and assign its interface to the new DF object.
+76565>>>        Get DocumentObject to hoDocumentObject
+76566>>>        Get createCDATASection of hoDocumentObject sValue to infcNewNode
+76567>>>        If infcNewNode Begin
+76569>>>            Get NodeClassId of hoDocumentObject NODE_CDATA_SECTION to iClassId
+76570>>>            Get CreateXMLObject iClassId infcNewNode to hoNewNode
+76571>>>        End
+76571>>>>
+76571>>>        Function_Return hoNewNode
+76572>>>    End_Function
+76573>>>
+76573>>>    // Create a document fragment.  Document fragments can be used to house nodes temporarily. When
+76573>>>    // You append or insert a document fragment (appendNode InsertBeforeNode) child nodes are appended
+76573>>>    // to the destination object and not the fragment node itself. This is useful!
+76573>>>
+76573>>>    Function CreateDocumentFragmentNode Returns Handle
+76575>>>        Integer hoNew
+76575>>>        Integer hoDocumentObject
+76575>>>        Integer infcNew
+76575>>>        Integer iClassID
+76575>>>        Get DocumentObject to hoDocumentObject
+76576>>>        // Create an Comment in the document and assign its interface to the new DF object.
+76576>>>        Get createDocumentFragment of hoDocumentObject to infcNew
+76577>>>        If infcNew Begin // if there was an error, no infc handle would be returned
+76579>>>            Get NodeClassId of hoDocumentObject NODE_DOCUMENT_FRAGMENT to iClassId
+76580>>>            Get CreateXMLObject iClassId infcNew to hoNew
+76581>>>        End
+76581>>>>
+76581>>>        Function_Return hoNew
+76582>>>    End_Function
+76583>>>
+76583>>>    //  Create a Node of any passed Type (e.g. Node_element). Normally you don't need this as there are
+76583>>>    //  specific messages to do this for each node type. Node that this lets you pass namespaces as a separate
+76583>>>    //  parameter. With all of the other messages (e.g. createElementNode) you pass namespaces as prefixed to
+76583>>>    // the tagname (e.g. Get CreateElementNode "MyNameSpace:MyTag" "MyValue" to hoEle)
+76583>>>
+76583>>>    Function CreateChildNode Integer iNodeType String sTagName String sNameSpace Returns Handle
+76585>>>        Integer hoNewNode hoDocumentObject
+76585>>>        Integer infcNewNode
+76585>>>        Integer iClassid iType
+76585>>>        Get DocumentObject to hoDocumentObject
+76586>>>        Get NodeClassId iNodeType to iClassId
+76587>>>        If (iClassId<>0) Begin
+76589>>>            // Create a node in the document and assign its interface to the new DF object.
+76589>>>            Get createNode of hoDocumentObject iNodeType sTagName sNameSpace to infcNewNode
+76590>>>            // this is required to force the interface type to be correct.
+76590>>>            Move (invokexml(DF_IXMLDOMNODE, GET_piNodeType, infcNewNode, 0, 0, 0, 0)) to iType
+76591>>>            Move (invokexml(DF_IXMLDOMNODE, GET_ChangeNodeType, infcNewNode, iType, 1, 0, 0)) to infcNewNode
+76592>>>
+76592>>>            If infcNewNode ;                Get CreateXMLObject iClassId infcNewNode to hoNewNode
+76595>>>        End
+76595>>>>
+76595>>>        Function_Return hoNewNode
+76596>>>    End_Function
+76597>>>
+76597>>>
+76597>>>
+76597>>>    // The Addxxxxx messages create a new node and appends it to the list. When used as a function,
+76597>>>    // the object handle is returned and must be disposed of later by the programmer.
+76597>>>    // When used as a procedure, the object is destroyed--it just does it and is done.
+76597>>>
+76597>>>    Function AddElement String sTagName String sValue Returns Handle
+76599>>>        Integer hoNewElement
+76599>>>        Get CreateElementNode sTagName sValue to hoNewElement
+76600>>>        If hoNewElement Get AppendNode hoNewElement to hoNewElement
+76603>>>        Function_Return hoNewElement
+76604>>>    End_Function
+76605>>>
+76605>>>    Procedure AddElement String sTagName String sValue
+76607>>>        Integer hoNewElement
+76607>>>        Get AddElement sTagName sValue to hoNewElement
+76608>>>        If hoNewElement ;            Send Destroy to hoNewElement
+76611>>>        Else ;            Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_AddElement"))
+76613>>>    End_Procedure
+76614>>>
+76614>>>    // this returns the object, This is often needed
+76614>>>    Function CreateElementNodeNS String sNameSpace String sTagName String sValue Returns Handle
+76616>>>        Integer hoNewElement
+76616>>>        Get CreateChildNode NODE_ELEMENT sTagName sNameSpace to hoNewElement
+76617>>>        If (hoNewElement and sValue<>"") ;            Set psText of hoNewElement to sValue
+76620>>>        Function_Return hoNewElement
+76621>>>    End_Procedure
+76622>>>
+76622>>>
+76622>>>    // this returns the object, This is often needed
+76622>>>    Function AddElementNS String sNameSpace String sTagName String sValue Returns Handle
+76624>>>        Integer hoNewElement
+76624>>>        Get CreateElementNodeNS sNameSpace sTagName sValue to hoNewElement
+76625>>>        If hoNewElement Begin
+76627>>>            Get AppendNode hoNewElement to hoNewElement
+76628>>>        End
+76628>>>>
+76628>>>        Function_Return hoNewElement
+76629>>>    End_Function
+76630>>>
+76630>>>    Procedure AddElementNS String sNameSpace String sTagName String sValue
+76632>>>        Integer hoNewElement
+76632>>>        Get AddElementNS sNameSpace sTagName sValue to hoNewElement
+76633>>>        If hoNewElement ;            Send Destroy to hoNewElement
+76636>>>        Else ;            Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_AddElementNS"))
+76638>>>    End_Procedure
+76639>>>
+76639>>>    Function AddAttributeNode Handle hoNode Returns Handle
+76641>>>        Handle hInfc
+76641>>>        Get Set_AttributeNode (XmlInterface(hoNode)) to hInfc
+76642>>>        If hInfc ; // if ret value we have a replacement            Set XmlInterface of hoNode to hInfc
+76645>>>        Function_Return hoNode
+76646>>>    End_Function
+76647>>>
+76647>>>//    // is this needed
+76647>>>//    Function AddAttributeNodeNS handle hoNode returns Handle
+76647>>>//        Get AddAttributeNode hoNode to hoNode
+76647>>>//        function_return hoNode
+76647>>>//    End_Function
+76647>>>
+76647>>>    Function AttributeValueNode String sName Returns Handle
+76649>>>        Handle hInfc
+76649>>>        Handle hoNode
+76649>>>        Get AttributeNode sName to hInfc
+76650>>>        If hInfc ; // if ret value we have a replacement           Get CreateXMLNode hInfc to hoNode
+76653>>>        Function_Return hoNode
+76654>>>    End_Function
+76655>>>
+76655>>>    Function AttributeValueNodeNS String sNameSpace String sBaseName Returns Handle
+76657>>>        Handle hoAttrs hoAttr
+76657>>>        String sValue
+76657>>>        Get TempAttributeNodes to hoAttrs
+76658>>>        If hoAttrs Begin
+76660>>>            Get QualifiedNode of hoAttrs sNamespace sBaseName to hoAttr
+76661>>>            Set XMLInterface of hoAttrs to 0
+76662>>>        End
+76662>>>>
+76662>>>        Function_Return hoAttr
+76663>>>    End_Function
+76664>>>
+76664>>>
+76664>>>    Function CreateAttributeNodeNS String sNameSpace String sName String sValue Returns Handle
+76666>>>        Integer hoNewAttribute
+76666>>>        Get CreateChildNode NODE_ATTRIBUTE sName sNameSpace to hoNewAttribute
+76667>>>        If hoNewAttribute ;            Set psText of hoNewAttribute to sValue
+76670>>>        Function_Return hoNewAttribute
+76671>>>    End_Function
+76672>>>
+76672>>>    Procedure AddAttributeNS String sNameSpace String sName String sValue
+76674>>>       Handle hoNode
+76674>>>       Get CreateAttributeNodeNS sNameSpace sName sValue to hoNode
+76675>>>       If hoNode Begin
+76677>>>          Get AddAttributeNode hoNode to hoNode
+76678>>>          If hoNode Send Destroy of hoNode
+76681>>>       End
+76681>>>>
+76681>>>       Else ;            Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_AddAttributeNS"))
+76683>>>    End_Procedure
+76684>>>
+76684>>>
+76684>>>    // This function encapsulates creation and addition of attributes to a node.
+76684>>>    // should only work with element class
+76684>>>    Procedure AddAttribute String sName String sValue
+76686>>>        Set AttributeValue sName to sValue
+76687>>>    End_Procedure
+76688>>>
+76688>>>    // This function encapsulates creation and addition of comments to a node.
+76688>>>    // The return value is a Boolean that is currently unused.
+76688>>>
+76688>>>    Procedure AddChildComment String sValue
+76690>>>        Integer hoNewNode
+76690>>>        Get createChildComment sValue to hoNewNode
+76691>>>        If not hoNewNode ;            Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_AddChildComment"))
+76694>>>        Else Begin
+76695>>>            Get AppendNode hoNewNode to hoNewNode
+76696>>>            Send Destroy to hoNewNode
+76697>>>        End
+76697>>>>
+76697>>>    End_Procedure
+76698>>>
+76698>>>    // This function encapsulates creation and addition of processing instructions to a node.
+76698>>>    // The return value is a Boolean that is currently unused.
+76698>>>
+76698>>>    Procedure AddChildProcessingInstruction String sTarget String sValue
+76700>>>        Integer hoNewNode
+76700>>>        Get createChildProcessingInstruction sTarget sValue to hoNewNode
+76701>>>        If not hoNewNode ;            Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_AddChildProcessingInstruction"))
+76704>>>        Else Begin
+76705>>>            Get AppendNode hoNewNode to hoNewNode
+76706>>>            Send Destroy to hoNewNode
+76707>>>        End
+76707>>>>
+76707>>>    End_Procedure
+76708>>>
+76708>>>
+76708>>>    // This function encapsulates creation and addition of text nodes to a node.
+76708>>>    // The return value is a Boolean that is currently unused.
+76708>>>
+76708>>>    Procedure AddChildTextNode String sValue
+76710>>>        Integer hoNewNode
+76710>>>        Get createChildTextNode sValue to hoNewNode
+76711>>>        If not hoNewNode ;            Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_AddChildTextNode"))
+76714>>>        Else Begin
+76715>>>            Get AppendNode hoNewNode to hoNewNode
+76716>>>            Send Destroy to hoNewNode
+76717>>>        End
+76717>>>>
+76717>>>    End_Procedure
+76718>>>
+76718>>>    // This procedure encapsulates creation and addition of cdata text nodes to a node.
+76718>>>    Procedure AddCDataSection String sValue
+76720>>>        Handle hoNewNode
+76720>>>        Get CreateCDATASectionNode sValue to hoNewNode
+76721>>>        If not hoNewNode ;            Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_AddCDataSection"))
+76724>>>        Else Begin
+76725>>>            Get AppendNode hoNewNode to hoNewNode
+76726>>>            Send Destroy to hoNewNode
+76727>>>        End
+76727>>>>
+76727>>>    End_Procedure
+76728>>>
+76728>>>
+76728>>>    Function AddChildNode Integer iNodeType String sTagName String sNameSpace Returns Handle
+76730>>>        Integer hoNewNode
+76730>>>        Integer hoDocumentObject
+76730>>>        Get DocumentObject to hoDocumentObject
+76731>>>        Get createChildNode of hoDocumentObject iNodeType sTagName sNamespace to hoNewNode
+76732>>>        If hoNewNode ;            Get AppendNode hoNewNode to hoNewNode
+76735>>>        Function_Return hoNewNode
+76736>>>    End_Function
+76737>>>    
+76737>>>    // don't use the runtime/msxml version of this. Instead just return the
+76737>>>    // first text from the first child node. This is much faster
+76737>>>    Function psText Returns String
+76739>>>        Handle hText
+76739>>>        String sValue
+76739>>>        Get phFirstChild to hText
+76740>>>        Get InfcNodeValue hText to sValue
+76741>>>        Function_Return sValue        
+76742>>>    End_Function
+76743>>>     
+76743>>>    // Use this to call the internal Text property. This returns all text for all child
+76743>>>    // node. You rarely would want to do this. The is uses the msxml psText which can 
+76743>>>    // get slow with very large files. If for some reason you need all of the child node's
+76743>>>    // text and the file is large, you might want to consider doing this process manually.
+76743>>>    Function AllChildNodesText Returns String
+76745>>>        String sValue
+76745>>>        Forward Get psText to sValue
+76747>>>        Function_Return sValue        
+76748>>>    End_Function
+76749>>>    
+76749>>>    // return the interface NodeValue without having to create a
+76749>>>    // new object
+76749>>>    Function InfcNodeValue Handle hInfc Returns String
+76751>>>        Integer hoDocument hoTempNode
+76751>>>        String sValue
+76751>>>        If (hinfc) Begin
+76753>>>            Get DocumentObject to hoDocument
+76754>>>            Get phoTempDomNode of hoDocument to hoTempNode
+76755>>>            Set XMLInterface of hoTempNode to hInfc
+76756>>>            Get psNodeValue of hoTempNode to sValue
+76757>>>            Set XMLInterface of hoTempNode to 0
+76758>>>        End
+76758>>>>
+76758>>>        Function_Return sValue
+76759>>>    End_Function
+76760>>>    
+76760>>>    // ChildNodeValue is used to get the "value" of an element. This is useful when the element
+76760>>>    // only has a single value (similar to an attribute).
+76760>>>    
+76760>>>    Function ChildNodeValue String sTagName Returns String
+76762>>>        Integer hoTempNode hoDocument
+76762>>>        Integer hinfcTempNode 
+76762>>>        String sRetVal
+76762>>>        Get SelectSingleNode sTagName to hinfcTempNode
+76763>>>        If (hinfcTempNode <> 0) Begin
+76765>>>            Get DocumentObject to hoDocument
+76766>>>            Get phoTempDomNode of hoDocument to hoTempNode
+76767>>>            Set XMLInterface of hoTempNode to hinfcTempNode
+76768>>>            Get phFirstChild of hoTempNode to hinfcTempNode
+76769>>>            Set XMLInterface of hoTempNode to 0
+76770>>>            If hinfcTempNode Begin
+76772>>>                Get InfcNodeValue hinfcTempNode to sRetVal
+76773>>>            End
+76773>>>>
+76773>>>        End
+76773>>>>
+76773>>>        Function_Return sRetVal
+76774>>>    End_Function
+76775>>>
+76775>>>    // This simple function allows a parent to change the text of one of its elements.
+76775>>>    // This actually occurs quite a bit, because (as stated above) lowest level
+76775>>>    // elements are frequently used as properties.
+76775>>>    //
+76775>>>    Procedure SetChildNodeValue String sTagName String sValue
+76777>>>        Integer hoTempNode
+76777>>>        Integer hinfcTempNode
+76777>>>        // Search for the node that matches.
+76777>>>        Get SelectSingleNode sTagName to hinfcTempNode
+76778>>>        // If no match is found, add a new element with the tag.
+76778>>>        If (hinfcTempNode = 0) ;            Send AddElement sTagName sValue
+76781>>>        Else Begin
+76782>>>            Get CreateXMLObject U_BaseXMLDOMNode hinfcTempNode to hoTempNode
+76783>>>            If hoTempNode Begin
+76785>>>                // Set the text of the element.
+76785>>>                Set psText of hoTempNode to sValue
+76786>>>                Send Destroy to hoTempNode
+76787>>>            End
+76787>>>>
+76787>>>            Else ;                Error DFERR_XML_INTERNAL_ERROR (SFormat(C_$XmlMethodFailure, "msg_SetChildNodeValue"))
+76789>>>        End
+76789>>>>
+76789>>>    End_Procedure
+76790>>>
+76790>>>    // These messages are used to allow you to travese through a nodes.
+76790>>>
+76790>>>    Function FirstChild Returns Handle
+76792>>>        Handle hoChild
+76792>>>        Integer hinfcChild
+76792>>>        Get phFirstChild  to hinfcChild
+76793>>>        If (hinfcChild) ;            Get CreateXMLNode hinfcChild to hoChild
+76796>>>        Function_Return hoChild
+76797>>>    End_Function
+76798>>>
+76798>>>    Function NextSibling Returns Handle
+76800>>>        Handle hoChild
+76800>>>        Integer hinfcChild
+76800>>>        Get phNextSibling  to hinfcChild
+76801>>>        If (hinfcChild) ;            Get CreateXMLNode hinfcChild to hoChild
+76804>>>        Function_Return hoChild
+76805>>>    End_Function
+76806>>>
+76806>>>    Function PreviousSibling Returns Handle
+76808>>>        Handle hoChild
+76808>>>        Integer hinfcChild
+76808>>>        Get phPreviousSibling  to hinfcChild
+76809>>>        If (hinfcChild) ;            Get CreateXMLNode hinfcChild to hoChild
+76812>>>        Function_Return hoChild
+76813>>>    End_Function
+76814>>>
+76814>>>    Function LastChild Returns Handle
+76816>>>        Handle hoChild
+76816>>>        Integer hinfcChild
+76816>>>        Get phLastChild  to hinfcChild
+76817>>>        If (hinfcChild) ;            Get CreateXMLNode hinfcChild to hoChild
+76820>>>        Function_Return hoChild
+76821>>>    End_Function
+76822>>>
+76822>>>    // return an object that is the parent of the current node
+76822>>>    Function ParentNode Returns Handle
+76824>>>        Handle hoId
+76824>>>        Handle hinfcXMLInterface
+76824>>>        Get phParentNode to hinfcXMLInterface
+76825>>>        If (hinfcXMLInterface) ;            Get CreateXmlNode hinfcXMLInterface to hoID
+76828>>>        Function_Return hoID
+76829>>>    End_Function
+76830>>>
+76830>>>    // Same as NextSibling except it uses or destroys the current node
+76830>>>    //
+76830>>>    // optimized version does not destroy/create object unless it needs to.  
+76830>>>    // if the next node is the same node type we will resuse this object
+76830>>>    // else this object is destroyed 
+76830>>>    Function NextNode Returns Handle
+76832>>>        Handle hoNode hoDocument
+76832>>>        Handle hInfc
+76832>>>        Get phNextSibling to hInfc
+76833>>>        If hInfc Begin
+76835>>>            Get DocumentObject to hoDocument
+76836>>>            Move Self to hoNode
+76837>>>            Send BindXMLInfc of hoDocument hInfc (&hoNode)
+76838>>>        End
+76838>>>>
+76838>>>        Else Begin
+76839>>>            Send Destroy
+76840>>>            Move 0 to hoNode
+76841>>>        End
+76841>>>>
+76841>>>        Function_Return hoNode
+76842>>>    End_Function
+76843>>>        
+76843>>>        
+76843>>>    // Enumerate through all nodes.
+76843>>>
+76843>>>    Procedure EnumerateNodes Integer iMsg Integer hoReceiver String sVal1 String sVal2
+76845>>>        Integer i iLen
+76845>>>        Integer hoNode
+76845>>>        Integer hoNodeCollection
+76845>>>        Get ChildNodes to hoNodeCollection
+76846>>>        If (hoNodeCollection <> 0) Begin
+76848>>>            Get NodeListLength of hoNodeCollection to iLen
+76849>>>            Decrement iLen
+76850>>>            For i from 0 to iLen
+76856>>>>
+76856>>>                // For each record, process its fields.
+76856>>>                Get CollectionNode of hoNodeCollection i to hoNode
+76857>>>                Send iMsg of hoReceiver hoNode sVal1 sVal2
+76858>>>                Send Destroy of hoNode
+76859>>>            Loop
+76860>>>>
+76860>>>            Send Destroy of hoNodeCollection
+76861>>>        End
+76861>>>>
+76861>>>    End_Procedure
+76862>>>
+76862>>>    // Enumerate through all elements.
+76862>>>
+76862>>>    Procedure EnumerateElements Integer iMsg Integer hoReceiver String sVal1 String sVal2
+76864>>>        Integer i iLen
+76864>>>        Integer hoNode
+76864>>>        Integer hoNodeCollection
+76864>>>        Get ChildNodes to hoNodeCollection
+76865>>>        If (hoNodeCollection <> 0) Begin
+76867>>>            Get NodeListLength of hoNodeCollection to iLen
+76868>>>            Decrement iLen
+76869>>>            For i from 0 to iLen
+76875>>>>
+76875>>>                // For each record, process its fields.
+76875>>>                Get CollectionNode of hoNodeCollection i to hoNode
+76876>>>                If (piNodeType(hoNode)=NODE_ELEMENT) ;                    Send iMsg of hoReceiver hoNode sVal1 sVal2
+76879>>>                Send Destroy of hoNode
+76880>>>            Loop
+76881>>>>
+76881>>>            Send Destroy of hoNodeCollection
+76882>>>        End
+76882>>>>
+76882>>>    End_Procedure
+76883>>>
+76883>>>
+76883>>>    // enumerate through all attributes. There is no recurse here because attributes will not
+76883>>>    // contain attributes.
+76883>>>
+76883>>>    Procedure EnumerateAttributes Integer iMsg Integer hoReceiver String sSomeValue
+76885>>>        Integer i iLen
+76885>>>        Integer hoNode
+76885>>>        Integer hoNodeMapCollection
+76885>>>        // we don't use tempattributenodes because we don't know what the enum message will do.
+76885>>>        Get AttributeNodes to hoNodeMapCollection
+76886>>>        If (hoNodeMapCollection <> 0) Begin
+76888>>>            Get NodeListLength of hoNodeMapCollection to iLen
+76889>>>            Decrement iLen
+76890>>>            For i from 0 to iLen
+76896>>>>
+76896>>>                // For each record, process its fields.
+76896>>>                Get CollectionNode of hoNodeMapCollection i to hoNode
+76897>>>                Send iMsg of hoReceiver hoNode sSomeValue
+76898>>>                Send Destroy of hoNode
+76899>>>            Loop
+76900>>>>
+76900>>>            Send Destroy of hoNodeMapCollection
+76901>>>        End
+76901>>>>
+76901>>>    End_Procedure
+76902>>>
+76902>>>
+76902>>>    Function XSLTransformation Integer hoXSLDocument Returns String
+76904>>>        Integer infcXSLStartAt
+76904>>>        String sBuffer
+76904>>>        // Transformation is of current object using passed XSLDocument.
+76904>>>        Get XMLInterface of hoXSLDocument to infcXSLStartAt
+76905>>>        Get TransformNode infcXSLStartAt to sBuffer
+76906>>>        Function_Return sBuffer
+76907>>>    End_Function
+76908>>>
+76908>>>    // This allows for transformations not limited to the size of the string buffer
+76908>>>    //
+76908>>>    // Note that it is up to the programmer to dispose of the memory allocated at pBuffer
+76908>>>    // by using the free(pBuffer) function
+76908>>>    //
+76908>>>    Function XSLTransformationToAddress Integer hoXSLDocument Returns Address
+76910>>>        Integer infcXSLStartAt
+76910>>>        Address pBuffer
+76910>>>        // Transformation is of current object using passed XSLDocument.
+76910>>>        Get XMLInterface of hoXSLDocument to infcXSLStartAt
+76911>>>        Get TransformNodeToAddress infcXSLStartAt to pBuffer
+76912>>>        Function_Return pBuffer
+76913>>>    End_Function
+76914>>>
+76914>>>
+76914>>>    // extract base name from string. e.g.: ns:name --> name
+76914>>>    //
+76914>>>    Function BaseNameFromQName String sName Returns String
+76916>>>        Integer iPos
+76916>>>        Move (Pos(":",sName)) to iPos
+76917>>>        If iPos Begin
+76919>>>            Move (remove(sName,1,iPos)) to sName
+76920>>>        End
+76920>>>>
+76920>>>        Function_Return sName
+76921>>>    End_Function
+76922>>>
+76922>>>    // extract prefix name from string. e.g.: ns:name --> ns
+76922>>>    //
+76922>>>    Function PrefixNameFromQName String sName Returns String
+76924>>>        String sPreFix
+76924>>>        Integer iPos
+76924>>>        Move (Pos(":",sName)) to iPos
+76925>>>        If iPos Begin
+76927>>>            Move (Left(sName,iPos-1)) to sPreFix
+76928>>>        End
+76928>>>>
+76928>>>        Function_Return sPreFix
+76929>>>    End_Function
+76930>>>
+76930>>>
+76930>>>    // Returns true if node is element and namespace and base name match
+76930>>>    //
+76930>>>    Function IsElementNS String sNamespaceURI String sBaseName Returns Boolean
+76932>>>         Function_Return (piNodeType(Self)=NODE_ELEMENT and ;                          psNameSpaceURI(Self)=sNamespaceURI and ;                          psBaseName(Self)=sBaseName )
+76933>>>    End_Function
+76934>>>
+76934>>>    // Returns node of first occurence of child node matching namespace and base name
+76934>>>    //
+76934>>>    Function ChildElementNS String sNameSpaceURI String sBaseName Returns Handle
+76936>>>        Handle hoNode
+76936>>>        Get FirstChild to hoNode
+76937>>>        While (hoNode and not(IsElementNS(hoNode, sNameSpaceURI, sBaseName)))
+76941>>>            Get NextNode of hoNode to hoNode
+76942>>>        End
+76943>>>>
+76943>>>        Function_Return hoNode
+76944>>>    End_Function
+76945>>>
+76945>>>    // Returns node of next occurence of sibling node matching namespace and base name
+76945>>>    // and destroys the current node.
+76945>>>//    Function NextElementNS String sNameSpaceURI String sBaseName Returns Handle
+76945>>>//        handle hoNode
+76945>>>//        Get NextSibling to hoNode
+76945>>>//        While (hoNode and not(IsElementNS(hoNode, sNameSpaceURI, sBaseName)))
+76945>>>//            Get NextNode of hoNode to hoNode
+76945>>>//        end
+76945>>>//        Send Destroy
+76945>>>//        function_return hoNode
+76945>>>//    end_function
+76945>>>
+76945>>>    Function NextElementNS String sNameSpaceURI String sBaseName Returns Handle
+76947>>>        Handle hoNode
+76947>>>        // NextNode may return the same object or it may destroy the object and
+76947>>>        // return nothing or a different object
+76947>>>        Get NextNode to hoNode
+76948>>>        While (hoNode and not(IsElementNS(hoNode, sNameSpaceURI, sBaseName)))
+76952>>>            // use of hoNode is required. This can be different than self
+76952>>>            Get NextNode of hoNode to hoNode
+76953>>>        End
+76954>>>>
+76954>>>         
+76954>>>        Function_Return hoNode
+76955>>>    End_Function
+76956>>>
+76956>>>
+76956>>>    // Returns value (string) first occurence of child node matching namespace and base name
+76956>>>    //
+76956>>>    Function ChildElementValueNS String sNameSpaceURI String sBaseName Returns String
+76958>>>        Handle hoNext
+76958>>>        String sText
+76958>>>        Get ChildElementNS sNameSpaceURI sBaseName to hoNext
+76959>>>        If hoNext Begin
+76961>>>            Get psText of hoNext to sText
+76962>>>            Send destroy of hoNext
+76963>>>        End
+76963>>>>
+76963>>>        Function_Return sText
+76964>>>    End_Function
+76965>>>
+76965>>>    Procedure SetChildElementValueNS String sNameSpaceURI String sBaseName String sValue
+76967>>>        Integer hoNode
+76967>>>        Integer hinfcTempNode
+76967>>>        Get ChildElementNS sNameSpaceURI sBaseName to hoNode
+76968>>>        If (hoNode=0) Begin
+76970>>>            Send AddElementNS sNameSpaceURI sBaseName sValue
+76971>>>        End
+76971>>>>
+76971>>>        Else Begin
+76972>>>            Set psText of hoNode to sValue
+76973>>>            Send destroy of hoNode
+76974>>>        End
+76974>>>>
+76974>>>    End_Procedure
+76975>>>
+76975>>>
+76975>>>//    // Returns node of first occurence of child node matching namespace and base name
+76975>>>//    // that has an attrib value that contains a specified value
+76975>>>//    //
+76975>>>//    //Doc/ Visibility=Public
+76975>>>//    Function FindElementNodeWithAttribNS string sNamespace string sBaseName string sAttribName string sAttribValue returns handle
+76975>>>//        handle hoNext hoNode
+76975>>>//        string sName
+76975>>>//        Get FirstChild to hoNode
+76975>>>//        While (hoNode)
+76975>>>//            If (IsElementNS(hoNode, sNameSpace, sBaseName)) begin
+76975>>>//                Get AttributeValue of hoNode sAttribName to sName
+76975>>>//                If (sName=sAttribValue) Begin
+76975>>>//                    Function_return hoNode
+76975>>>//                end
+76975>>>//            end
+76975>>>//            Get NextSibling of hoNode to hoNext
+76975>>>//            Send Destroy of hoNode
+76975>>>//            Move hoNext to hoNode
+76975>>>//        end
+76975>>>//        function_return 0
+76975>>>//    end_function
+76975>>>
+76975>>>    // pass a prefix and try to finds its NameSpaceURI. Start at current node and work up to parent.
+76975>>>    // This can be useful when a qualified name is found in an attribute value
+76975>>>    //
+76975>>>    Function PrefixToNamespaceURI String sPrefix Returns String
+76977>>>        Handle hoNode
+76977>>>        Integer i iNodes
+76977>>>        Integer hoNodes hoParentNode hoAttNode
+76977>>>        Boolean bDone bParent
+76977>>>        String sAttPrefix sName sNameSpace
+76977>>>
+76977>>>        Move Self to hoNode
+76978>>>        While not bDone
+76982>>>            Get TempAttributeNodes of hoNode to hoNodes
+76983>>>            If (hoNodes <> 0) Begin
+76985>>>                Get NodeListLength of hoNodes to iNodes
+76986>>>                For i from 0 to (iNodes-1)
+76992>>>>
+76992>>>                    // For each record, process its fields.
+76992>>>                    Get CollectionNode of hoNodes i to hoAttNode
+76993>>>                    Get psPrefix of hoAttNode to sAttPrefix
+76994>>>                    Get psBaseName of hoAttNode to sName
+76995>>>                    // with legacy msxml, xmlns="foo" returns psPrefix="xmlns" and pbBaseName=""
+76995>>>                    // with newer msxml, xmlns="foo" returns psPrefix="" and pbBaseName="xmlns"
+76995>>>                    // We handle both cases here. 
+76995>>>                    
+76995>>>                    If ( (sAttPrefix="xmlns" and sName=sPrefix) or ; // if a normal xmlns:xx="foo" match (sPrefix="xx") or a legacy xmlns="foo" match (sPrefix="")                         (sPrefix="" and sAttPrefix="" and sName="xmlns") ) Begin // special test for newer msxml xmlns="foo" match (sPrefix="")
+76997>>>
+76997>>>                        Get Value of hoAttNode to sNameSpace
+76998>>>                        Move True to bDone
+76999>>>                        Move (iNodes-1) to i
+77000>>>
+77000>>>                    End
+77000>>>>
+77000>>>
+77000>>>                    Send Destroy of hoAttNode
+77001>>>                Loop
+77002>>>>
+77002>>>                Set XMLInterface of hoNodes to 0
+77003>>>            End
+77003>>>>
+77003>>>            
+77003>>>            Get ParentNode of hoNode to hoParentNode
+77004>>>            If bParent Send destroy of hoNode
+77007>>>            If not bDone Begin
+77009>>>                If not hoParentNode Move True to bDone
+77012>>>                Else Begin
+77013>>>                    Move True to bParent
+77014>>>                    Move hoParentNode to hoNode
+77015>>>                End
+77015>>>>
+77015>>>            End
+77015>>>>
+77015>>>        End
+77016>>>>
+77016>>>        Function_Return sNameSpace
+77017>>>    End_Function
+77018>>>
+77018>>>
+77018>>>
+77018>>>End_Class
+77019>>>
+77019>>>// Set up basic inheritance for specialized forms of XML classes.
+77019>>>// This needs to be done so we can make objects of these types.
+77019>>>
+77019>>>Class cXMLDOMElement is a BaseXmlDomElement
+77020>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77021>>>
+77021>>>// Send AddAttribute
+77021>>>// Get  AddAttributeNode
+77021>>>// Send RemoveAttribute
+77021>>>// Get  AttributeValue
+77021>>>// Get  AttributeValueNode
+77021>>>
+77021>>>// Send AddAttributeNS
+77021>>>// Get  AddAttributeNodeNS
+77021>>>// Send RemoveAttributeNs
+77021>>>// Get  AttributeValueNS
+77021>>>// Get  AttributeValueNodeNS
+77021>>>
+77021>>>    // Should use AddAttributeValue...does same thing
+77021>>>    Procedure SetAttributeValue String sName String sValue
+77023>>>        Send AddAttribute sName sValue
+77024>>>    End_Procedure
+77025>>>
+77025>>>    // Note: Get_AttributeValue already there
+77025>>>
+77025>>>    Procedure RemoveAttribute String sName
+77027>>>        Integer iVal
+77027>>>        Get RemoveAttribute sName to iVal
+77028>>>    End_Procedure
+77029>>>
+77029>>>    Function AttributeValueNS String sNameSpace String sBaseName Returns String
+77031>>>        String sValue
+77031>>>        Handle hinfcItem
+77031>>>        Handle hoDoc hoTempAttributeNodes hoNode
+77031>>>        Integer hinfcAttributes
+77031>>>        
+77031>>>//        // test if the basename attribute exists at all. This is an opimization as this
+77031>>>//        // message is much faster allowing for quicker false matches (good for client web-services).
+77031>>>//        Get AttributeValue sBaseName to sValue // doesn't work as expected
+77031>>>//        If (sValue<>"") Begin 
+77031>>>            Get TempAttributeNodes to hoTempAttributeNodes
+77032>>>            Get QualifiedItem of hoTempAttributeNodes sBaseName sNameSpace  to hinfcItem
+77033>>>            Set XMLInterface of hoTempAttributeNodes to 0
+77034>>>            If hinfcItem Begin
+77036>>>                Get DocumentObject to hoDoc
+77037>>>                Get phoTempDomNode of hoDoc to hoNode
+77038>>>                Set XMLInterface of hoNode to hinfcItem
+77039>>>                Get psNodeValue of hoNode to sValue
+77040>>>                Set XMLInterface of hoNode to 0
+77041>>>            End
+77041>>>>
+77041>>>//        End
+77041>>>        Function_Return sValue
+77042>>>    End_Function
+77043>>>
+77043>>>// replaced with optimized version above
+77043>>>//    Function AttributeValueNS String sNameSpace String sBaseName Returns String
+77043>>>//        Handle hoAttr
+77043>>>//        String sValue
+77043>>>//
+77043>>>//        Get AttributeValueNodeNS sNameSpace sBaseName to hoAttr
+77043>>>//        If hoAttr Begin
+77043>>>//            Get Value of hoAttr to sValue
+77043>>>//            Send destroy of hoAttr
+77043>>>//        End
+77043>>>//        function_return sValue
+77043>>>//    end_function
+77043>>>
+77043>>>    Procedure RemoveAttributeNS String sNameSpace String sBaseName
+77045>>>        Handle hoAttrs hoAttr
+77045>>>        String sValue
+77045>>>        Get TempAttributeNodes to hoAttrs
+77046>>>        If hoAttrs Begin
+77048>>>            Get RemoveQualifiedNode of hoAttrs sNamespace sBaseName to hoAttr
+77049>>>            Set XMLInterface of hoAttrs to 0
+77050>>>            If hoAttr ;                Send destroy of hoAttr
+77053>>>        End
+77053>>>>
+77053>>>    End_Procedure
+77054>>>
+77054>>>End_Class
+77055>>>
+77055>>>Class cXMLDOMNode is a BaseXmlDomNode
+77056>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77057>>>End_Class
+77058>>>
+77058>>>Class cXMLDOMAttribute is a BaseXmlDomAttribute
+77059>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77060>>>End_Class
+77061>>>
+77061>>>Class cXMLDOMComment is a BaseXmlDomComment
+77062>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77063>>>End_Class
+77064>>>
+77064>>>Class cXMLDOMProcessingInstruction is a BaseXmlDomProcessingInstruction
+77065>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77066>>>End_Class
+77067>>>
+77067>>>Class cXMLDOMTextNode is a BaseXmlDomTextNode
+77068>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77069>>>End_Class
+77070>>>
+77070>>>Class cXMLDOMCDATASection is a BaseXmlDomCDATASection
+77071>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77072>>>End_Class
+77073>>>
+77073>>>Class cXMLDOMDocumentType is a BaseXmlDomDocumentType
+77074>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77075>>>    
+77075>>>
+77075>>>//        Function EnumerateEntities Integer iMsg Integer hoReceiver Integer bEnumerate Integer iSomeValue Returns Handle
+77075>>>//            Integer i
+77075>>>//            Integer hoNode
+77075>>>//            Integer hoNamedNodeMap
+77075>>>//            Integer hinfcNamedNodeMap
+77075>>>//            Integer iLength
+77075>>>
+77075>>>//            Get phEntities To hinfcNamedNodeMap
+77075>>>
+77075>>>//            showln "The interface of the named node map is " hinfcNamedNodeMap
+77075>>>
+77075>>>//            If (hinfcNamedNodeMap <> 0) Begin
+77075>>>//                Get CreateXMLObject U_cXMLDOMNamedNodeMap hinfcNamedNodeMap to hoNamedNodeMap
+77075>>>//                Get piLength Of hoNamedNodeMap To iLength
+77075>>>//                Showln "There are " iLength " items in map"
+77075>>>
+77075>>>//                ///                For i From 0 To (NodeListLength(hoNamedNodeMap)-1)
+77075>>>//                ///                    // For each record, process its fields.
+77075>>>//                //                    Get CollectionNode Of hoNamedNodeMap i To hoNode
+77075>>>//                //                    Send iMsg Of hoReceiver hoNode bEnumerate iSomeValue
+77075>>>//                //                    Send Destroy_Object Of hoNode
+77075>>>//                //                Loop
+77075>>>//            End
+77075>>>//            Send Destroy To hoNamedNodeMap
+77075>>>//            Function_Return 0
+77075>>>//        End_Function
+77075>>>
+77075>>>//        Function EnumerateNotations Integer iMsg Integer hoReceiver Integer bEnumerate Integer iSomeValue Returns Handle
+77075>>>//            Integer i
+77075>>>//            Integer hoNode
+77075>>>//            Integer hoNamedNodeMap
+77075>>>//            Integer hinfcNamedNodeMap
+77075>>>//            Integer iLength
+77075>>>
+77075>>>//            Object oNamedNodeMap Is A cXMLDOMNamedNodeMap
+77075>>>//                Move Self To hoNamedNodeMap
+77075>>>//            End_Object
+77075>>>
+77075>>>//            Get phNotations To hinfcNamedNodeMap
+77075>>>
+77075>>>//            showln "The interface of the named node map is " hinfcNamedNodeMap
+77075>>>
+77075>>>//            If (hinfcNamedNodeMap <> 0) Begin
+77075>>>//                Set XMLInterface Of hoNamedNodeMap To hinfcNamedNodeMap
+77075>>>//                Get piLength Of hoNamedNodeMap To iLength
+77075>>>//                Showln "There are " iLength " items in map"
+77075>>>
+77075>>>/////                For i From 0 To (NodeListLength(hoNamedNodeMap)-1)
+77075>>>/////                    // For each record, process its fields.
+77075>>>////                    Get CollectionNode Of hoNamedNodeMap i To hoNode
+77075>>>////                    Send iMsg Of hoReceiver hoNode bEnumerate iSomeValue
+77075>>>////                    Send Destroy_Object Of hoNode
+77075>>>////                Loop
+77075>>>//            End
+77075>>>//            Send Destroy_Object To hoNamedNodeMap
+77075>>>//            Function_Return 0
+77075>>>//        End_Function
+77075>>>
+77075>>>End_Class
+77076>>>
+77076>>>Class cXMLDOMNotation is a BaseXmlDomNotation
+77077>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77078>>>End_Class
+77079>>>
+77079>>>Class cXMLDOMEntity is a BaseXmlDomEntity
+77080>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77081>>>End_Class
+77082>>>
+77082>>>Class cXMLDOMEntityReference is a BaseXmlDomEntityReference
+77083>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77084>>>End_Class
+77085>>>
+77085>>>Class cXMLDOMDocumentFragment is a BaseXmlDomDocumentFragment
+77086>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77087>>>End_Class
+77088>>>
+77088>>>
+77088>>>Class cXMLDOMParseError is a BaseXMLDomParseError
+77089>>>    // returns an error sub-object as a sibling of this error object
+77089>>>    Function ErrorItemNode Integer iItem Returns Handle
+77091>>>        Handle hoParseErrorNode hoParent
+77091>>>        Handle hParseErrorIntf
+77091>>>        Get ErrorItem iItem to hParseErrorIntf
+77092>>>        If (hParseErrorIntf) Begin
+77094>>>            // add to parent in case developer destroys the current object
+77094>>>            Get Parent to hoParent
+77095>>>            Get Create of hoParent U_cXMLDOMParseError to hoParseErrorNode
+77096>>>            Set XmlInterface of hoParseErrorNode to hParseErrorIntf
+77097>>>        End
+77097>>>>
+77097>>>        Function_Return hoParseErrorNode
+77098>>>    End_Function         
+77099>>>End_Class
+77100>>>
+77100>>>// Base document class with Base functions.
+77100>>>
+77100>>>Class cXMLDOMDocument is an BaseXmlDomDocument
+77101>>>
+77101>>>    Import_Class_Protocol cXMLDOMNodeMixin
+77102>>>
+77102>>>    Procedure Construct_Object
+77104>>>        Handle hInfc
+77104>>>        Forward Send Construct_Object
+77106>>>        Property String psDocumentName ""
+77107>>>        Property Integer phPrivateDocumentElement 0
+77108>>>        Property Handle phoTempDomNode (Create(Self,U_cXMLDomNode))
+77109>>>        Property Handle phoTempDomNodeMap (Create(Self,U_cXMLDOMNamedNodeMap))
+77110>>>        
+77110>>>        // added in 15.1. If no COM pointer, msxml6 is most likely not installed. This will
+77110>>>        // raise an unhandled error, which could be augmented to do something else.
+77110>>>        Get XmlInterface to hInfc
+77111>>>        If (hInfc=0) Begin
+77113>>>            Send ErrorCreatingXMLObject
+77114>>>        End
+77114>>>>
+77114>>>        
+77114>>>        // as of 18.0 pbAsync now defaults to False. In most cases, this is what you want
+77114>>>        Set pbAsync to False
+77115>>>    End_Procedure
+77116>>>
+77116>>>    // returns the classId for the passed NodeType. This is a good augmentation point. All nodes
+77116>>>    // within an xml document come here to get a class. So, if you want to augment and return a
+77116>>>    // different class, just check the node type and return whatever -- else forward
+77116>>>
+77116>>>    Function NodeClassId Integer iType Returns Integer
+77118>>>        Integer iClassId
+77118>>>        Case Begin
+77118>>>            Case (iType=NODE_ELEMENT)                   Move U_cXMLDOMElement      to iClassId
+77121>>>            Case (iType=NODE_ATTRIBUTE)                 Move U_cXMLDOMAttribute    to iClassId
+77125>>>            Case (iType=NODE_TEXT)                      Move U_cXMLDOMTextNode     to iClassId
+77129>>>            Case (iType=NODE_CDATA_SECTION)             Move U_cXMLDOMCDATASection to iClassId
+77133>>>            Case (iType=NODE_ENTITY_REFERENCE)          Move U_cXMLDOMEntityReference to iClassId
+77137>>>            Case (iType=NODE_ENTITY)                    Move U_cXMLDOMEntity       to iClassId
+77141>>>            Case (iType=NODE_PROCESSING_INSTRUCTION)    Move U_cXMLDOMProcessingInstruction to iClassId
+77145>>>            Case (iType=NODE_COMMENT)                   Move U_cXMLDOMComment      to iClassId
+77149>>>            Case (iType=NODE_DOCUMENT)                  Move U_cXMLDOMDocument     to iClassId
+77153>>>            Case (iType=NODE_DOCUMENT_TYPE)             Move U_cXMLDOMDocumentType to iClassId
+77157>>>            Case (iType=NODE_DOCUMENT_FRAGMENT)         Move U_cXMLDOMDocumentFragment to iClassId
+77161>>>            Case (iType=NODE_NOTATION)                  Move U_cXMLDOMNotation     to iClassId
+77165>>>            Case (iType=0)                              Move 0                     to iClassId // this is an error!!
+77169>>>            Case Else                                   Move U_cXMLDOMNode         to iClassId
+77171>>>        Case End
+77171>>>        Function_Return iClassId
+77172>>>    End_Function
+77173>>>
+77173>>>    // Load an XML Document. The name of the document is stored in a property
+77173>>>    // that must be set for this function to work correctly.
+77173>>>
+77173>>>    Function LoadXMLDocument Returns Integer
+77175>>>        String sDocumentName
+77175>>>        Integer bRetVal
+77175>>>        Get psDocumentName to sDocumentName
+77176>>>        Get LoadDocument sDocumentName to bRetVal
+77177>>>        If (bRetVal = 0);            Function_Return True
+77180>>>        Else;            Function_Return False
+77182>>>    End_Function
+77183>>>
+77183>>>    Function SaveXMLDocument Returns Integer
+77185>>>        String sDocumentName
+77185>>>        Integer bRetVal
+77185>>>        Get psDocumentName to sDocumentName
+77186>>>        Get SaveDocument sDocumentName to bRetVal
+77187>>>        Function_Return bRetVal
+77188>>>    End_Function
+77189>>>
+77189>>>    // Load an XML from a string. This aguments the C message to ret 1 if Ok and 0 if error.
+77189>>>    //
+77189>>>    Function LoadXML String sXML Returns Integer
+77191>>>        Integer bRetVal
+77191>>>        // for some reason the parser will not work properly with embedded double quotes.
+77191>>>        // Change all " to ' in document.
+77191>>>        //Move (replaces('"',sXML,"'")) to sXML  // removed this. Bad Idea.
+77191>>>        Forward Get LoadXml sXML to bRetVal
+77193>>>        If (bRetVal = 0) ;            Function_Return True
+77196>>>        Else;            Function_Return False
+77198>>>    End_Function
+77199>>>
+77199>>>    // Load an XML string from an address. This aguments the C message to ret 1 if Ok and 0 if error.
+77199>>>    //
+77199>>>    Function LoadXMLFromAddress Address pXML Returns Integer
+77201>>>        Integer bRetVal
+77201>>>        Forward Get LoadXmlFromAddress pXML to bRetVal
+77203>>>        If (bRetVal = 0) ;            Function_Return True
+77206>>>        Else;            Function_Return False
+77208>>>    End_Function
+77209>>>
+77209>>>
+77209>>>    // Allow Nodes and Node node lists to get the parent document.
+77209>>>
+77209>>>    Function DocumentObject Returns Handle
+77211>>>        Function_Return Self
+77212>>>    End_Function
+77213>>>
+77213>>>    // Access to the root node allows for searches and iterations.
+77213>>>    // The root node is a cNode.
+77213>>>
+77213>>>    Function DocumentElement Returns Handle
+77215>>>        Integer hNewNode       // Object ID of Root Node
+77215>>>        Integer infcNode   // XML Element Interface
+77215>>>// we used to buffer this so we'd always return the same object. This is dangerous. If the devloper
+77215>>>// deletes the root and then creates some other object with this name, we will have problems. Now we
+77215>>>// always create a new root now - which means you can create multiple roots (which is probably ok).
+77215>>>
+77215>>>//        Get phPrivateDocumentElement to hNewNode
+77215>>>//        // if for some reason the developer sends destroy to the root element then
+77215>>>//        // we must check that acutally exists. If not, create the root all over again
+77215>>>//        Get Object_Id of hNewNode to hNewNode // if Object no longer exists, 0 is returned
+77215>>>//        If not (hNewNode) Begin
+77215>>>//            // Call XML to get the document root element.
+77215>>>//            Get phDocumentElement To infcNode
+77215>>>//            If infcNode Begin
+77215>>>//                Get CreateXMLObject U_cXMLDOMElement infcNode to hNewNode
+77215>>>//                Set phPrivateDocumentElement to hNewNode
+77215>>>//            end
+77215>>>//        End
+77215>>>
+77215>>>        Get phDocumentElement to infcNode
+77216>>>        If infcNode Begin
+77218>>>            Get CreateXMLObject U_cXMLDOMElement infcNode to hNewNode
+77219>>>            Set phPrivateDocumentElement to hNewNode // we no longer use this at all
+77220>>>        End
+77220>>>>
+77220>>>        Function_Return hNewNode
+77221>>>    End_Function
+77222>>>
+77222>>>    //  CreateRootNode is used to set up the first element in a document.
+77222>>>    //  It should only be used when creating new files.
+77222>>>
+77222>>>    Function CreateDocumentElement String sTagName Returns Handle
+77224>>>        Integer hNewNode       // Object ID of Root Node
+77224>>>        Integer infcNode   // XML Element Interface
+77224>>>        // Call XML to create an element in the document.
+77224>>>        Get CreateElement sTagName to infcNode
+77225>>>        // Tie the element interface to the DataFlex object.
+77225>>>        If infcNode ;            Get CreateXMLObject U_cXMLDOMElement infcNode to hNewNode
+77228>>>        // Call XML to set the root element of the document.
+77228>>>        Set phDocumentElement to infcNode
+77229>>>        Set phPrivateDocumentElement to hNewNode
+77230>>>        Function_Return hNewNode
+77231>>>    End_Function
+77232>>>
+77232>>>    Function CreateDocumentElementNS String sNamespace String sTagName Returns Handle
+77234>>>        Integer hNewNode       // Object ID of Root Node
+77234>>>        Integer infcNode iType  // XML Element Interface
+77234>>>        Get CreateElementNodeNS sNameSpace sTagName "" to hNewNode
+77235>>>        Get XmlInterface of hNewNode to infcNode
+77236>>>        Set phDocumentElement to infcNode
+77237>>>        Set phPrivateDocumentElement to hNewNode
+77238>>>        Function_Return hNewNode
+77239>>>    End_Function
+77240>>>
+77240>>>
+77240>>>
+77240>>>    // return the DocType as a document-type object. Returns 0 if no dtd
+77240>>>    // Access to information from the doc type object is limited. Use get psXML
+77240>>>    Function DocTypeNode Returns Handle
+77242>>>        Handle hinfcDocType hoDocType
+77242>>>        Get phDocType to hinfcDocType
+77243>>>        If hinfcDocType ;            Get CreateXMLObject U_cXMLDOMDocumentType hinfcDocType to hoDocType
+77246>>>        Function_Return hoDocType
+77247>>>    End_Function
+77248>>>
+77248>>>    Function phXMLErrorObject Returns Handle
+77250>>>        Integer hoParseErrorObject
+77250>>>        Integer hInfcParseError
+77250>>>        Get phParseError to hInfcParseError
+77251>>>        If hInfcParseError ;            Get CreateXMLObject U_cXMLDOMParseError hinfcParseError to hoParseErrorObject
+77254>>>        Function_Return hoParseErrorObject
+77255>>>    End_Function
+77256>>>
+77256>>>    //  The following procedure is meant to be overridden by one provided by the developer.
+77256>>>
+77256>>>    Procedure BasicParseErrorReport
+77258>>>        String sProblem
+77258>>>        String sLinePosition
+77258>>>        String sDescr
+77258>>>        String sReason
+77258>>>        String sSource
+77258>>>        Integer hoParseErrorObject
+77258>>>        Get phXMLErrorObject to hoParseErrorObject
+77259>>>        If hoParseErrorObject Begin
+77261>>>            Move (SFormat(C_$CannotLoad, psDocumentName(Self)) + "."+character(13)+character(10)) to sProblem
+77262>>>            Move (SFormat(C_$ParsingError, piLine(hoParseErrorObject), piLinePos(hoParseErrorObject))) to sLinePosition
+77263>>>            Move (sLinePosition +character(13)+character(10)) to sLinePosition
+77264>>>
+77264>>>            Move (C_$Reason + ":" * (psReason(hoParseErrorObject))  +character(13)+character(10)) to sReason
+77265>>>            Move (C_$Source + ":" * (psSrcText(hoParseErrorObject))) to sSource
+77266>>>            Move (sProblem + sLinePosition + sReason + sSource) to sDescr
+77267>>>            Error DFERR_XML_INTERNAL_ERROR sDescr
+77268>>>>
+77268>>>            Send Destroy of hoParseErrorObject
+77269>>>        End
+77269>>>>
+77269>>>        Else ;            Error DFERR_XML_INTERNAL_ERROR C_$NotCreatedParseObject
+77271>>>    End_Procedure
+77272>>>
+77272>>>    // bind an xml interface node to the passed XML object. If the
+77272>>>    // object type is of the wrong type, we will destroy it and recreate it
+77272>>>    // which is why hoNode is passed byRef.
+77272>>>    // to use this you'd have to use the lower level private messages to get the
+77272>>>    // xml interface handles and then bind them to an object. Just like in COM you could
+77272>>>    // bind these to the same object, which might save some parsing time. This is made private
+77272>>>    // because the time savings would probably be small and would not justify the extra
+77272>>>    // complexity.
+77272>>>    // It is a programming error to pass this a zero handle.
+77272>>>    Procedure BindXMLInfc Handle hInfc Handle ByRef hoNode
+77274>>>        Integer iType iClassId iType2
+77274>>>        Get piNodeType of hoNode to iType2 // type of the DF XML object
+77275>>>        
+77275>>>        // Get the node type of the infc handle w/o creating a DF object
+77275>>>        Move (invokexml(DF_IXMLDOMNODE, GET_piNodeType, hinfc, 0, 0, 0, 0)) to iType
+77276>>>        Move (invokexml(DF_IXMLDOMNODE, GET_ChangeNodeType, hinfc, iType, 1, 0, 0)) to hInfc
+77277>>>        If (hinfc=0) Begin
+77279>>>            // this should not happen and we would need to know about this.
+77279>>>            Error DFERR_XML_INTERNAL_ERROR (C_$XmlFailedNoDocObject + String(iType))
+77280>>>>
+77280>>>            Function_Return 0
+77281>>>        End
+77281>>>>
+77281>>>        // if the type is the same we can reuse the current object and binding it to the interface pointer
+77281>>>        If (iType=iType2) Begin
+77283>>>            // resuse Self and return
+77283>>>            Set XMLInterface of hoNode to hInfc
+77284>>>        End
+77284>>>>
+77284>>>        // if diffrent type, destroy the existing object and recreate it
+77284>>>        Else Begin
+77285>>>            Send Destroy of hoNode
+77286>>>            Get NodeClassId iType to iClassId
+77287>>>            Get CreateXMLObject iClassId hInfc to hoNode
+77288>>>        End
+77288>>>>
+77288>>>    End_Procedure
+77289>>>    
+77289>>>    Function ValidateDocument Returns Handle
+77291>>>        Handle hParseErrorIntf hoParseError
+77291>>>        Forward Get ValidateDocument to hParseErrorIntf
+77293>>>        If hParseErrorIntf Begin
+77295>>>            Get CreateXMLObject U_cXMLDOMParseError hParseErrorIntf to hoParseError
+77296>>>        End
+77296>>>>
+77296>>>        Function_Return hoParseError
+77297>>>    End_Function
+77298>>>    
+77298>>>    Function AddExternalSchemaDocument String sSchema Handle hoSchema Returns Boolean
+77300>>>        Handle hInfc
+77300>>>        Boolean bOk
+77300>>>        Get XmlInterface of hoSchema to hInfc
+77301>>>        Forward Get AddExternalSchemaDocument sSchema hInfc to bOk
+77303>>>        Function_Return (not(bOk))
+77304>>>    End_Function
+77305>>>        
+77305>>>    Function AddExternalSchemaFile String sSchema String sFile Returns Boolean
+77307>>>        Boolean bOk
+77307>>>        Forward Get AddExternalSchemaFile sSchema sFile to bOk
+77309>>>        Function_Return (not(bOk))
+77310>>>    End_Function
+77311>>>
+77311>>>    Procedure Set psSelectionNamespaces String sNamespaces
+77313>>>        Set psDomSecondLevelProperty "SelectionNamespaces" to sNamespaces
+77314>>>    End_Procedure
+77315>>>
+77315>>>    Function psSelectionNamespaces Returns String
+77317>>>        String  sNamespaces
+77317>>>        Get psDomSecondLevelProperty "SelectionNamespaces" to sNamespaces
+77318>>>        Function_Return sNamespaces
+77319>>>    End_Function
+77320>>>    
+77320>>>    Procedure Set pbMultipleErrorMessages Boolean bMultipleErrors
+77322>>>        Set pbDomSecondLevelProperty "MultipleErrorMessages" to bMultipleErrors
+77323>>>    End_Procedure
+77324>>>
+77324>>>    Function pbMultipleErrorMessages Returns Boolean
+77326>>>        Boolean bMultipleErrors
+77326>>>        Get pbDomSecondLevelProperty "MultipleErrorMessages" to bMultipleErrors
+77327>>>        Function_Return bMultipleErrors
+77328>>>    End_Function
+77329>>>    
+77329>>>    Procedure ErrorCreatingXMLObject
+77331>>>        Error DFERR_XML_INTERNAL_ERROR "Could not create XML COM object. MSXML6 may not be properly installed and registered."
+77332>>>>
+77332>>>    End_Procedure
+77333>>>    
+77333>>>    // returns the last parse error. If 0, you know everything parsed. This can be
+77333>>>    // used along wit pbReadyState to load XML documents in async mode. 
+77333>>>    Function LastParseError Returns Integer
+77335>>>        Integer iErr
+77335>>>        Handle hoParseErrorReport
+77335>>>        Get phXMLErrorObject to hoParseErrorReport
+77336>>>        Get piErrorCode of hoParseErrorReport to iErr
+77337>>>        Send Destroy of hoParseErrorReport 
+77338>>>        Function_Return iErr
+77339>>>    End_Function
+77340>>>    
+77340>>>
+77340>>>End_Class
+77341>>>
+77341>Use cVDFUnitResultList.pkg
+Including file: cVDFUnitResultList.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cVDFUnitResultList.pkg)
+77341>>>Use cRichEdit.pkg
+Including file: cRichEdit.pkg    (C:\Program Files (x86)\DataFlex 18.2\Pkg\cRichEdit.pkg)
+77341>>>>>use Windows.pkg
+77341>>>>>Use cEdit_Mixin.pkg
+77341>>>>>
+77341>>>>>// DFO: cRichEdit.Dfo
+77341>>>>>// DFC: cRichEdit.Dfc
+77341>>>>>
+77341>>>>>// constants used for RichEdit Properties
+77341>>>>>// peAlignment 
+77341>>>>>Enum_List 
+77341>>>>>    Define alLeft   for 1 
+77341>>>>>    Define alRight  for 2 
+77341>>>>>    Define alCenter for 3 
+77341>>>>>End_Enum_List 
+77341>>>>>
+77341>>>>>// peBullets 
+77341>>>>>Enum_List 
+77341>>>>>    Define buNone 
+77341>>>>>    Define buBullets 
+77341>>>>>    Define buArabicNumbers 
+77341>>>>>    Define buLowerLetters 
+77341>>>>>    Define buUpperLetters 
+77341>>>>>    Define buLowerRomans 
+77341>>>>>    Define buUpperRomans 
+77341>>>>>End_Enum_List 
+77341>>>>>
+77341>>>>>// peBulletStyle 
+77341>>>>>Enum_List 
+77341>>>>>    Define busRightParen   for 0 
+77341>>>>>    Define busEncloseParen for 256 
+77341>>>>>    Define busPeriod       for 512 
+77341>>>>>    Define busNumberOnly   for 768 
+77341>>>>>    Define busNoDisplay    for 1024 
+77341>>>>>End_Enum_List
+77341>>>>>    
+77341>>>>>// peLineSpacingType
+77341>>>>>Enum_List 
+77341>>>>>    Define lstSingle
+77341>>>>>    Define lstSingleAndOneHalf
+77341>>>>>    Define lstDouble
+77341>>>>>End_Enum_List
+77341>>>>>
+77341>>>>>Class cRichEdit Is A DFBaseRichEdit
+77342>>>>>
+77342>>>>>    Procedure Construct_Object
+77344>>>>>        Forward Send Construct_Object
+77346>>>>>        Send Define_cEdit_Mixin
+77347>>>>>
+77347>>>>>        On_key Key_Ctrl+Key_B send ToggleBold
+77348>>>>>        On_key Key_Ctrl+Key_I send ToggleItalics
+77349>>>>>        On_key Key_Ctrl+Key_U send ToggleUnderline
+77350>>>>>
+77350>>>>>    End_Procedure // Construct_Object
+77351>>>>>
+77351>>>>>    Import_Class_Protocol cEdit_Mixin
+77352>>>>>    
+77352>>>>>    Procedure ToggleBold
+77354>>>>>        Set pbBold to (not(pbBold(self))) 
+77355>>>>>    end_procedure
+77356>>>>>    
+77356>>>>>    Procedure ToggleItalics
+77358>>>>>        Set pbItalics to (not(pbItalics(self))) 
+77359>>>>>    end_procedure
+77360>>>>>    
+77360>>>>>    Procedure ToggleUnderline
+77362>>>>>       Set pbUnderLine to (not(pbUnderLine(self))) 
+77363>>>>>    end_procedure
+77364>>>>>
+77364>>>>>End_Class
+77365>>>>>
+77365>>>
+77365>>>Class cVDFUnitResultList is a cRichEdit
+77366>>>    Procedure Construct_Object
+77368>>>        Forward Send Construct_Object
+77370>>>        Set Focus_Mode to NonFocusable
+77371>>>    End_Procedure
+77372>>>    
+77372>>>    Procedure SetRunningColor
+77374>>>        Set Color to clGray
+77375>>>    End_Procedure
+77376>>>    
+77376>>>    Procedure OnExecute
+77378>>>        Send SetRunningColor
+77379>>>    End_Procedure
+77380>>>    
+77380>>>    Procedure SetSuccessColor
+77382>>>        Set Color to clLime
+77383>>>    End_Procedure
+77384>>>    
+77384>>>    Procedure SetWarningColor
+77386>>>        Set Color to clYellow
+77387>>>    End_Procedure
+77388>>>    
+77388>>>    Procedure SetFailedColor
+77390>>>        Set Color to clRed
+77391>>>    End_Procedure
+77392>>>    
+77392>>>    Procedure OnFail
+77394>>>        Send SetFailedColor
+77395>>>    End_Procedure
+77396>>>    
+77396>>>    Procedure OnSuccess
+77398>>>        Send SetSuccessColor
+77399>>>    End_Procedure
+77400>>>    
+77400>>>    Function TestResultOutputString Handle hResult Returns String
+77402>>>        String sResult sSuccess
+77402>>>        If (psSuccess(hResult) = "True") Move "" to sSuccess
+77405>>>        Else Move "*** FAILED ***" to sSuccess
+77407>>>        Move ("[" + FormatNumber(Number(SpanTotalMilliSeconds(pTime(hResult)))/1000, 3) + "]" * sSuccess * psName(hResult)) to sResult
+77408>>>        Function_Return sResult
+77409>>>    End_Function
+77410>>>    
+77410>>>    Procedure StartTestResults
+77412>>>    End_Procedure
+77413>>>    
+77413>>>    Procedure EndTestResults
+77415>>>    End_Procedure
+77416>>>    
+77416>>>    Procedure OutputTestResult Handle hResult Integer iIndentation
+77418>>>        String sResult
+77418>>>        Get TestResultOutputString hResult iIndentation to sResult
+77419>>>        Move (Pad("", iIndentation * 4) + sResult) to sResult
+77420>>>        Integer iStart iEnd
+77420>>>        String sValue
+77420>>>        Send Select_All
+77421>>>        Get SelText to sValue
+77422>>>        Move (Length(sValue)) to iStart
+77423>>>        Send AppendTextLn (Replaces("_", sResult, " "))
+77424>>>        Boolean bFailed
+77424>>>        Move (Pos("*** FAILED ***", sResult) > 0) to bFailed
+77425>>>        If (not(bFailed)) Procedure_Return
+77428>>>        Send Select_All
+77429>>>        Get SelText to sValue
+77430>>>        Move (Length(sValue)) to iEnd
+77431>>>        Send SetSel iStart iEnd
+77432>>>        Set pbBold to bFailed
+77433>>>        Send SetSel 0 0
+77434>>>    End_Procedure
+77435>>>    
+77435>>>    Procedure OutputTestResults Handle hTestFixture Integer iIndentation
+77437>>>        Handle hTestCatalog hTest
+77437>>>        Get phTestCatalog of hTestFixture to hTestCatalog
+77438>>>        Send IteratorReset to hTestCatalog
+77439>>>        While (IteratorMoveNext(hTestCatalog))
+77443>>>            Get CurrentTest of hTestCatalog to hTest
+77444>>>            Send OutputTestResult (oTestResult(hTest)) iIndentation
+77445>>>        Loop
+77446>>>>
+77446>>>    End_Procedure
+77447>>>    
+77447>>>    Procedure OutputTestFixtureResult Handle hTestFixture Integer iIndentation
+77449>>>        Handle hResult
+77449>>>        Move (oTestFixtureResult(hTestFixture)) to hResult
+77450>>>        Send OutputTestResult hResult iIndentation
+77451>>>        Send OutputTestResults hTestFixture (iIndentation + 1)
+77452>>>    End_Procedure
+77453>>>    
+77453>>>    Procedure OutputTestFixture Handle hTestFixture Integer iIndentation
+77455>>>        Send OutputTestFixtureResult hTestFixture iIndentation
+77456>>>        Send OutputTestFixtureCatalog (oTestFixtureCatalog(hTestFixture)) (iIndentation + 1)
+77457>>>    End_Procedure
+77458>>>    
+77458>>>    Procedure OutputTestFixtureCatalog Handle hTestFixtureCatalog Integer iIndentation
+77460>>>        Integer iIndentation_
+77460>>>        If (num_arguments >= 2) Move iIndentation to iIndentation_
+77463>>>        Send IteratorReset to hTestFixtureCatalog
+77464>>>        While (IteratorMoveNext(hTestFixtureCatalog))
+77468>>>            Send OutputTestFixture (CurrentTestFixture(hTestFixtureCatalog)) iIndentation_
+77469>>>        Loop
+77470>>>>
+77470>>>    End_Procedure
+77471>>>    
+77471>>>    Procedure OutputResults Handle hTestFixtureCatalog
+77473>>>        Send StartTestResults
+77474>>>        Send Delete_Data
+77475>>>        Send OutputTestFixtureCatalog hTestFixtureCatalog
+77476>>>        Send EndTestResults
+77477>>>    End_Procedure
+77478>>>    
+77478>>>    Procedure OnExecuteFinished
+77480>>>    End_Procedure
+77481>>>End_Class
+77482>Use cVDFUnitResultXml.pkg
+Including file: cVDFUnitResultXml.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cVDFUnitResultXml.pkg)
+77482>>>Use Flexml.pkg
+77482>>>
+77482>>>Class cVDFUnitResultXml is a cXMLDOMDocument
+77483>>>    Procedure Construct_Object
+77485>>>        Forward Send Construct_Object
+77487>>>        Property Handle phRoot
+77488>>>    End_Procedure
+77489>>>    
+77489>>>    Procedure OnExecute
+77491>>>    End_Procedure
+77492>>>    
+77492>>>    Procedure OnFail
+77494>>>    End_Procedure
+77495>>>    
+77495>>>    Procedure OnSuccess
+77497>>>    End_Procedure
+77498>>>    
+77498>>>    Procedure InsertXmlDeclaration Handle hoRoot
+77500>>>        Handle hoNodeToInsert hoInsertedNode
+77500>>>        Get CreateChildProcessingInstruction of hoRoot "xml" 'version="1.0" encoding="ISO-8859-1"' to hoNodeToInsert
+77501>>>        If (hoNodeToInsert > 0) Begin
+77503>>>            Get InsertBeforeNode of hoNodeToInsert hoRoot to hoInsertedNode
+77504>>>            If ((hoInsertedNode <> hoNodeToInsert) and (hoInsertedNode > 0)) Begin
+77506>>>                Send Destroy of hoInsertedNode
+77507>>>            End
+77507>>>>
+77507>>>            Send Destroy of hoNodeToInsert
+77508>>>        End
+77508>>>>
+77508>>>    End_Procedure
+77509>>>
+77509>>>    Procedure StartTestResults
+77511>>>        Handle hRoot
+77511>>>        Get CreateDocumentElement "testsuites" to hRoot
+77512>>>        Send InsertXmlDeclaration hRoot
+77513>>>        Set phRoot to hRoot
+77514>>>    End_Procedure
+77515>>>    
+77515>>>    Procedure EndTestResults
+77517>>>        String sXml
+77517>>>        Get psXML to sXml
+77518>>>        Integer iResult
+77518>>>        Get SaveXMLDocument to iResult
+77519>>>        Send Destroy of (phRoot(Self))
+77520>>>    End_Procedure
+77521>>>    
+77521>>>    Procedure AddErrorNode Handle hNode String sErrorMessage
+77523>>>        Handle hNewNode
+77523>>>        Get AddElement of hNode "failure" sErrorMessage to hNewNode
+77524>>>        Send AddAttribute to hNewNode "type" "error-type"
+77525>>>        Send Destroy of hNewNode
+77526>>>    End_Procedure
+77527>>>    
+77527>>>    Function OutputTestResult Handle hNode String sTagName Handle hResult Returns Handle
+77529>>>        String sName
+77529>>>        Get psName of hResult to sName
+77530>>>        Handle hNewNode
+77530>>>        Get AddElement of hNode sTagName "" to hNewNode
+77531>>>        Send AddAttribute to hNewNode "name" sName
+77532>>>        Number nTime
+77532>>>        Move (SpanTotalMilliSeconds(pTime(hResult))/1000) to nTime
+77533>>>        Send AddAttribute to hNewNode "time" (Replaces(",", nTime, "."))
+77534>>>        If (psErrorMessage(hResult) <> "") Send AddErrorNode hNewNode (psErrorMessage(hResult))
+77537>>>        Function_Return hNewNode
+77538>>>    End_Function
+77539>>>    
+77539>>>    Procedure OutputTestResults Handle hNode Handle hTestFixture
+77541>>>        Handle hTestCatalog hTest hResult hNewNode
+77541>>>        Get phTestCatalog of hTestFixture to hTestCatalog
+77542>>>        Send IteratorReset to hTestCatalog
+77543>>>        String sClassName
+77543>>>        Move (oTestFixtureResult(hTestFixture)) to hResult
+77544>>>        Get psName of hResult to sClassName
+77545>>>        While (IteratorMoveNext(hTestCatalog))
+77549>>>            Get CurrentTest of hTestCatalog to hTest
+77550>>>            Move (oTestResult(hTest)) to hResult
+77551>>>            Get OutputTestResult hNode "testcase" hResult to hNewNode
+77552>>>            Send AddAttribute to hNewNode "classname" sClassName
+77553>>>            Send Destroy of hNewNode
+77554>>>        Loop
+77555>>>>
+77555>>>    End_Procedure
+77556>>>    
+77556>>>    Function OutputTestFixtureResult Handle hNode Handle hTestFixture Returns Handle
+77558>>>        Handle hNewNode hResult
+77558>>>        Move (oTestFixtureResult(hTestFixture)) to hResult
+77559>>>        Get OutputTestResult hNode "testsuite" hResult to hNewNode
+77560>>>        Send AddAttribute to hNewNode "tests" (TotalNumberOfTests(hTestFixture))
+77561>>>        Send OutputTestResults hNewNode hTestFixture
+77562>>>        Function_Return hNewNode
+77563>>>    End_Function
+77564>>>    
+77564>>>    Procedure OutputTestFixture Handle hTestFixture Handle hNode
+77566>>>        Handle hNewNode
+77566>>>        Get OutputTestFixtureResult hNode hTestFixture to hNewNode
+77567>>>        Send OutputTestFixtureCatalog (oTestFixtureCatalog(hTestFixture)) hNewNode
+77568>>>        Send Destroy of hNewNode
+77569>>>    End_Procedure
+77570>>>    
+77570>>>    Procedure OutputTestFixtureCatalog Handle hCatalog Handle hNode
+77572>>>        Send IteratorReset to hCatalog
+77573>>>        While (IteratorMoveNext(hCatalog))
+77577>>>            Send OutputTestFixture (CurrentTestFixture(hCatalog)) hNode
+77578>>>        Loop
+77579>>>>
+77579>>>    End_Procedure
+77580>>>    
+77580>>>    Procedure OutputResults Handle hTestFixtureCatalog
+77582>>>        Send StartTestResults
+77583>>>        Handle hNode
+77583>>>        Get phRoot to hNode
+77584>>>        Send OutputTestFixtureCatalog hTestFixtureCatalog hNode
+77585>>>        Send EndTestResults
+77586>>>    End_Procedure
+77587>>>    
+77587>>>    Procedure OnExecuteFinished
+77589>>>    End_Procedure
+77590>>>End_Class
+77591>Use cRichEdit.pkg
+77591>Use cProgressBar.pkg
+Including file: cProgressBar.pkg    (C:\Program Files (x86)\DataFlex 18.2\Pkg\cProgressBar.pkg)
+77591>>>Use Windows.pkg
+77591>>>Use cWinControl.pkg
+77591>>>Use CommCtrl.pkg
+77591>>>
+77591>>>Type tPbRange
+77591>>>    Field tPbRange.iLow  as DWord
+77591>>>    Field tPbRange.iHigh as DWord
+77591>>>End_Type
+77591>>>
+77591>>>//{ OverrideProperty=pbEnabled DesignTime=False }
+77591>>>Class cProgressBar is a cWinControl
+77592>>>
+77592>>>    Procedure Construct_Object
+77594>>>        Forward Send Construct_Object
+77596>>>        Property Integer private_piMinimum
+77597>>>        Property Integer private_piMaximum   100
+77598>>>        Property Integer private_piAdvanceBy 10
+77599>>>        Property Integer private_piPosition
+77600>>>        Property Integer private_pbVertical  False
+77601>>>        Property Integer private_pbSmooth    False
+77602>>>        Property Integer private_piBackColor clDefault
+77603>>>        Property Integer private_piBarColor  clDefault
+77604>>>
+77604>>>        Send Define_ToolTip_Support_Mixin
+77605>>>
+77605>>>        Set External_Class_Name 'cVdfProgressBar' To 'msctls_progress32'
+77606>>>        Set Focus_Mode to NonFocusable
+77607>>>        Set Skip_State to True
+77608>>>        Set pbUseFormWindowHandle to False     // Must come after Define_ToolTip_Support_Mixin
+77609>>>    End_Procedure
+77610>>>
+77610>>>    Import_Class_Protocol ToolTip_Support_Mixin
+77611>>>
+77611>>>    Procedure Set piMinimum Integer iMin
+77613>>>        Integer iMax
+77613>>>
+77613>>>        Set private_piMinimum to iMin
+77614>>>        Get private_piMaximum To iMax
+77615>>>        Send Windows_Message PBM_SETRANGE32 iMin iMax
+77616>>>    End_Procedure
+77617>>>    Function piMinimum Returns Integer
+77619>>>        If (Window_Handle(self)) Function_Return (WindowsMessage(PBM_GETRANGE, 1, 0))
+77622>>>        Else Function_Return (private_piMinimum(self))
+77624>>>    End_Function
+77625>>>
+77625>>>    Procedure Set piMaximum Integer iMax
+77627>>>        Integer iMin
+77627>>>
+77627>>>        Set private_piMaximum to iMax
+77628>>>        Get private_piMinimum To iMin
+77629>>>        Send Windows_Message PBM_SETRANGE32 iMin iMax
+77630>>>    End_Procedure
+77631>>>    Function piMaximum Returns Integer
+77633>>>        If (Window_Handle(self)) Function_Return (WindowsMessage(PBM_GETRANGE, 0, 0))
+77636>>>        Else Function_Return (private_piMaximum(self))
+77638>>>    End_Function
+77639>>>
+77639>>>    Procedure Set piAdvanceBy Integer iAdvanceBy
+77641>>>        Set private_piAdvanceBy To iAdvanceBy
+77642>>>        Send Windows_Message PBM_SETSTEP iAdvanceBy 0
+77643>>>    End_Procedure
+77644>>>    Function piAdvanceBy Returns Integer
+77646>>>        Function_Return (private_piAdvanceBy(self))
+77647>>>    End_Function
+77648>>>
+77648>>>    Procedure Set piPosition Integer iPos
+77650>>>        Set private_piPosition To iPos
+77651>>>        Send Windows_Message PBM_SETPOS iPos 0
+77652>>>    End_Procedure
+77653>>>
+77653>>>    Function piPosition Returns Integer
+77655>>>        If (Window_Handle(self)) Function_Return (WindowsMessage(PBM_GETPOS, 0, 0))
+77658>>>        Else Function_Return (private_piPosition(self))
+77660>>>    End_Function
+77661>>>
+77661>>>    Procedure Set pbVertical Boolean bVertical
+77663>>>        If (private_pbVertical(self) <> bVertical) Begin
+77665>>>            Set private_pbVertical To bVertical
+77666>>>           Send DoRecreateWindow
+77667>>>        End
+77667>>>>
+77667>>>    End_Procedure
+77668>>>
+77668>>>    Function pbVertical Returns Boolean
+77670>>>        Function_Return (private_pbVertical(self))
+77671>>>    End_Function
+77672>>>
+77672>>>    Procedure Set pbSmooth Boolean bSmooth
+77674>>>        If (private_pbSmooth(self) <> bSmooth) Begin
+77676>>>           Set private_pbSmooth To bSmooth
+77677>>>           Send DoRecreateWindow
+77678>>>        End
+77678>>>>
+77678>>>    End_Procedure
+77679>>>    Function pbSmooth Returns Boolean
+77681>>>        Function_Return (private_pbSmooth(self))
+77682>>>    End_Function
+77683>>>
+77683>>>    Procedure Set piBackColor Integer rgbColor
+77685>>>        Set private_piBackColor To rgbColor
+77686>>>        Send Windows_Message PBM_SETBKCOLOR 0 rgbColor
+77687>>>    End_Procedure
+77688>>>    Function piBackColor Returns Integer
+77690>>>        Function_Return (private_piBackColor(self))
+77691>>>    End_Function
+77692>>>
+77692>>>    Procedure Set piBarColor Integer rgbColor
+77694>>>        Set private_piBarColor To rgbColor
+77695>>>        Send Windows_Message PBM_SETBARCOLOR 0 rgbColor
+77696>>>    End_Procedure
+77697>>>    Function piBarColor Returns Integer
+77699>>>        Function_Return (private_piBarColor(self))
+77700>>>    End_Function
+77701>>>
+77701>>>    Procedure DoAdvance
+77703>>>        Send Windows_Message PBM_STEPIT 0 0
+77704>>>    End_procedure
+77705>>>
+77705>>>    Procedure DoAdvanceBy  Integer iAdvanceBy
+77707>>>        Send Windows_Message PBM_DELTAPOS iAdvanceBy 0
+77708>>>    End_procedure
+77709>>>
+77709>>>    Procedure private_DoInitWindow
+77711>>>        Set piBarColor  To (private_piBarColor(self))
+77712>>>        Set piBackColor To (private_piBackColor(self))
+77713>>>        Set piAdvanceBy To (private_piAdvanceBy(self))
+77714>>>        Set piMinimum   To (private_piMinimum(self))
+77715>>>        Set piMaximum   To (private_piMaximum(self))
+77716>>>        Set piPosition  To (private_piPosition(self))
+77717>>>    End_Procedure
+77718>>>
+77718>>>    Procedure Page_Object Integer iState
+77720>>>        Handle hWnd
+77720>>>
+77720>>>        Get Window_Handle To hWnd
+77721>>>        If (hWnd=0 and iState) Begin
+77723>>>            Set Window_Style To PBS_VERTICAL (private_pbVertical(self))
+77724>>>            Set Window_Style To PBS_SMOOTH   (private_pbSmooth(self))
+77725>>>            Forward Send Page_Object True
+77727>>>        End
+77727>>>>
+77727>>>        Else Forward Send Page_Object iState
+77730>>>     
+77730>>>        // Handle tooltip support....
+77730>>>        If (iState = 0) Begin
+77732>>>            Send RequestDeleteToolTip
+77733>>>        End 
+77733>>>>
+77733>>>        Else Begin
+77734>>>            Send RequestAddToolTip
+77735>>>        End
+77735>>>>
+77735>>>    End_Procedure
+77736>>>
+77736>>>    Procedure Page Integer iState
+77738>>>        Forward Send Page iState
+77740>>>        If (iState =1) Send private_DoInitWindow
+77743>>>    End_Procedure
+77744>>>
+77744>>>    // Called by Page_Object. Handles tooltip creation. We use a dedicated
+77744>>>    // method to perform AddToolTip because it is often the case that Page_Object
+77744>>>    // is implemented in a mixin class.
+77744>>>    Procedure RequestAddToolTip
+77746>>>        Send AddToolTip
+77747>>>    End_Procedure  // RequestAddToolTip
+77748>>>
+77748>>>
+77748>>>    // Called by Page_Object. Handles tooltip removal. 
+77748>>>    Procedure RequestDeleteToolTip
+77750>>>        Send DeleteToolTip
+77751>>>    End_Procedure // RequestDeleteToolTip
+77752>>>End_Class
+77753>Use cUnattendedErrorSystem.pkg
+Including file: cUnattendedErrorSystem.pkg    (C:\Projects\Bitbucket\vdfunit\VDFUnit\AppSrc\cUnattendedErrorSystem.pkg)
+77753>>>Use Dferror.pkg
+77753>>>
+77753>>>Class cUnattendedErrorSystem is a ErrorSystem
+77754>>>    Procedure construct_object
+77756>>>        Forward Send Construct_Object
+77758>>>        Property String psLastErrorMessage
+77759>>>        Property Boolean pbShowErrorDialog False
+77760>>>    End_Procedure
+77761>>>    
+77761>>>    Procedure UnhandledErrorDisplay Integer iErrorLine String sMessage 
+77763>>>        If (pbShowErrorDialog(Self)) Forward Send UnhandledErrorDisplay iErrorLine sMessage
+77767>>>        String sCRLF
+77767>>>        Move (Character(13)+Character(10)) to sCRLF
+77768>>>        Move (Replaces("\n",sMessage,sCRLF)) to sMessage
+77769>>>        Move (Replaces("\"+sCRLF, sMessage, "\n")) to sMessage
+77770>>>        Set psLastErrorMessage to sMessage
+77771>>>    End_Procedure
+77772>>>End_Class
+77773>
+Summary
+Memory Available: 2147483646
+Total Warnings : 0
+Total Errors   : 0
+Total Symbols  : 44599
+Total Resources: 0
+Total Commands : 77772
+Total Windows  : 1
+Total Pages    : 1
+Static Data    : 466357
+Message area   : 534310
+Total Blocks   : 27840
