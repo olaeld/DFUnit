@@ -1,4 +1,4 @@
-Use VDFUnit.pkg
+Use DFUnit.pkg
 Use AOUT.CH3.LogAn\cCalculator.pkg
 
 Object cCalculatorTests is a cTestFixture
