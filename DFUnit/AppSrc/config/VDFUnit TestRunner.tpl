@@ -1,5 +1,4 @@
 Use DFAllEnt.pkg
-Use DFUnit.pkg
 Use cUnattendedErrorSystem.pkg
 
 Object oApplication is a cApplication
@@ -10,6 +9,9 @@ Object oUnattendedErrorSystem is a cUnattendedErrorSystem
         Set pbShowErrorDialog to True
     End
 End_Object
+
+Object oApplication is a cApplication
+End_Object
 Use cTestFixture.pkg
 Use cTest.pkg
 
@@ -17,12 +19,14 @@ Object oMain is a Panel
     
     Property Boolean pbAutoRunTests Public True
     
-    Set Label to "AOUT.CH3.LogAn"
+    Set Label to "DFUnit TestRunner"
     Set Size to 213 433
     
     Object oClientArea is a ClientArea
         Object Total_test_run is a cTestFixture
-            Use AOUT.CH3.Logan.Tests\cCalculatorTests.pkg
+            
+            Use oDFUnitTests.pkg
+            
         End_Object
         Use DFUnitTestRunner.vw
     End_Object

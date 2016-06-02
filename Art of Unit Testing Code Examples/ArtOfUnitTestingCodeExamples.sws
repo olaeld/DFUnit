@@ -1,9 +1,9 @@
 [Properties]
-Version=15.1
+Version=18.2
 [WorkspacePaths]
 ConfigFile=.\Programs\Config.ws
 [Libraries]
-Lib1=..\VDFUnit\VDFUnit.sws
+Lib1=..\DFUnit\DFUnit.sws
 [Projects]
 Project0=AOUT.CH1.Examples.src
 Project1=AOUT.Ch1.Examples.Tests.src

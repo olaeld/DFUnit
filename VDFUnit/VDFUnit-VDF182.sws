@@ -1,8 +1,0 @@
-[Properties]
-Version=18.2
-[WorkspacePaths]
-ConfigFile=.\Programs\Config.ws
-[Libraries]
-Lib1=..\VDFPatterns\VDFPatterns-VDF182.sws
-[Projects]
-Project0=VDFUnit TestRunner.src
