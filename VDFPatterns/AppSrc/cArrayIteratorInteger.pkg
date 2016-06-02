@@ -4,7 +4,7 @@ Use cArrayIterator.pkg
 Class cArrayIteratorInteger is a cArrayIterator
     Procedure Construct_Object
         Forward Send Construct_Object
-        { Visibility=Private }
+        {Visibility = Private}
         Property Integer[] piArray
     End_Procedure
     
@@ -60,4 +60,11 @@ Class cArrayIteratorInteger is a cArrayIterator
         Function_Return iArray[iCurrent]
     End_Function
     
+    //Returns number of items in collection
+    { Visibility=Public }
+    Function NumberOfItems Returns Integer
+        Integer[] iArray
+        Get piArray to iArray
+        Function_Return (SizeOfArray(iArray))
+    End_Function
 End_Class
