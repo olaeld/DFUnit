@@ -2,6 +2,7 @@ Use DFAllEnt.pkg
 Use cUnattendedErrorSystem.pkg
 
 Object oApplication is a cApplication
+    Set psAutoOpenWorkspace to ""
 End_Object
 Object oUnattendedErrorSystem is a cUnattendedErrorSystem
     Move Self to Error_Object_Id
@@ -10,8 +11,6 @@ Object oUnattendedErrorSystem is a cUnattendedErrorSystem
     End
 End_Object
 
-Object oApplication is a cApplication
-End_Object
 Use cTestFixture.pkg
 Use cTest.pkg
 
