@@ -2,7 +2,7 @@
 Home=..\
 AppSrcPath=.\AppSrc
 AppHTMLPath=.\
-BitmapPath=.\
+BitmapPath=.\Bitmaps
 IdeSrcPath=.\IdeSrc
 DataPath=.\
 DDSrcPath=.\
