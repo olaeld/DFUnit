@@ -1,7 +1,5 @@
 Use "DFUnit Precompile.pkg"
 
-Object oApplication is a cApplication
-End_Object
 Object oUnattendedErrorSystem is a cUnattendedErrorSystem
     Move Self to Error_Object_Id
     If (IsDebuggerPresent()) Begin
