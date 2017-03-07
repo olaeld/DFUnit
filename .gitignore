@@ -1,0 +1,6 @@
+DFUnit/test_results.xml
+*.dep
+*.prn
+DFUnit/IdeSrc/Workspace.loc
+*.dbg
+*.exe
