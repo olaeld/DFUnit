@@ -1,4 +1,4 @@
-Use cArrayIteratorInteger.pkg
+Use cArrayIterator.pkg
 
 Class cTestFixtureCatalog is a cArrayIteratorInteger
     Procedure Construct_Object

@@ -1,4 +1,4 @@
-Use cArrayIteratorInteger.pkg
+Use cArrayIterator.pkg
 
 Class cTestCatalog is a cArrayIteratorInteger
     Procedure Construct_Object
