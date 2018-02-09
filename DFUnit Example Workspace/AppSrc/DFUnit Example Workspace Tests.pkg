@@ -8,5 +8,5 @@ Use Mock_spec.pkg
 Use TestFixture_spec.pkg
 Use ExpectError_spec.pkg
 Use ObjectNameMixin_spec.pkg
-Use ArrayIteratorInteger_spec.pkg
-Use IsNumericType_spec.pkg
+Use Array_Iterator_spec.pkg
+Use String_Methods_spec.pkg

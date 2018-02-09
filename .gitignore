@@ -4,3 +4,12 @@ DFUnit/test_results.xml
 DFUnit/IdeSrc/Workspace.loc
 *.dbg
 *.exe
+*.dsk
+*.mtd
+DFUnit Example Workspace/test_results.xml
+*.fld
+*.pbg
+*.pdp
+*.pkd
+*.prp
+*.loc
