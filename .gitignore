@@ -13,3 +13,4 @@ DFUnit Example Workspace/test_results.xml
 *.pkd
 *.prp
 *.loc
+DFUnit Example Workspace/AppSrc/LoginEncryptionKey.inc
