@@ -23,6 +23,8 @@ Class cTestFixture is a cObject
         Object oTestFixtureCatalog is a cTestFixtureCatalog
         End_Object
         Set phTestFixtureNeighborhood of oTestFixtureCatalog to Self
+        
+        
         Object oTestFixtureRunner is a cTestFixtureRunner
         End_Object
         Object oTestCatalog is a cTestCatalog
@@ -76,6 +78,22 @@ Class cTestFixture is a cObject
     
     Procedure CatalogTestFixture
         Send CatalogTestFixtures to oTestFixtureCatalog
+    End_Procedure
+    
+    Procedure AddTestProcedure Integer iMsg String sMsgName
+        Handle hTest
+        Get Create (RefClass(cTest)) to hTest
+        Set piTestMsg of hTest to iMsg
+        If (Left(sMsgName, 4) = "msg_") Begin
+            Move (Replace("msg_", sMsgName, "")) to sMsgName
+        End
+        Set psTestName of hTest to sMsgName
+        Send AddTestToCatalog to (phTestCatalog(Self)) hTest
+    End_Procedure
+    
+    //Registers the "published" test methods
+    Procedure RegisterInterface Integer iMsg String sMsgName String sParams String sComment
+        Send AddTestProcedure iMsg sMsgName
     End_Procedure
     
     Procedure SetTestFixtureResult

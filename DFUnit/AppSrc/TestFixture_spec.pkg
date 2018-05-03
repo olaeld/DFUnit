@@ -18,15 +18,13 @@ Object TestFixture_spec is a cTestFixture
             Set piTearDownCalled to (piTearDownCalled(Self) + 1)
         End_Procedure
         
-        Object Test1 is a cTest
-            Procedure Test
-            End_Procedure
-        End_Object
+        {Published=True}
+        Procedure Test1
+        End_Procedure
         
-        Object Test2 is a cTest
-            Procedure Test
-            End_Procedure
-        End_Object
+        {Published=True}
+        Procedure Test2
+        End_Procedure
         
         Procedure AfterTearDownOneTime
             Send AssertIAreEqual 2 (piSetupCalled(Self))

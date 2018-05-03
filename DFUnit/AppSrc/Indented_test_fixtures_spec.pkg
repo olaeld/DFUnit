@@ -23,21 +23,24 @@ Object Indented_test_fixtures_spec is a cTestFixture
             Send SetupOneTime to oSetupMock
         End_Procedure
         Object Fixture1 is a cTestFixture
-            Object We_need_a_test_object_for_setup_to_run is a cTest
-            End_Object
+            {Published=True}
+            Procedure We_need_a_test_object_for_setup_to_run
+            End_Procedure
             Procedure Setup
                 Send SetupChildFixture1 to oSetupMock
             End_Procedure
         End_Object
         Object Fixture2 is a cTestFixture
-            Object We_need_a_test_object_for_setup_to_run is a cTest
-            End_Object
+            {Published=True}
+            Procedure We_need_a_test_object_for_setup_to_run
+            End_Procedure
             Procedure Setup
                 Send SetupChildFixture2 to oSetupMock
             End_Procedure
         End_Object
-        Object We_need_a_test_object_for_setup_to_run is a cTest
-        End_Object
+        {Published=TRue}
+        Procedure We_need_a_test_object_for_setup_to_run
+        End_Procedure
         Procedure AfterTearDownOneTime
             Send AssertIAreEqual 1 (FirstTimeProcedureHasBeenCalled(oSetupMock, RefProc(SetupOneTime)))
             Send Assert (FirstTimeProcedureHasBeenCalled(oSetupMock, RefProc(SetupChildFixture1)) > 1)

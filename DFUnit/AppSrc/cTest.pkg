@@ -11,6 +11,7 @@ Class cTest is a cObject
     Procedure Construct_Object
         Forward Send Construct_Object
         Property String psTestName
+        Property Integer piTestMsg
         Property Boolean pbSuccess
         Property Integer piExpectedError
         Property Handle phErrorState
@@ -111,7 +112,14 @@ Class cTest is a cObject
     End_Procedure
     
     Procedure RunTest
-        Send Test
+        Integer iTestMsg
+        Get piTestMsg to iTestMsg
+        If (iTestMsg = 0) Begin
+            Send Test
+        End
+        Else Begin
+            Send iTestMsg
+        End
         Send CheckIfExpectedError
         Send UnexpectError
         String sErrorMessage

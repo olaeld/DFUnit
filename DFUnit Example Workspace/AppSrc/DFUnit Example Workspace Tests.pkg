@@ -2,7 +2,8 @@ Use cTestFixture.pkg
 Use cTest.pkg
 
 Use Indented_test_fixtures_spec.pkg
-Use Test_fixtures_with_tests_spec.pkg
+Use Test_fixtures_with_test_objects_spec.pkg
+Use Test_fixtures_with_test_procedures_spec.pkg
 Use Leap_year_spec.pkg
 Use Mock_spec.pkg
 Use TestFixture_spec.pkg
