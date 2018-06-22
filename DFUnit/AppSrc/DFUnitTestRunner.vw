@@ -75,7 +75,7 @@ Object oTestFixtureRunner is a cTestFixtureRunner
         Send OnExecute to hOutput
         Indicate Err False
         Send RunTestFixtures
-        If (pbFailOccured(Self)) Send OnFail to hOutput
+        If (pbFailureOccured(Self)) Send OnFail to hOutput
         Else Send OnSuccess to hOutput
         Send OnExecuteFinished to hOutput
     End_Procedure

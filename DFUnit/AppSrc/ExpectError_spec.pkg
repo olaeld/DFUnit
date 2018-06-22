@@ -10,22 +10,22 @@ Object ExpectError_spec is a cTestFixture
             Procedure Test
                 Send ExpectError DFERR_OPERATOR
             End_Procedure
-        End_Object
         
-        Procedure TearDown
-            Send Trap_Error to Error_Object_Id DFERR_PROGRAM
-            If ((Err) and (LastErr = DFERR_PROGRAM)) Begin
-                //Expected error did not occur, so dferr_program was thrown
-                //This is correct behaviour, so reset Err indicator
-                Move False to Err
-                Move 0 to LastErr
-            End
-            Else Begin
-                //Expected error did not occur, but dferr_program was not thrown
-                //Something must be wrong with ExpectError
-                Error DFERR_PROGRAM "ExpectError does not work"
-            End
-        End_Procedure
+            Procedure FinishTest
+                Send Trap_Error to Error_Object_Id DFERR_PROGRAM
+                Boolean bExpectedErrorOccured
+                Move ((Err) and (LastErr = DFERR_PROGRAM)) to bExpectedErrorOccured
+                If bExpectedErrorOccured Begin
+                    //Expected error did not occur, so dferr_program was thrown
+                    //This is correct behaviour, so reset Err indicator and failed asserts
+                    Move False to Err
+                    Move 0 to LastErr
+                    Send ResetAsserts
+                End
+                Send Assert bExpectedErrorOccured "ExpectError does not work"
+                Forward Send FinishTest
+            End_Procedure
+        End_Object
     End_Object
     
     Object Err_not_reset_inadvertently is a cTestFixture

@@ -10,6 +10,10 @@ Class cTest is a cObject
     
     Procedure Construct_Object
         Forward Send Construct_Object
+        
+        Send Define_cObjectNameMixin
+        Send Define_cAssertMixin
+        
         Property String psTestName
         Property Integer piTestMsg
         Property Boolean pbSuccess
@@ -17,7 +21,6 @@ Class cTest is a cObject
         Property Handle phErrorState
         Property DateTime pStartTime
         Property DateTime pEndTime
-        Property Integer piAsserts
         
         Object oRememberErrorState is a cErrorState
             Set phErrorState to Self
@@ -70,6 +73,14 @@ Class cTest is a cObject
         End
     End_Procedure
     
+    Procedure SuppressErrorDialog
+        Send SuppressErrorDialog to Error_Object_Id
+    End_Procedure
+    
+    Procedure ResetErrorDialog
+        Send ResetErrorDialog to Error_Object_Id
+    End_Procedure
+    
     Procedure SetTestResult
         Handle hResult
         Move oTestResult to hResult
@@ -87,20 +98,23 @@ Class cTest is a cObject
             Set psErrorMessage of oTestResult to sErrorMessage
         End
         Set pTime of hResult to (pEndTime(Self) - pStartTime(Self))
-        Set psAsserts of hResult to (piAsserts(Self))
     End_Procedure
     
     Procedure InitTest
+        Send ResetAsserts
         Send Reset to oTestResult
         Set pStartTime to (CurrentDateTime())
-        Set piAsserts to 0
         Send SaveErrorState to (phErrorState(Self))
         Move False to Err
         Move 0 to LastErr
     End_Procedure
     
+    Function TestFailed Returns Boolean
+        Function_Return (pbAssertFailureOccured(Self))
+    End_Function
+    
     Procedure FinishTest
-        If (Err) Begin
+        If (TestFailed(Self)) Begin
             Send SaveErrorState to (phErrorState(Self))
             Set pbSuccess to False
         End

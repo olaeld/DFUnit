@@ -12,18 +12,22 @@ Class cTestFixture is a cObject
     
     Procedure Construct_Object
         Forward Send Construct_Object
+        
+        Send Define_cObjectNameMixin
+        Send Define_cAssertMixin
+        
         Property String psTestFixtureName
         Property Handle phTestCatalog
         Property Boolean pbAbortTestFixture False
+        Property Boolean pbFailureOccured False
+        Property Handle phCurrentlyRunningTest
         Property DateTime pStartTime
         Property DateTime pEndTime
-        Property Integer piAsserts
         Property Integer piNumberOfTests
         
         Object oTestFixtureCatalog is a cTestFixtureCatalog
         End_Object
         Set phTestFixtureNeighborhood of oTestFixtureCatalog to Self
-        
         
         Object oTestFixtureRunner is a cTestFixtureRunner
         End_Object
@@ -71,9 +75,19 @@ Class cTestFixture is a cObject
         Function_Return sTestFixtureName
     End_Function
     
+    Procedure FailedAssert String sFailureMessage
+        Handle hAssertAppliesTo
+        Get phCurrentlyRunningTest to hAssertAppliesTo
+        If (hAssertAppliesTo = 0) Move Self to hAssertAppliesTo
+        Send DoFailedAssert to hAssertAppliesTo sFailureMessage
+    End_Procedure
+    
     Procedure RunChildTestFixtures
         Set phTestFixtureCatalog of oTestFixtureRunner to oTestFixtureCatalog
         Send RunTestFixtures to oTestFixtureRunner
+        If (FailureOccured(oTestFixtureRunner(Self))) Begin
+            Set pbFailureOccured to True
+        End
     End_Procedure
     
     Procedure CatalogTestFixture
@@ -106,13 +120,17 @@ Class cTestFixture is a cObject
         Set psResult of hResult to "Success"
         Set psSuccess of hResult to "True"
         Set pTime of hResult to (pEndTime(Self) - pStartTime(Self))
-        Set psAsserts of hResult to (piAsserts(Self))
     End_Procedure
     
+    Function TestFixtureFailed Returns Boolean
+        Function_Return (pbFailureOccured(Self))
+    End_Function
+    
     Procedure InitTestFixture
+        Send ResetAsserts
+        Set pbFailureOccured to False
         Set pStartTime to (CurrentDateTime())
         Set pbAbortTestFixture to False
-        Set piAsserts to 0
     End_Procedure
     
     Procedure FinishTestFixture
@@ -184,7 +202,9 @@ Class cTestFixture is a cObject
             Send SetupParentFixture
             Send Setup
             
+            Set phCurrentlyRunningTest to hTest
             Send RunTest to hTest
+            Set phCurrentlyRunningTest to 0
             
             Send TearDown
             Send TearDownParentFixture
@@ -192,6 +212,9 @@ Class cTestFixture is a cObject
             
             Send FinishTest to hTest
             Send SetTestResult to hTest
+            If (TestFailed(hTest)) Begin
+                Set pbFailureOccured to True
+            End
         Loop
     End_Procedure
     

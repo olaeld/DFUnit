@@ -5,6 +5,38 @@ Class cUnattendedErrorSystem is a ErrorSystem
         Forward Send Construct_Object
         Property String psLastErrorMessage
         Property Boolean pbShowErrorDialog False
+        Property Boolean[] pShowErrorDialogStack
+    End_Procedure
+    
+    Procedure PushStack Boolean bShow
+        Boolean[] Stack
+        Get pShowErrorDialogStack to Stack
+        Move bShow to Stack[SizeOfArray(Stack)]
+        Set pShowErrorDialogStack to Stack
+    End_Procedure
+    
+    Function PopStack Returns Boolean
+        Boolean[] Stack
+        Boolean bShow
+        Get pShowErrorDialogStack to Stack
+        Move Stack[SizeOfArray(Stack)] to bShow
+        Move (ResizeArray(Stack, SizeOfArray(Stack) -1)) to Stack
+        Set pShowErrorDialogStack to Stack
+        Function_Return bShow
+    End_Function
+    
+    Procedure SuppressErrorDialog
+        Send PushStack (pbShowErrorDialog(Self))
+        Set pbShowErrorDialog to False
+    End_Procedure
+    
+    Procedure ShowErrorDialog
+        Send PushStack (pbShowErrorDialog(Self))
+        Set pbShowErrorDialog to True
+    End_Procedure
+    
+    Procedure ResetErrorDialog
+        Set pbShowErrorDialog to (PopStack(Self))
     End_Procedure
     
     Procedure UnhandledErrorDisplay Integer iErrorLine String sMessage 

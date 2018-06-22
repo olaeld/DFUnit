@@ -1,8 +1,39 @@
 Use VdfBase.pkg
 
 Class cAssertMixin is a Mixin
-    Procedure Define_cObjectNameMixin
+    Procedure Define_cAssertMixin
+        Property Boolean pbAssertFailureOccured
+        Property String[] pFailureMessages
     End_Procedure
+    
+    Procedure ResetAsserts
+        String[] Empty
+        Set pFailureMessages to Empty
+        Set pbAssertFailureOccured to False
+    End_Procedure
+    
+    Procedure DoFailedAssert String sFailureMessage
+        Error DfErr_Program sFailureMessage
+        Set pbAssertFailureOccured to True
+        String[] FailureMessages
+        Get pFailureMessages to FailureMessages
+        Move sFailureMessage to FailureMessages[SizeOfArray(FailureMessages)]
+        Set pFailureMessages to FailureMessages
+    End_Procedure
+    
+    Procedure FailedAssert String sFailureMessage
+        Send DoFailedAssert sFailureMessage
+    End_Procedure
+    
+    Function AssertFailureOccured Returns Boolean
+        Function_Return (pbAssertFailureOccured(Self))
+    End_Function
+    
+    Function FailureMessages Returns String[]
+        String[] FailureMessages
+        Get pFailureMessages to FailureMessages
+        Function_Return FailureMessages
+    End_Function
     
     Procedure Assert Boolean bCondition String sAssertMessage
         If bCondition Procedure_Return
@@ -13,7 +44,7 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 2) Begin
             Move (sErrorMessage + "\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
     
     Procedure AssertFalse Boolean bCondition String sAssertMessage
@@ -25,7 +56,7 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 2) Begin
             Move (sErrorMessage + "\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
     
     Procedure AssertIAreEqual Integer Expected Integer Actual String sAssertMessage
@@ -38,7 +69,7 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 3) Begin
             Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
     
     Procedure AssertNAreEqual Number Expected Number Actual String sAssertMessage
@@ -51,7 +82,7 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 3) Begin
             Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
     
     Procedure AssertSAreEqual String Expected String Actual String sAssertMessage
@@ -64,7 +95,7 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 3) Begin
             Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
 
     Procedure AssertDAreEqual Date Expected Date Actual String sAssertMessage
@@ -77,7 +108,7 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 3) Begin
             Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
     
     Procedure AssertDTAreEqual DateTime Expected DateTime Actual String sAssertMessage
@@ -90,7 +121,7 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 3) Begin
             Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
     
     Procedure AssertTSAreEqual TimeSpan Expected TimeSpan Actual String sAssertMessage
@@ -103,6 +134,6 @@ Class cAssertMixin is a Mixin
         If (num_arguments >= 3) Begin
             Move (sErrorMessage + ".\n" + sAssertMessage) to sErrorMessage
         End
-        Error DfErr_Program sErrorMessage
+        Send FailedAssert sErrorMessage
     End_Procedure
 End_Class
