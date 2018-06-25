@@ -22,6 +22,7 @@ Object oMain is a Panel
     Object oClientArea is a ClientArea
         Object Total_test_run is a cTestFixture
             
+            Use oDFUnitTests.pkg
             Use "DFUnit Example Workspace Tests.pkg"
             
         End_Object
